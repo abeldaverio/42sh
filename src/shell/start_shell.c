@@ -16,8 +16,8 @@ static bool handle_input(char *input, int tty, env_t *env)
 {
     if (input == NULL)
         exit(84);
-    if (start_tree(input, env))
-            return true;
+    if (start_tree(env, input))
+        return true;
     if (tty == 1)
         print_prompt(env);
     return false;

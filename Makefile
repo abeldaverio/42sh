@@ -19,6 +19,13 @@ SRC	=	$(addprefix src/,\
 				free_env.c	\
 				free_array.c	\
 			)	\
+			$(addprefix parser/,\
+				checkers.c	\
+				file_redirections.c	\
+				ll_decoder.c	\
+				ll_parser.c	\
+				symbols_handling.c	\
+			)	\
 			$(addprefix shell/,\
 				$(addprefix init/,\
 					$(addprefix own_env_init/,\

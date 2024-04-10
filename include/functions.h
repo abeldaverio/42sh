@@ -49,4 +49,7 @@ char *int_to_str(int);
 char **my_arraydup(char **);
 int my_arraylen(char **);
 
+// parser
+int start_tree(env_t *env, char *input);
+
 #endif

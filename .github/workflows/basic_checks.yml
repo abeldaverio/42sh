@@ -1,0 +1,49 @@
+on:
+  push:
+  pull_request:
+
+jobs:
+  check_coding_style:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/epitech/coding-style-checker:latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Run coding style
+      run: check.sh $(pwd) $(pwd)
+    - name: print errors
+      run: |
+        while IFS= read -r line
+        do
+          IFS=':' read -ra error_code <<< "${line[0]}"
+          echo "::error file=${error_code[0]},line=${error_code[1]},title=${error_code[2]} coding style error $error::${error_code[3]}"
+        done < coding-style-reports.log
+        if [[ -s coding-style-reports.log ]]; then
+          exit 1
+        fi
+        
+  check_program_compilation:
+    runs-on: ubuntu-latest
+    needs: check_coding_style
+    timeout-minutes: 2
+    container:
+      image: epitechcontent/epitest-docker
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build
+      run: make
+
+  run_tests:
+    runs-on: ubuntu-latest
+    needs: check_program_compilation
+    timeout-minutes: 2
+    container:
+      image: epitechcontent/epitest-docker
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build
+      run: make
+    - name: Run_tests
+      run: make tests_run
+    - name: Run_bash_tests
+      run: cd tests/bash_testing ; ./all_tests.sh
