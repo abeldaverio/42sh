@@ -45,12 +45,14 @@ static void replace_variables(char **args, env_t *env)
 
 bool execute(char **args, env_t *env)
 {
+    bool return_value = true;
+
     replace_variables(args, env);
     for (int i = 0; i < NB_OF_POSSIBILITY; i++) {
         if (POSSIBILITY[i].check(args)) {
-            POSSIBILITY[i].function(args, env);
+            return_value = POSSIBILITY[i].function(args, env);
             free_array(args);
-            return true;
+            return return_value;
         }
     }
     exit(84);

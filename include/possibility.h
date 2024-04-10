@@ -17,13 +17,13 @@ bool always_true(char **args);
 bool is_it_variable(char **args);
 
 // functions
-void execute_comand(char **args, env_t *env);
-void check_first_arg(char **args, env_t *env);
-void set_variable(char **args, env_t *env_list);
+bool execute_comand(char **args, env_t *env);
+bool check_first_arg(char **args, env_t *env);
+bool set_variable(char **args, env_t *env_list);
 
 typedef struct poss_s {
     bool (*check)(char **args);
-    void (*function)(char **argv, env_t *env);
+    bool (*function)(char **argv, env_t *env);
 }poss_t;
 
 static const poss_t POSSIBILITY[] = {

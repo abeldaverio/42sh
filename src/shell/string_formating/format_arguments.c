@@ -80,7 +80,6 @@ static bool fill_the_array(char *line,
     if (*array == NULL)
         return false;
     i += fill_the_string(line + i, array[0], separators, ignorer);
-    array[0][nb_of_letters] = '\0';
     return fill_the_array(line + i, array + 1, separators, ignorer);
 }
 
@@ -131,6 +130,5 @@ char **format_arguments(char *line,
         return NULL;
     if (!fill_the_array(line, array, separators, ignorer))
         return NULL;
-    array[nb_of_arguments] = NULL;
     return array;
 }

@@ -12,14 +12,12 @@
 #include "env.h"
 #include "functions.h"
 
-static bool handle_input(char *input, int tty, env_t *env)
+static bool handle_input(char *input, env_t *env)
 {
     if (input == NULL)
         exit(84);
     if (start_tree(env, input))
         return true;
-    if (tty == 1)
-        print_prompt(env);
     return false;
 }
 
@@ -33,8 +31,10 @@ static void start_loop(env_t *env, int tty)
     size = getline(&input, &tmp, stdin);
     while ((size != -1)) {
         new_input = clear_special(input);
-        if (!handle_input(new_input, tty, env))
+        if (!handle_input(new_input, env))
             break;
+        if (tty == 1)
+            print_prompt(env);
         size = getline(&input, &tmp, stdin);
     }
     if (input != NULL)

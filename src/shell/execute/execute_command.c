@@ -16,15 +16,14 @@
 #include "built_in.h"
 #include "functions.h"
 
-static bool try_shell_command(char **args, env_t *env)
+static int try_shell_command(char **args, env_t *env)
 {
     for (int i = 0; i < NB_OF_COMMANDS; i++) {
-        if (strcmp(args[0], COMMANDS[i].command) == 1) {
-            (COMMANDS[i].function)(args, env);
-            return true;
+        if (strcmp(args[0], COMMANDS[i].command) == 0) {
+            return (COMMANDS[i].function)(args, env);
         }
     }
-    return false;
+    return 2;
 }
 
 static char *concatenate_path(char *str1, char *str2)
@@ -92,12 +91,18 @@ bool is_it_command(char **args)
     return true;
 }
 
-void execute_comand(char **args, env_t *env)
+bool execute_comand(char **args, env_t *env)
 {
-    if (try_shell_command(args, env))
-        return;
+    int built_in_return = 0;
+
+    built_in_return = try_shell_command(args, env);
+    if (built_in_return == 1)
+        return true;
+    if (built_in_return == 0)
+        return false;
     if (try_path_command(args, env))
-        return;
+        return true;
     dprintf(2, "%s: Command not found.\n", args[0]);
     env->last_return = 1;
+    return true;
 }

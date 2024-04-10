@@ -17,17 +17,19 @@ bool set_exit_value(char **args, env_t *env)
     char *check = NULL;
     int value = 0;
 
-    if (args[2] != NULL)
+    if (args[1] == NULL)
         return false;
-    if (args[3] != NULL) {
+    if (args[2] != NULL) {
         dprintf(2, "exit: Expression Syntax.\n");
         env->last_return = 1;
         return true;
     }
     value = strtol(args[1], &check, 10);
-    if (check != NULL) {
+    if (strcmp(check, "") != 0) {
+        printf("%s\n", check);
         dprintf(2, "exit: Expression Syntax.\n");
         env->last_return = 1;
+        return true;
     }
     env->last_return = value;
     return false;

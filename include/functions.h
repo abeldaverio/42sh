@@ -31,7 +31,7 @@ int start_shell(char const **env);
 bool handle_line(char **args, env_t *env);
 bool execute(char **args, env_t *env);
 void update_status(int status, env_t *env);
-void execute_file(char *executable, char **args, env_t *env);
+bool execute_file(char *executable, char **args, env_t *env);
 void try_execute(char *path, char **args, char **env);
 
 //string formating

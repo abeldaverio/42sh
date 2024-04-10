@@ -11,7 +11,7 @@
 #include <sys/wait.h>
 #include "functions.h"
 
-void execute_file(char *executable, char **args, env_t *env)
+bool execute_file(char *executable, char **args, env_t *env)
 {
     int wstatus;
     pid_t child_pid = fork();
@@ -27,4 +27,5 @@ void execute_file(char *executable, char **args, env_t *env)
         update_status(wstatus, env);
     }
     free_array(env_array);
+    return true;
 }
