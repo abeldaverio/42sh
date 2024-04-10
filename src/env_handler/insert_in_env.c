@@ -15,7 +15,7 @@ static env_list_t *init_env_node(char *variable, char *value)
     env_list_t *env = calloc(sizeof(env_list_t), 1);
 
     if (env == NULL)
-        exit(84);
+        exit(ERROR_STATUS);
     env->variable = strdup(variable);
     env->value = strdup((value == NULL) ? "" : value);
     if (env->variable == NULL || env->value == NULL)

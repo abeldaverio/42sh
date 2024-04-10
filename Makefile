@@ -10,6 +10,7 @@ SRC	=	$(addprefix src/,\
 			$(addprefix env_handler/,\
 				insert_in_env.c	\
 				search_in_env.c	\
+				get_env_array.c	\
 			)	\
 			$(addprefix error_handling/,\
 				check_arguments.c	\
@@ -30,11 +31,31 @@ SRC	=	$(addprefix src/,\
 					format_arguments.c	\
 					clear_special.c	\
 				)	\
+				$(addprefix execute/,\
+					$(addprefix built_in/,\
+						change_directory.c	\
+						set_env.c	\
+						set_variable.c	\
+						unset_env.c	\
+						display_env.c	\
+					)	\
+					default.c	\
+					execute_command.c	\
+					find.c	\
+					execute_file.c	\
+					last_return.c	\
+					try_execute.c	\
+				)	\
 				start_shell.c	\
 				handle_line.c	\
 			)	\
 			$(addprefix print/,\
 				print_prompt.c	\
+			)	\
+			$(addprefix side_functions/,\
+				int_to_str.c	\
+				my_arraydup.c	\
+				my_arraylen.c	\
 			)	\
 		)	\
 

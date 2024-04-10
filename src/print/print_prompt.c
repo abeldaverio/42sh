@@ -17,8 +17,12 @@ void print_prompt(env_t *env)
     char *pwd = search_env_value("PWD", env->env_list);
 
     dprintf(1, "%s%s%s@", PURPLE, ((username == NULL) ? "" : username),
-        DEFAULT);
+        GREY);
     dprintf(1, "%s%s%s:", RED, ((version == NULL) ? "" : version), DEFAULT);
-    dprintf(1, "%s%s%s > %ld\n$> ", CYAN, ((pwd == NULL) ? "" : pwd),
-        DEFAULT, env->last_return);
+    dprintf(1, "%s%s%s", BLUE, ((pwd == NULL) ? "" : pwd), DEFAULT);
+    if (env->last_return == 0)
+        dprintf(1, " > %s%ld%s\n", GREEN, env->last_return, DEFAULT);
+    else
+        dprintf(1, " > %s%ld%s\n", RED, env->last_return, DEFAULT);
+    dprintf(1, "%s$>%s ", GREY, DEFAULT);
 }

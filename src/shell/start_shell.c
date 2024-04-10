@@ -12,17 +12,12 @@
 #include "env.h"
 #include "functions.h"
 
-static bool handle_input(char **formated, int tty, env_t *env)
+static bool handle_input(char *input, int tty, env_t *env)
 {
-    if (formated == NULL)
+    if (input == NULL)
         exit(84);
-    if (formated[0] == NULL) {
-        free_array(formated);
-    } else {
-        dprintf(1, "command\n");
-        if (handle_line(formated, env))
+    if (start_tree(input, env))
             return true;
-    }
     if (tty == 1)
         print_prompt(env);
     return false;
@@ -34,14 +29,11 @@ static void start_loop(env_t *env, int tty)
     int size = 0;
     char *input = NULL;
     char *new_input = NULL;
-    char **formated = NULL;
 
     size = getline(&input, &tmp, stdin);
     while ((size != -1)) {
         new_input = clear_special(input);
-        formated = format_arguments(new_input, " \t\n", "\"\'");
-        free(new_input);
-        if (handle_input(formated, tty, env))
+        if (handle_input(new_input, tty, env))
             break;
         size = getline(&input, &tmp, stdin);
     }

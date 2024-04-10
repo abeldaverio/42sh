@@ -12,30 +12,16 @@
 #include "env.h"
 #include "functions.h"
 
-static bool set_exit_return(char **args, env_t *env)
-{
-    char *check = NULL;
-    int value = 0;
+// static bool set_exit_return(char **args, env_t *env)
+// {
+//     char *check = NULL;
+//     int value = 0;
 
-    if (args[2] != NULL)
-        return false;
-    value = strtol(args[1], &check, 10);
-    if (check != NULL)
-        return false;
-    env->last_return = value;
-    return true;
-}
-
-bool handle_line(char **args, env_t *env)
-{
-    if (strcmp(args[0], "exit") == 0) {
-        if (args[1] != NULL && !set_exit_return(args, env))
-            dprintf(2, "exit: invalid syntax\n");
-        else {
-            free_array(args);
-            return true;
-        }
-    }
-    free_array(args);
-    return false;
-}
+//     if (args[2] != NULL)
+//         return false;
+//     value = strtol(args[1], &check, 10);
+//     if (check != NULL)
+//         return false;
+//     env->last_return = value;
+//     return true;
+// }
