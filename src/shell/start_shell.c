@@ -33,7 +33,7 @@ static void start_loop(env_t *env, int tty)
     size = getline(&input, &tmp, stdin);
     while ((size != -1)) {
         new_input = clear_special(input);
-        if (handle_input(new_input, tty, env))
+        if (!handle_input(new_input, tty, env))
             break;
         size = getline(&input, &tmp, stdin);
     }

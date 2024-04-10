@@ -111,7 +111,7 @@ bool lauch_command(ll_node_t *self, env_t *env, int)
     char **input_twod = NULL;
     int return_value = 0;
 
-    input_twod = format_arguments(self->value, " \t", "");
+    input_twod = format_arguments(self->value, " \t\n", "\"\'");
     if (input_twod == NULL)
         return return_value;
     return_value = execute(input_twod, env);

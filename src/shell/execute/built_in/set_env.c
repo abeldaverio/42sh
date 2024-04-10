@@ -48,17 +48,16 @@ static bool check_error(char **argv)
     return false;
 }
 
-void set_env(char **argv, env_t *env)
+bool set_env(char **argv, env_t *env)
 {
     if (my_arraylen(argv) == 1) {
-        display_env(argv, env);
-        env->last_return = 0;
-        return;
+        return display_env(argv, env);
     }
     if (check_error(argv)) {
         env->last_return = 1;
-        return;
+        return true;
     } else
         insert_in_env(argv[1], argv[2], env->env_list);
     env->last_return = 0;
+    return true;
 }

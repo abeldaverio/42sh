@@ -95,22 +95,23 @@ static void normal_change(char *path, env_t *env, char *buff)
     env->last_return = 0;
 }
 
-void change_directory(char **argv, env_t *env)
+bool change_directory(char **argv, env_t *env)
 {
     char buff[255];
 
     if (my_arraylen(argv) > 2) {
         dprintf(2, "cd: Too many arguments.\n");
         env->last_return = 1;
-        return;
+        return true;
     }
     if (my_arraylen(argv) == 1 || strcmp(argv[1], "~") == 0) {
         go_home(env, buff);
-        return;
+        return true;
     }
     if (strcmp(argv[1], "-") == 0) {
         go_back(env, buff);
-        return;
+        return true;
     }
     normal_change(argv[1], env, buff);
+    return true;
 }

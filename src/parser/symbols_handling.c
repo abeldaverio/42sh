@@ -16,6 +16,23 @@
 #include "macros.h"
 #include "functions.h"
 
+static void execute_child(ll_node_t *self, int *fds, env_t *env)
+{
+    dup2(fds[IN], STDOUT_FILENO);
+    close(fds[OUT]);
+    self->left->func(self->left, env, -1);
+    exit(env->last_return);
+}
+
+static void execute_parent(ll_node_t *self,
+    int *fds, env_t *env, int stdin_save)
+{
+    dup2(fds[OUT], STDIN_FILENO);
+    close(fds[IN]);
+    self->right->func(self->right, env, -1);
+    dup2(stdin_save, STDIN_FILENO);
+}
+
 bool pipe_redir(ll_node_t *self, env_t *env, int)
 {
     int fds[2];
@@ -26,15 +43,9 @@ bool pipe_redir(ll_node_t *self, env_t *env, int)
     pipe(fds);
     pid = fork();
     if (pid == 0) {
-        dup2(fds[IN], STDOUT_FILENO);
-        close(fds[OUT]);
-        self->left->func(self->left, env, -1);
-        exit(env->last_return);
+        execute_child(self, fds, env);
     } else {
-        dup2(fds[OUT], STDIN_FILENO);
-        close(fds[IN]);
-        self->right->func(self->right, env, -1);
-        dup2(stdin_save, STDIN_FILENO);
+        execute_parent(self, fds, env, stdin_save);
         waitpid(pid, &stat_val, 0);
     }
     update_status(stat_val, env);

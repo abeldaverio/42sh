@@ -34,13 +34,10 @@ static char *concatenate_path(char *str1, char *str2)
     if (str1[strlen(str1) - 1] == '/')
         return strcat(str1, str2);
     else {
-        tmp = strcat(str1, "/");
+        tmp = my_strcat(3, str1, "/", str2);
         if (tmp == NULL)
-            exit(ERROR_STATUS);
-        tmp = strcat(tmp, str2);
-        if (str1 == NULL)
             exit(84);
-        return str1;
+        return tmp;
     }
 }
 

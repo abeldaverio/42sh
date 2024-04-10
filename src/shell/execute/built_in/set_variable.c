@@ -19,7 +19,7 @@ bool is_it_variable(char **args)
     return false;
 }
 
-void set_variable(char **args, env_t *env)
+bool set_variable(char **args, env_t *env)
 {
     char **tmp = separate_line(args[0]);
 
@@ -30,4 +30,5 @@ void set_variable(char **args, env_t *env)
     free_array(tmp);
     if (my_arraylen(args) > 1)
         execute(my_arraydup(args + 1), env);
+    return true;
 }

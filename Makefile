@@ -45,6 +45,7 @@ SRC	=	$(addprefix src/,\
 						set_variable.c	\
 						unset_env.c	\
 						display_env.c	\
+						exit.c	\
 					)	\
 					default.c	\
 					execute_command.c	\
@@ -54,7 +55,6 @@ SRC	=	$(addprefix src/,\
 					try_execute.c	\
 				)	\
 				start_shell.c	\
-				handle_line.c	\
 			)	\
 			$(addprefix print/,\
 				print_prompt.c	\
@@ -63,6 +63,7 @@ SRC	=	$(addprefix src/,\
 				int_to_str.c	\
 				my_arraydup.c	\
 				my_arraylen.c	\
+				my_strcat.c	\
 			)	\
 		)	\
 

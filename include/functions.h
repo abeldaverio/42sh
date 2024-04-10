@@ -48,6 +48,7 @@ void free_array(char **);
 char *int_to_str(int);
 char **my_arraydup(char **);
 int my_arraylen(char **);
+char *my_strcat(size_t size, ...);
 
 // parser
 int start_tree(env_t *env, char *input);

@@ -33,15 +33,15 @@ static void remove_from_env(char *variable, env_list_t **env_list)
     remove_from_env(variable, &(*env_list)->next);
 }
 
-void unset_env(char **argv, env_t *env)
+bool unset_env(char **argv, env_t *env)
 {
     if (my_arraylen(argv) < 2) {
         dprintf(2, "unsetenv: Too few arguments.\n");
         env->last_return = 1;
-        return;
+        return true;
     }
     for (int i = 1; argv[i] != NULL; i++)
         remove_from_env(argv[i], env->env_list);
     env->last_return = 0;
-    return;
+    return true;
 }

@@ -17,13 +17,14 @@ static void print_env(env_list_t **env_list)
     print_env(&(*env_list)->next);
 }
 
-void display_env(char **argv, env_t *env)
+bool display_env(char **argv, env_t *env)
 {
     if (my_arraylen(argv) > 1) {
         dprintf(2, "env: Too many arguments.\n");
         env->last_return = 1;
-        return;
+        return true;
     }
     print_env(env->env_list);
     env->last_return = 0;
+    return true;
 }
