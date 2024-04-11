@@ -71,7 +71,8 @@ env_t *init_env(char const **env_array)
         return NULL;
     env->shell_variables = calloc(sizeof(env_list_t *), 1);
     env->env_list = calloc(sizeof(env_list_t *), 1);
-    if (env->env_list == NULL || env->shell_variables == NULL)
+    env->aliases = calloc(sizeof(env_list_t *), 1);
+    if (!env->env_list || !env->shell_variables || !env->aliases)
         return NULL;
     env->last_return = 0;
     if (!fill_the_list(env->env_list, env_array))

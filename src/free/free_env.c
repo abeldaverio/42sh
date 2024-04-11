@@ -22,7 +22,9 @@ void free_env(env_t *env)
 {
     free_env_list(env->env_list);
     free_env_list(env->shell_variables);
+    free_env_list(env->aliases);
     free(env->shell_variables);
+    free(env->aliases);
     free(env->old_pwd);
     free(env->env_list);
     free(env);

@@ -22,6 +22,7 @@ void init_own_env(env_list_t **env);
 char *search_env_value(char *variable, env_list_t **env);
 void insert_in_env(char *variable, char *value, env_list_t **env_list);
 char **get_env_array(env_list_t **env_list);
+void remove_from_env(char *variable, env_list_t **env_list);
 
 //print functions
 void print_prompt(env_t *env);
@@ -39,6 +40,8 @@ char *clear_special(char *input);
 char **format_arguments(char *line,
     const char *separators, const char *ignorer);
 char **separate_line(char const *line);
+bool replace_aliases(char ***args, env_list_t **aliases);
+char **array_concat(char **, char **);
 
 //free
 void free_env(env_t *);

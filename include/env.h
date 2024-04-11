@@ -19,6 +19,7 @@ typedef struct env_list_s {
 typedef struct env_s {
     env_list_t **shell_variables;
     env_list_t **env_list;
+    env_list_t **aliases;
     size_t last_return;
     char *old_pwd;
 }env_t;

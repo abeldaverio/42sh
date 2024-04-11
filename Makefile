@@ -37,6 +37,8 @@ SRC	=	$(addprefix src/,\
 				$(addprefix string_formating/,\
 					format_arguments.c	\
 					clear_special.c	\
+					array_concat.c 	\
+					replace_aliases.c	\
 				)	\
 				$(addprefix execute/,\
 					$(addprefix built_in/,\
@@ -46,6 +48,8 @@ SRC	=	$(addprefix src/,\
 						unset_env.c	\
 						display_env.c	\
 						exit.c	\
+						set_alias.c	\
+						unset_alias.c	\
 					)	\
 					default.c	\
 					execute_command.c	\

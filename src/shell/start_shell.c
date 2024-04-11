@@ -16,8 +16,11 @@ static bool handle_input(char *input, env_t *env)
 {
     if (input == NULL)
         exit(84);
-    if (start_tree(env, input))
+    if (start_tree(env, input)) {
+        free(input);
         return true;
+    }
+    free(input);
     return false;
 }
 

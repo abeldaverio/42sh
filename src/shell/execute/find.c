@@ -47,6 +47,7 @@ bool execute(char **args, env_t *env)
 {
     bool return_value = true;
 
+    while (replace_aliases(&args, env->aliases));
     replace_variables(args, env);
     for (int i = 0; i < NB_OF_POSSIBILITY; i++) {
         if (POSSIBILITY[i].check(args)) {
