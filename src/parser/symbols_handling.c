@@ -49,10 +49,10 @@ bool pipe_redir(ll_node_t *self, env_t *env, int)
         waitpid(pid, &stat_val, 0);
     }
     update_status(stat_val, env);
-    return false;
+    return true;
 }
 
 bool no_redir(ll_node_t *, env_t *, int)
 {
-    return 0;
+    return true;
 }
