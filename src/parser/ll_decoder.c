@@ -15,7 +15,6 @@
 #include "env.h"
 #include "functions.h"
 #include "ll_parsing.h"
-#include "macros.h"
 
 void free_tree(ll_node_t *current)
 {

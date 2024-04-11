@@ -67,6 +67,12 @@ SRC	=	$(addprefix src/,\
 			)	\
 		)	\
 
+SRC_TEST	=	$(addprefix tests/,\
+			redirect.c	\
+			)
+
+SRC_TO_TEST	=	$(filter-out src/main.c, $(SRC))
+
 CPPFLAGS	=	-iquote./include
 
 CFLAGS	+=	-Wall -Wextra
@@ -93,7 +99,7 @@ $(NAME):	$(OBJ)
 clean:
 	$(RM) $(OBJ)
 
-fclean:	clean
+fclean:	clean tests_clean
 	$(RM) $(NAME)
 
 re:	fclean all
@@ -107,7 +113,7 @@ asan: re
 $(TEST_NAME):	$(OBJ_TEST)
 	$(CC) -o $(TEST_NAME) $(CFLAGS) $(CPPFLAGS)	\
 	$(OBJ_TEST) $(SRC_TO_TEST)	\
-	$(TEST_FLAGS)
+	$(TEST_FLAGS) $(TEST_LIB)
 
 tests_run:	$(TEST_NAME)
 	./$(TEST_NAME)
