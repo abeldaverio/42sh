@@ -13,3 +13,4 @@ unit_tests
 *.gcno
 *.gcda
 compile_flags.txt
+42sh
