@@ -26,5 +26,5 @@ bool replace_aliases(char ***args, env_list_t **aliases)
     free(*args);
     free(formated_alias);
     *args = new_args;
-    return true;
+    return strcmp(alias_value, **args) == 0 ? false : true;
 }
