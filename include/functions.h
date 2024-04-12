@@ -16,7 +16,7 @@ bool check_main_args(int const argc);
 
 //init
 env_t *init_env(char const **env);
-void init_own_env(env_list_t **env);
+bool init_own_env(env_list_t **env);
 
 //env functions
 char *search_env_value(char *variable, env_list_t **env);

@@ -12,9 +12,9 @@
     #include <stddef.h>
     #include "env.h"
 
-void init_host(env_list_t **env);
+bool init_host(env_list_t **env);
 
-static void (*OWN_INIT[])(env_list_t **) = {
+static bool (*OWN_INIT[])(env_list_t **) = {
     init_host,
 };
 
