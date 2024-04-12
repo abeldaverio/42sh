@@ -18,7 +18,7 @@ static char *get_dir(char *pwd)
         return NULL;
     for (int i = 0; pwd[i] != '\0'; i++)
         if (pwd[i] == '/')
-            last_slash = i;
+            last_slash = (i == 0) ? i : i + 1;
     return pwd + last_slash;
 }
 
@@ -29,12 +29,12 @@ void print_prompt(env_t *env)
     char *dir = get_dir(search_env_value("PWD", env->env_list));
 
     dprintf(1, "%s%s%s@", RED, ((username == NULL) ? "" : username),
-        GREY);
+        DEFAULT);
     dprintf(1, "%s%s%s:", PURPLE, ((version == NULL) ? "" : version), DEFAULT);
     dprintf(1, "%s%s%s", BLUE, ((dir == NULL) ? "" : dir), DEFAULT);
     if (env->last_return == 0)
-        dprintf(1, " > %s%ld%s\n", GREEN, env->last_return, DEFAULT);
+        dprintf(1, " > %s%ld%s ", GREEN, env->last_return, DEFAULT);
     else
-        dprintf(1, " > %s%ld%s\n", RED, env->last_return, DEFAULT);
-    dprintf(1, "%s$>%s ", GREY, DEFAULT);
+        dprintf(1, " > %s%ld%s ", RED, env->last_return, DEFAULT);
+    dprintf(1, "%s$>%s ", YELLOW, DEFAULT);
 }

@@ -15,11 +15,11 @@
 
 static void replace_arg(char **origin, env_t *env)
 {
-    char *tmp = search_env_value(*origin + 1, env->env_list);
+    char *tmp = search_env_value((*origin) + 1, env->env_list);
 
-    free(*origin);
     if (tmp == NULL)
-        tmp = search_env_value(*origin + 1, env->shell_variables);
+        tmp = search_env_value((*origin) + 1, env->shell_variables);
+    free(*origin);
     if (tmp == NULL)
         *origin = strdup("");
     else

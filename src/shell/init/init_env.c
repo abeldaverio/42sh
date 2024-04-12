@@ -11,13 +11,6 @@
 #include "env.h"
 #include "functions.h"
 
-static void fill_the_node(env_list_t *env, char **env_line)
-{
-    env->variable = env_line[0];
-    env->value = env_line[1];
-    env->next = NULL;
-}
-
 static int get_variable_size(char const *line)
 {
     int i;
@@ -54,13 +47,12 @@ static bool fill_the_list(env_list_t **env, char const **env_array)
         init_own_env(env);
         return true;
     }
-    *env = malloc(sizeof(env_list_t));
     tmp = separate_line(*env_array);
-    if (*env == NULL || tmp == NULL)
+    if (tmp == NULL)
         return false;
-    fill_the_node(*env, tmp);
-    free(tmp);
-    return fill_the_list(&(*env)->next, env_array + 1);
+    insert_in_env(tmp[0], tmp[1], env);
+    free_array(tmp);
+    return fill_the_list(env, env_array + 1);
 }
 
 env_t *init_env(char const **env_array)

@@ -25,7 +25,10 @@ bool set_variable(char **args, env_t *env)
 
     if (tmp == NULL)
         exit(ERROR_STATUS);
-    insert_in_env(tmp[0], tmp[1], env->shell_variables);
+    if (search_env_value(tmp[0], env->env_list) == NULL)
+        insert_in_env(tmp[0], tmp[1], env->shell_variables);
+    else
+        insert_in_env(tmp[0], tmp[1], env->env_list);
     env->last_return = 0;
     free_array(tmp);
     if (my_arraylen(args) > 1)

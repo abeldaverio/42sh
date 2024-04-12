@@ -12,10 +12,12 @@
     #include <stddef.h>
     #include "env.h"
 
-bool init_host(env_list_t **env);
+bool init_utsname(env_list_t **env);
+bool init_user(env_list_t **env);
 
 static bool (*OWN_INIT[])(env_list_t **) = {
-    init_host,
+    init_utsname,
+    init_user,
 };
 
 static const size_t NB_OF_OWN_VARIABLES = sizeof(OWN_INIT) / sizeof(void *);

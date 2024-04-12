@@ -31,6 +31,7 @@ SRC	=	$(addprefix src/,\
 					$(addprefix own_env_init/,\
 						init_host.c	\
 						init_own_env.c	\
+						init_user.c	\
 					)	\
 					init_env.c	\
 				)	\
