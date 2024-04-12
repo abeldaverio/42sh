@@ -12,7 +12,6 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
-#include "macros.h"
 #include "built_in.h"
 #include "functions.h"
 
@@ -42,7 +41,7 @@ static char *concatenate_path(char *str1, char *str2)
 
 static bool try_path(char **args, char *path, env_t *env)
 {
-    char *executable = concatenate_path(path, args[0]);
+    char *executable = my_strcat(3, path, "/", args[0]);
     struct stat sb;
 
     if (lstat(executable, &sb) != -1) {
