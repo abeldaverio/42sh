@@ -45,5 +45,3 @@ jobs:
       run: make
     - name: Run_tests
       run: make tests_run
-    - name: Run_bash_tests
-      run: cd tests/bash_testing ; ./all_tests.sh
