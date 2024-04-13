@@ -69,6 +69,7 @@ SRC	=	$(addprefix src/,\
 				my_arraydup.c	\
 				my_arraylen.c	\
 				my_strcat.c	\
+				is_string_in_array.c	\
 			)	\
 		)	\
 

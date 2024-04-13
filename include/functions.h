@@ -40,7 +40,7 @@ char *clear_special(char *input);
 char **format_arguments(char *line,
     const char *separators, const char *ignorer);
 char **separate_line(char const *line);
-bool replace_aliases(char ***args, env_list_t **aliases);
+void replace_aliases(char ***args, env_list_t **aliases);
 char **array_concat(char **, char **);
 
 //free
@@ -52,6 +52,7 @@ char *int_to_str(int);
 char **my_arraydup(char **);
 int my_arraylen(char **);
 char *my_strcat(size_t size, ...);
+bool is_string_in_array(char *str, char **array);
 
 // parser
 int start_tree(env_t *env, char *input);
