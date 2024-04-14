@@ -58,6 +58,13 @@ SRC	=	$(addprefix src/,\
 						set_alias.c	\
 						unset_alias.c	\
 						append_to_variable.c	\
+						camille_fetch.c	\
+						$(addprefix fetch/,\
+							fetch_command.c	\
+							fetch_hardware.c	\
+							fetch_usr_info.c	\
+							fetch_window_info.c	\
+						)	\
 					)	\
 					default.c	\
 					execute_command.c	\
