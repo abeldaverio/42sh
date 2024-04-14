@@ -39,18 +39,9 @@ static bool try_path(char **args, char *path, env_t *env)
     return false;
 }
 
-char **get_path(env_list_t **env)
-{
-    if (*env == NULL)
-        return NULL;
-    if (strcmp((*env)->variable, "PATH") == 0)
-        return format_arguments((*env)->value, ":", "");
-    return get_path(&(*env)->next);
-}
-
 static bool try_path_command(char **args, env_t *env)
 {
-    char **paths = get_path(env->env_list);
+    char **paths = get_formated_value("PATH", env->env_list);
 
     for (int i = 0; paths != NULL && paths[i] != NULL; i++) {
         if (try_path(args, paths[i], env)) {

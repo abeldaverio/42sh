@@ -12,6 +12,7 @@ SRC	=	$(addprefix src/,\
 				search_in_env.c	\
 				get_env_array.c	\
 				insert_int_in_env.c	\
+				get_formated_value.c	\
 			)	\
 			$(addprefix error_handling/,\
 				check_arguments.c	\
@@ -36,6 +37,7 @@ SRC	=	$(addprefix src/,\
 						init_shlvl.c	\
 						init_vendor.c	\
 						init_pwd.c	\
+						init_prompt_colors.c	\
 					)	\
 					init_env.c	\
 				)	\
