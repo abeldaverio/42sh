@@ -11,6 +11,7 @@ SRC	=	$(addprefix src/,\
 				insert_in_env.c	\
 				search_in_env.c	\
 				get_env_array.c	\
+				insert_int_in_env.c	\
 			)	\
 			$(addprefix error_handling/,\
 				check_arguments.c	\
@@ -32,6 +33,9 @@ SRC	=	$(addprefix src/,\
 						init_host.c	\
 						init_own_env.c	\
 						init_user.c	\
+						init_shlvl.c	\
+						init_vendor.c	\
+						init_pwd.c	\
 					)	\
 					init_env.c	\
 				)	\

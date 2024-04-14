@@ -23,6 +23,7 @@ char *search_env_value(char *variable, env_list_t **env);
 void insert_in_env(char *variable, char *value, env_list_t **env_list);
 char **get_env_array(env_list_t **env_list);
 void remove_from_env(char *variable, env_list_t **env_list);
+void insert_int_in_env(char *variable, int int_value, env_list_t **env);
 
 //print functions
 void print_prompt(env_t *env);
