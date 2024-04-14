@@ -71,23 +71,23 @@ static char *get_dash(env_t *env)
 }
 
 static void display_fetch_info(env_t *env, fetch_model_t model,
-    size_t *i, int count)
+    size_t *i, size_t count)
 {
     char *data = NULL;
 
     if (count > 1 && count <= 2 && *i < SIZE_FETCH_INFO) {
-        dprintf(1, "\t\t%s%s%s@%s%s\n", FETCH_THEME[model].color,
+        dprintf(1, "\t\t%s%s%s@%s%s", FETCH_THEME[model].color,
         search_env_value("USER", env->env_list), DEFAULT,
         FETCH_THEME[CAMILLE].color,
         search_env_value("HOSTNAME", env->env_list));
     }
     if (count > 2 && count <= 3 && *i < SIZE_FETCH_INFO) {
         data = get_dash(env);
-        dprintf(1, "\t\t%s\n", data);
+        dprintf(1, "\t\t%s", data);
     }
     if (count > 3 && *i < SIZE_FETCH_INFO) {
         data = FETCH_INFO[*i].data(env);
-        dprintf(1, "\t\t%s%s%s: %s\n", FETCH_THEME[model].color,
+        dprintf(1, "\t\t%s%s%s: %s", FETCH_THEME[model].color,
         FETCH_INFO[*i].var, DEFAULT, (data != NULL ? data : "unknown"));
         *i = *i + 1;
     }
@@ -95,16 +95,40 @@ static void display_fetch_info(env_t *env, fetch_model_t model,
         free(data);
 }
 
+static void display_colors_shell(env_t *env)
+{
+    char **data = NULL;
+    char **colors = NULL;
+
+    colors = get_colors(env);
+    if (colors == NULL)
+        return;
+    dprintf(1, "\t\t");
+    for (int i = 0; colors[i] != NULL; ++i) {
+        data = format_arguments(colors[i], ";m[", "");
+        if (data == NULL || data[0] == NULL)
+            break;
+        if (my_arraylen(data) == 1)
+            dprintf(1, "\033[%dm   ", atoi(data[0]) + 10);
+        if (my_arraylen(data) == 2)
+            dprintf(1, "\033[%dm   ", atoi(data[1]) + 10);
+        free_array(data);
+    }
+    dprintf(1, "%s", DEFAULT);
+    free_array(colors);
+}
+
 static void display_fetch(env_t *env, char *fetch, fetch_model_t model)
 {
     size_t i = 0;
 
-    for (int count = 0; fetch != NULL; count ++) {
-        if (count > 1 && i < SIZE_FETCH_INFO) {
-            dprintf(1, "%s", fetch);
+    for (size_t count = 0; fetch != NULL; count ++) {
+        dprintf(1, "%s", fetch);
+        if (count > 1 && i < SIZE_FETCH_INFO)
             display_fetch_info(env, model, &i, count);
-        } else
-            dprintf(1, "%s\n", fetch);
+        if (count == SIZE_FETCH_INFO + 5)
+            display_colors_shell(env);
+        dprintf(1, "\n");
         fetch = strtok(NULL, "\n");
     }
 }

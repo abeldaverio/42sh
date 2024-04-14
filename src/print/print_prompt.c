@@ -23,13 +23,6 @@ static char *get_dir(char *pwd)
     return pwd + last_slash;
 }
 
-static char **get_colors(env_t *env)
-{
-    char **colors = get_formated_value("PROMPT_COLORS", env->env_list);
-
-    return colors;
-}
-
 void print_boring_prompt(char *username, char *version, char *dir, env_t *env)
 {
     dprintf(1, "%s@", ((username == NULL) ? "" : username));
@@ -62,6 +55,13 @@ static void print_formated_last_return(size_t last_return,
     if ((my_arraylen(colors) > (int)color) && (strlen(colors[color]) < 255))
         sprintf(color_buff, "\033%s", colors[color]);
     dprintf(1, " > %s%ld%s ", color_buff, last_return, DEFAULT);
+}
+
+char **get_colors(env_t *env)
+{
+    char **colors = get_formated_value("PROMPT_COLORS", env->env_list);
+
+    return colors;
 }
 
 void print_cool_prompt(env_t *env, char *version, char *dir, char **colors)

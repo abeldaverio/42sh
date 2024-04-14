@@ -25,5 +25,6 @@ static const fetch_theme_t FETCH_THEME[] = {
 
 bool fetch_command(env_t *env, fetch_model_t model);
 char *create_buffer(char *filepath);
+char **get_colors(env_t *env);
 
 #endif /* !FETCH_THEME_H */
