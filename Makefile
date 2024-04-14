@@ -55,6 +55,7 @@ SRC	=	$(addprefix src/,\
 						exit.c	\
 						set_alias.c	\
 						unset_alias.c	\
+						append_to_variable.c	\
 					)	\
 					default.c	\
 					execute_command.c	\

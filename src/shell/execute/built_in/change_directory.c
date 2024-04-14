@@ -65,16 +65,13 @@ static void go_back(env_t *env, char *buff)
 static void print_errors(char *path)
 {
     if (errno == ENOENT) {
-        dprintf(2, path);
-        dprintf(2, ": No such file or directory.\n");
+        dprintf(2, "%s: No such file or directory.\n", path);
     }
     if (errno == ENOTDIR) {
-        dprintf(2, path);
-        dprintf(2, ": Not a directory.\n");
+        dprintf(2, "%s: Not a directory.\n", path);
     }
     if (errno == EACCES) {
-        dprintf(2, path);
-        dprintf(2, ": Permission denied.\n");
+        dprintf(2, "%s: Permission denied.\n", path);
     }
 }
 

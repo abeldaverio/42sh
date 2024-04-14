@@ -8,10 +8,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include "possibility.h"
 #include "macros.h"
 #include "functions.h"
 #include "env.h"
-#include "possibility.h"
 
 static void replace_arg(char **origin, env_t *env)
 {
