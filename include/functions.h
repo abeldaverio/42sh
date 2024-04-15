@@ -28,6 +28,7 @@ char **get_formated_value(char *variable, env_list_t **env);
 
 //print functions
 void print_prompt(env_t *env);
+int display_changes(void);
 
 //main functions
 int start_shell(char const **env);

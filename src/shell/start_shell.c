@@ -31,6 +31,7 @@ static void start_loop(env_t *env, int tty)
     char *input = NULL;
     char *new_input = NULL;
 
+    display_changes();
     size = getline(&input, &tmp, stdin);
     while ((size != -1)) {
         new_input = clear_special(input);

@@ -74,6 +74,7 @@ SRC	=	$(addprefix src/,\
 					try_execute.c	\
 				)	\
 				start_shell.c	\
+				termios.c		\
 			)	\
 			$(addprefix print/,\
 				print_prompt.c	\
