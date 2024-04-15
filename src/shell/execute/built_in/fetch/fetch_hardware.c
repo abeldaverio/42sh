@@ -48,6 +48,7 @@ static char *compute_memory(FILE *file)
 
     total_memory = search_memory(file) / 1024;
     free_memory = search_memory(file) / 1024;
+    free_memory = search_memory(file) / 1024;
     if (free_memory < 0 || total_memory < 0)
         return NULL;
     if (sprintf(tmp, "%dMib / %dMib", free_memory, total_memory) == -1)
