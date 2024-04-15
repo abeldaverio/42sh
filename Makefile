@@ -64,6 +64,7 @@ SRC	=	$(addprefix src/,\
 							fetch_hardware.c	\
 							fetch_usr_info.c	\
 							fetch_window_info.c	\
+							fetch_memory.c	\
 						)	\
 					)	\
 					default.c	\
