@@ -19,7 +19,7 @@ static bool check_type(char *arg, env_t *env)
     struct stat sb;
 
     if (lstat(arg, &sb) == -1) {
-        dprintf(1, arg);
+        dprintf(1, "%s", arg);
         dprintf(1, ": Command not found.\n");
         env->last_return = 1;
         return false;

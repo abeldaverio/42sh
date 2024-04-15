@@ -26,7 +26,7 @@ static bool error_in_open(int fd, char **formated, bool opening)
         return true;
     }
     free_array(formated);
-    return false;
+    return true;
 }
 
 bool input_w_redir(ll_node_t *self, env_t *env, int)
@@ -48,12 +48,12 @@ bool input_w_redir(ll_node_t *self, env_t *env, int)
         waitpid(pid, &stat_val, 0);
     }
     update_status(stat_val, env);
-    return false;
+    return true;
 }
 
 bool input_a_redir(ll_node_t *self, env_t *env, int)
 {
-    return 0;
+    return true;
 }
 
 bool output_w_redir(ll_node_t *self, env_t *env, int)
@@ -75,7 +75,7 @@ bool output_w_redir(ll_node_t *self, env_t *env, int)
         waitpid(pid, &stat_val, 0);
     }
     update_status(stat_val, env);
-    return false;
+    return true;
 }
 
 bool output_a_redir(ll_node_t *self, env_t *env, int)
@@ -97,5 +97,5 @@ bool output_a_redir(ll_node_t *self, env_t *env, int)
         waitpid(pid, &stat_val, 0);
     }
     update_status(stat_val, env);
-    return false;
+    return true;
 }

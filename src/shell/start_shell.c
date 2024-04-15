@@ -16,8 +16,11 @@ static bool handle_input(char *input, env_t *env)
 {
     if (input == NULL)
         exit(84);
-    if (start_tree(env, input))
+    if (start_tree(env, input)) {
+        free(input);
         return true;
+    }
+    free(input);
     return false;
 }
 
@@ -31,7 +34,7 @@ static void start_loop(env_t *env, int tty)
     size = getline(&input, &tmp, stdin);
     while ((size != -1)) {
         new_input = clear_special(input);
-        if (!handle_input(new_input, env))
+        if (handle_input(new_input, env))
             break;
         if (tty == 1)
             print_prompt(env);

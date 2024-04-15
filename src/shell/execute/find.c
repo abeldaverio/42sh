@@ -8,18 +8,18 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include "possibility.h"
 #include "macros.h"
 #include "functions.h"
 #include "env.h"
-#include "possibility.h"
 
 static void replace_arg(char **origin, env_t *env)
 {
-    char *tmp = search_env_value(*origin + 1, env->env_list);
+    char *tmp = search_env_value((*origin) + 1, env->env_list);
 
-    free(*origin);
     if (tmp == NULL)
-        tmp = search_env_value(*origin + 1, env->shell_variables);
+        tmp = search_env_value((*origin) + 1, env->shell_variables);
+    free(*origin);
     if (tmp == NULL)
         *origin = strdup("");
     else
@@ -47,6 +47,7 @@ bool execute(char **args, env_t *env)
 {
     bool return_value = true;
 
+    replace_aliases(&args, env->aliases);
     replace_variables(args, env);
     for (int i = 0; i < NB_OF_POSSIBILITY; i++) {
         if (POSSIBILITY[i].check(args)) {

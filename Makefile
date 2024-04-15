@@ -11,6 +11,8 @@ SRC	=	$(addprefix src/,\
 				insert_in_env.c	\
 				search_in_env.c	\
 				get_env_array.c	\
+				insert_int_in_env.c	\
+				get_formated_value.c	\
 			)	\
 			$(addprefix error_handling/,\
 				check_arguments.c	\
@@ -31,12 +33,19 @@ SRC	=	$(addprefix src/,\
 					$(addprefix own_env_init/,\
 						init_host.c	\
 						init_own_env.c	\
+						init_user.c	\
+						init_shlvl.c	\
+						init_vendor.c	\
+						init_pwd.c	\
+						init_prompt_colors.c	\
 					)	\
 					init_env.c	\
 				)	\
 				$(addprefix string_formating/,\
 					format_arguments.c	\
 					clear_special.c	\
+					array_concat.c 	\
+					replace_aliases.c	\
 				)	\
 				$(addprefix execute/,\
 					$(addprefix built_in/,\
@@ -46,6 +55,16 @@ SRC	=	$(addprefix src/,\
 						unset_env.c	\
 						display_env.c	\
 						exit.c	\
+						set_alias.c	\
+						unset_alias.c	\
+						append_to_variable.c	\
+						camille_fetch.c	\
+						$(addprefix fetch/,\
+							fetch_command.c	\
+							fetch_hardware.c	\
+							fetch_usr_info.c	\
+							fetch_window_info.c	\
+						)	\
 					)	\
 					default.c	\
 					execute_command.c	\
@@ -64,8 +83,15 @@ SRC	=	$(addprefix src/,\
 				my_arraydup.c	\
 				my_arraylen.c	\
 				my_strcat.c	\
+				is_string_in_array.c	\
 			)	\
 		)	\
+
+SRC_TEST	=	$(addprefix tests/,\
+			redirect.c	\
+			)
+
+SRC_TO_TEST	=	$(filter-out src/main.c, $(SRC))
 
 CPPFLAGS	=	-iquote./include
 
@@ -93,7 +119,7 @@ $(NAME):	$(OBJ)
 clean:
 	$(RM) $(OBJ)
 
-fclean:	clean
+fclean:	clean tests_clean
 	$(RM) $(NAME)
 
 re:	fclean all
@@ -107,7 +133,7 @@ asan: re
 $(TEST_NAME):	$(OBJ_TEST)
 	$(CC) -o $(TEST_NAME) $(CFLAGS) $(CPPFLAGS)	\
 	$(OBJ_TEST) $(SRC_TO_TEST)	\
-	$(TEST_FLAGS)
+	$(TEST_FLAGS) $(TEST_LIB)
 
 tests_run:	$(TEST_NAME)
 	./$(TEST_NAME)

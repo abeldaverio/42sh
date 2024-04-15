@@ -22,6 +22,9 @@ bool set_env(char **argv, env_t *env);
 bool unset_env(char **argv, env_t *env);
 bool change_directory(char **argv, env_t *env);
 bool set_exit_value(char **argv, env_t *env);
+bool set_alias(char **argv, env_t *env);
+bool unset_alias(char **argv, env_t *env);
+bool camille_fetch(char **argv, env_t *env);
 
 static const command_t COMMANDS[] = {
     {"cd", change_directory},
@@ -29,6 +32,9 @@ static const command_t COMMANDS[] = {
     {"setenv", set_env},
     {"unsetenv", unset_env},
     {"exit", set_exit_value},
+    {"alias", set_alias},
+    {"unalias", unset_alias},
+    {"camillefetch", camille_fetch}
 };
 
 static const int NB_OF_COMMANDS = sizeof(COMMANDS) / sizeof(command_t);

@@ -12,9 +12,9 @@
 #include <sys/wait.h>
 #include <string.h>
 
+#include "env.h"
 #include "functions.h"
 #include "ll_parsing.h"
-#include "macros.h"
 
 void free_tree(ll_node_t *current)
 {
@@ -118,17 +118,28 @@ bool lauch_command(ll_node_t *self, env_t *env, int)
     return return_value;
 }
 
+static bool pre_checking(char **commands, env_t *env)
+{
+    if (commands[0] == NULL) {
+        free_array(commands);
+        return false;
+    }
+    if (error_in_args(commands)) {
+        env->last_return = 1;
+        free_array(commands);
+        return false;
+    }
+    return true;
+}
+
 int start_tree(env_t *env, char *input)
 {
     ll_node_t *root = NULL;
     int return_value = 0;
-    char **commands = format_arguments(input, ";", "");
+    char **commands = format_arguments(input, ";\n", "");
 
-    if (error_in_args(commands)) {
-        env->last_return = 1;
-        free_array(commands);
-        return 0;
-    }
+    if (!pre_checking(commands, env))
+        return false;
     for (int i = 0; commands[i] != NULL; i++) {
         root = ll_parser(commands[i]);
         return_value = ll_real_decoder(env, root);
@@ -138,5 +149,5 @@ int start_tree(env_t *env, char *input)
         }
     }
     free_array(commands);
-    return return_value;
+    return return_value != true;
 }

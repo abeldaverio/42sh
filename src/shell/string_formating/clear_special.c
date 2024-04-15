@@ -57,11 +57,11 @@ static bool fill_special(char *input, char *new, int *i, int *j)
 {
     for (int z = 0; z < SPECIAL_SIZE; z++) {
         if (is_there_special_str(input, SPECIAL[z])) {
-            new[*j] = ' ';
+            new[*j] = '\1';
             *j += 1;
             fill_new_string_special(new + *j, SPECIAL[z]);
             *j += strlen(SPECIAL[z]);
-            new[*j] = ' ';
+            new[*j] = '\1';
             *j += 1;
             *i += strlen(SPECIAL[z]);
             return true;

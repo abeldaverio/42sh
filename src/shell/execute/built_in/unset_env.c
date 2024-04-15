@@ -22,7 +22,7 @@ static void remove_node(env_list_t **env_list)
     free(tmp);
 }
 
-static void remove_from_env(char *variable, env_list_t **env_list)
+void remove_from_env(char *variable, env_list_t **env_list)
 {
     if (*env_list == NULL)
         return;
