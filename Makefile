@@ -47,6 +47,7 @@ SRC	=	$(addprefix src/,\
 					clear_special.c	\
 					array_concat.c 	\
 					replace_aliases.c	\
+					star_formating.c	\
 				)	\
 				$(addprefix execute/,\
 					$(addprefix built_in/,\
@@ -85,6 +86,7 @@ SRC	=	$(addprefix src/,\
 				my_arraylen.c	\
 				my_strcat.c	\
 				is_string_in_array.c	\
+				ls_to_array.c	\
 			)	\
 		)	\
 

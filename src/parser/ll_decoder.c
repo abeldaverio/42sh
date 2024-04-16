@@ -136,8 +136,10 @@ int start_tree(env_t *env, char *input)
 {
     ll_node_t *root = NULL;
     int return_value = 0;
-    char **commands = format_arguments(input, ";\n", "");
+    char **commands = NULL;
 
+    format_input(input);
+    commands = format_arguments(input, ";\n", "");
     if (!pre_checking(commands, env))
         return false;
     for (int i = 0; commands[i] != NULL; i++) {
