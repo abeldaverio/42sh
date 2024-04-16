@@ -60,6 +60,6 @@ char **open_config_dir(char *dir);
 // parser
 int start_tree(env_t *env, char *input);
 void request_input(char **input, char const *img);
-char *format_input(char *input);
+bool format_input(char ***input);
 
 #endif

@@ -80,8 +80,11 @@ static bool read_config_dir(DIR *conf_dir, char **file_names)
 char **open_config_dir(char *dir)
 {
     DIR *conf_dir = NULL;
-    char **file_names = alloc_file_arr(dir);
+    char **file_names = NULL;
 
+    if (dir[0] == '\0')
+        dir = ".";
+    file_names = alloc_file_arr(dir);
     if (file_names == NULL)
         return NULL;
     conf_dir = opendir(dir);
