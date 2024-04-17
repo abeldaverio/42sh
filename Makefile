@@ -21,6 +21,10 @@ SRC	=	$(addprefix src/,\
 				free_env.c	\
 				free_array.c	\
 			)	\
+			$(addprefix history/,\
+				create_history.c	\
+				command_history.c	\
+			)	\
 			$(addprefix parser/,\
 				checkers.c	\
 				file_redirections.c	\
