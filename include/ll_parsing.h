@@ -33,6 +33,8 @@ typedef struct ll_node_s {
 // symbols_handling.c
 bool no_redir(ll_node_t *self, env_t *env, int);
 bool pipe_redir(ll_node_t *self, env_t *env, int);
+bool or_redir(ll_node_t *self, env_t *env, int);
+bool and_redir(ll_node_t *self, env_t *env, int);
 
 bool input_w_redir(ll_node_t *self, env_t *, int);
 bool output_w_redir(ll_node_t *self, env_t *, int);
@@ -50,8 +52,8 @@ typedef struct model_s {
 
 static const model_t MODEL_SEP[] = {
     {";", no_redir},
-    {"&&", NULL},
-    {"||", NULL},
+    {"&&", and_redir},
+    {"||", or_redir},
     {"&", NULL},
     {"|", pipe_redir},
     {"<<", input_a_redir},

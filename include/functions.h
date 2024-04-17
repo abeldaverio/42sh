@@ -59,5 +59,6 @@ bool is_string_in_array(char *str, char **array);
 
 // parser
 int start_tree(env_t *env, char *input);
+void request_input(char **input, char const *img);
 
 #endif

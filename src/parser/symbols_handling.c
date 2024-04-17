@@ -52,6 +52,22 @@ bool pipe_redir(ll_node_t *self, env_t *env, int)
     return true;
 }
 
+bool and_redir(ll_node_t *self, env_t *env, int)
+{
+    self->left->func(self->left, env, -1);
+    if (env->last_return == 0)
+        self->right->func(self->right, env, -1);
+    return true;
+}
+
+bool or_redir(ll_node_t *self, env_t *env, int)
+{
+    self->right->func(self->right, env, -1);
+    if (env->last_return != 0)
+        self->left->func(self->left, env, -1);
+    return true;
+}
+
 bool no_redir(ll_node_t *, env_t *, int)
 {
     return true;
