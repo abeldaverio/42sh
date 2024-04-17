@@ -144,9 +144,6 @@ int start_tree(env_t *env, char *input)
         root = ll_parser(commands[i]);
         return_value = ll_real_decoder(env, root);
         free_tree(root);
-        if (return_value == true) {
-            break;
-        }
     }
     free_array(commands);
     return return_value != true;
