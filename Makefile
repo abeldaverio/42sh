@@ -27,6 +27,7 @@ SRC	=	$(addprefix src/,\
 				ll_decoder.c	\
 				ll_parser.c	\
 				symbols_handling.c	\
+				request_input.c	\
 			)	\
 			$(addprefix shell/,\
 				$(addprefix init/,\
