@@ -55,11 +55,12 @@ char **my_arraydup(char **);
 int my_arraylen(char **);
 char *my_strcat(size_t size, ...);
 bool is_string_in_array(char *str, char **array);
-char **open_config_dir(char *dir);
+char **open_config_dir(char *dir, char *filter);
 
 // parser
 int start_tree(env_t *env, char *input);
 void request_input(char **input, char const *img);
 bool format_input(char ***input);
+bool is_filename_valid(char *name, char *prefix, char *suffix);
 
 #endif

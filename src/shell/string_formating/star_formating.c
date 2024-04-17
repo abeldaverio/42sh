@@ -5,115 +5,97 @@
 ** star formating
 */
 
-#include "functions.h"
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <glob.h>
+#include <unistd.h>
 
-static size_t get_suffix_size(char *input, int star_pos)
-{
-    int counter = 0;
-
-    for (int i = star_pos - 1; i >= 0 &&
-        input[i] != '\"' && input[i] != ' '; i--) {
-        counter++;
-    }
-    return counter;
-}
-
-static char *get_suffix(char *input, int star_pos)
-{
-    int counter = get_suffix_size(input, star_pos) - 1;
-    char *star_suffix = calloc(sizeof(char), counter + 1);
-
-    if (star_suffix == NULL)
-        return NULL;
-    for (int i = star_pos - 1; i >= 0 &&
-        input[i] != '\"' && input[i] != ' '; i--) {
-        star_suffix[counter] = input[i];
-        counter--;
-    }
-    return star_suffix;
-}
-
-static size_t get_prefix_size(char *input, int star_pos)
-{
-    int counter = 0;
-
-    for (int i = star_pos + 1; input[i] &&
-        input[i] != '\"' && input[i] != ' '; i++) {
-        counter++;
-    }
-    return counter;
-}
-
-static char *get_prefix(char *input, int star_pos)
-{
-    int counter = get_prefix_size(input, star_pos) - 1;
-    char *star_prefix = calloc(sizeof(char), counter + 1);
-
-    if (star_prefix == NULL)
-        return NULL;
-    for (int i = star_pos + 1; input[i] &&
-        input[i] != '\"' && input[i] != ' '; i++) {
-        star_prefix[counter] = input[i];
-        counter++;
-    }
-    return star_prefix;
-}
+#include "functions.h"
 
 static char **tab_reconstructor(char **input, char **options, int to_replace)
 {
     char **new_tab = NULL;
+    int offset = 0;
 
     new_tab = calloc(my_arraylen(input) +
-        my_arraylen(options) - 1, sizeof(char *));
+        my_arraylen(options), sizeof(char *));
     for (int i = 0; input[i] != NULL; i++) {
         if (i != to_replace)
-            new_tab[i] = strdup(input[i]);
+            new_tab[i + offset] = strdup(input[i]);
         for (int y = 0; i == to_replace && options[y]; y++) {
             new_tab[i + y] = strdup(options[y]);
+            offset = y;
         }
     }
     return new_tab;
 }
 
-static char **star_replacing(char **input, int to_replace)
+static char **star_replacing(char **input,
+    int to_replace, int *offset, bool *error)
 {
-    char *star_prefix = NULL;
-    char *star_suffix = NULL;
-    char **options = NULL;
-    char *temp = NULL;
+    glob_t globbuf;
+    char **new_tab = NULL;
 
-    for (int i = 0; input[to_replace][i]; i++) {
-        if (input[to_replace][i] == '*') {
-            star_suffix = get_suffix(input[to_replace], i);
-            star_prefix = get_prefix(input[to_replace], i);
-            break;
-        }
+    globbuf.gl_offs = 0;
+    if (glob(input[to_replace], GLOB_DOOFFS, NULL, &globbuf)) {
+        dprintf(STDERR_FILENO, "Error : %s, expression not found\n",
+        input[to_replace]);
+        *error = true;
+        globfree(&globbuf);
+        return NULL;
     }
-    options = open_config_dir(star_suffix);
-    for (int i = 0; options[i] != NULL; i++) {
-        temp = options[i];
-        options[i] = my_strcat(3, star_suffix, options[i], star_prefix);
-        free(temp);
+    *offset = my_arraylen(globbuf.gl_pathv) - 1;
+    new_tab = tab_reconstructor(input, globbuf.gl_pathv, to_replace);
+    globfree(&globbuf);
+    return new_tab;
+}
+
+static bool star_checking(char *candidate)
+{
+    char *star_ptr = strstr(candidate, "*");
+
+    if (star_ptr == NULL)
+        return false;
+    if (strlen(candidate) != strlen(star_ptr))
+        if (star_ptr[-1] == '\\')
+            return false;
+    return true;
+}
+
+static bool star_exec(char **tab_dup, int i, char ***input, int *to_offset)
+{
+    char **temp = NULL;
+    char **to_free = NULL;
+    bool error = false;
+
+    if (star_checking(tab_dup[i]))
+        temp = star_replacing(*input, i + *to_offset, to_offset, &error);
+    if (error) {
+        free_array(tab_dup);
+        return true;
     }
-    return tab_reconstructor(input, options, to_replace);
+    if (temp != NULL) {
+        to_free = *input;
+        *input = temp;
+        free_array(to_free);
+    }
+    return false;
 }
 
 bool format_input(char ***input)
 {
-    char **temp = *input;
-    char **to_free = NULL;
+    char **tab_dup = my_arraydup(*input);
+    int to_offset = 0;
 
-    for (int i = 1; temp[i] != NULL; i++) {
-        if (strcmp(temp[i], "*") == 0 ||
-            strstr(temp[i], "*") != temp[i]) {
-            to_free = *input;
-            *input = star_replacing(temp, i);
-            free_array(to_free);
+    for (int i = 0; tab_dup[i] != NULL; i++) {
+        if (star_exec(tab_dup, i, input, &to_offset)) {
+            free_array(tab_dup);
+            return true;
         }
     }
+    free_array(tab_dup);
     return false;
 }

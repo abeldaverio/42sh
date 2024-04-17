@@ -87,7 +87,6 @@ SRC	=	$(addprefix src/,\
 				my_arraylen.c	\
 				my_strcat.c	\
 				is_string_in_array.c	\
-				ls_to_array.c	\
 			)	\
 		)	\
 
@@ -128,7 +127,7 @@ fclean:	clean tests_clean
 
 re:	fclean all
 
-debug: CFLAGS += -ggdb3
+debug: CFLAGS += -g
 debug: re
 
 asan: CC = clang -fsanitize=address
