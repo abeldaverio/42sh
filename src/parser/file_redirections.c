@@ -29,7 +29,7 @@ static bool error_in_open(int fd, char **formated, bool opening)
         return true;
     }
     free_array(formated);
-    return true;
+    return false;
 }
 
 bool input_w_redir(ll_node_t *self, env_t *env, int)
