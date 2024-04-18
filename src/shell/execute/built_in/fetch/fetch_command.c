@@ -149,6 +149,7 @@ bool fetch_command(env_t *env, fetch_model_t model)
         return true;
     }
     display_fetch(env, fetch, model);
+    env->last_return = 0;
     free(buffer);
     return true;
 }

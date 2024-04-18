@@ -52,23 +52,12 @@ static void ll_filler(char *cmd, ll_node_t **head)
     }
 }
 
-static int len_arr(char **arr)
-{
-    int offset = 0;
-
-    while (*arr != NULL) {
-        arr++;
-        offset++;
-    }
-    return offset;
-}
-
 ll_node_t *ll_parser(char *input)
 {
     ll_node_t *first_node = NULL;
     char **formated = format_arguments(input, "\1", "");
 
-    for (int i = len_arr(formated) - 1; i >= 0; i--) {
+    for (int i = my_arraylen(formated) - 1; i >= 0; i--) {
         if (formated[i] != NULL)
             ll_filler(formated[i], &first_node);
     }

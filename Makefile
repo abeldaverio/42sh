@@ -47,6 +47,7 @@ SRC	=	$(addprefix src/,\
 					clear_special.c	\
 					array_concat.c 	\
 					replace_aliases.c	\
+					star_formating.c	\
 				)	\
 				$(addprefix execute/,\
 					$(addprefix built_in/,\
@@ -65,6 +66,7 @@ SRC	=	$(addprefix src/,\
 							fetch_hardware.c	\
 							fetch_usr_info.c	\
 							fetch_window_info.c	\
+							fetch_memory.c	\
 						)	\
 					)	\
 					default.c	\

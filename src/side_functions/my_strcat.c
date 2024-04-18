@@ -15,9 +15,12 @@
 static size_t get_allocate_size(size_t n_of_words, va_list list)
 {
     size_t to_allocate = 0;
+    char *word = NULL;
 
     for (size_t i = 0; i != n_of_words; i++) {
-        to_allocate += strlen(va_arg(list, char *));
+        word = va_arg(list, char *);
+        if (word != NULL)
+            to_allocate += strlen(word);
     }
     va_end(list);
     return to_allocate;
@@ -50,7 +53,6 @@ char *my_strcat(size_t n_of_words, ...)
     va_copy(list_counter, list);
     to_allocate = get_allocate_size(n_of_words, list_counter);
     new_buff = calloc(sizeof(char), (to_allocate + 1));
-    new_buff[to_allocate] = '\0';
     new_copy = new_buff;
     for (size_t i = 0; i != n_of_words; i++) {
         new_buff += fill_word(new_buff, list);
