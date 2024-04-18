@@ -22,6 +22,8 @@ static char **tab_reconstructor(char **input, char **options, int to_replace)
 
     new_tab = calloc(my_arraylen(input) +
         my_arraylen(options), sizeof(char *));
+    if (new_tab == NULL)
+        return NULL;
     for (int i = 0; input[i] != NULL; i++) {
         if (i != to_replace)
             new_tab[i + offset] = strdup(input[i]);

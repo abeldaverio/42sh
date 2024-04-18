@@ -127,7 +127,7 @@ fclean:	clean tests_clean
 
 re:	fclean all
 
-debug: CFLAGS += -g
+debug: CFLAGS += -ggdb3
 debug: re
 
 asan: CC = clang -fsanitize=address
