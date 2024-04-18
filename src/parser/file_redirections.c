@@ -132,6 +132,7 @@ bool output_w_redir(ll_node_t *self, env_t *env, int)
     } else {
         waitpid(pid, &stat_val, 0);
     }
+    close(fd);
     update_status(stat_val, env);
     return true;
 }
@@ -154,6 +155,7 @@ bool output_a_redir(ll_node_t *self, env_t *env, int)
     } else {
         waitpid(pid, &stat_val, 0);
     }
+    close(fd);
     update_status(stat_val, env);
     return true;
 }

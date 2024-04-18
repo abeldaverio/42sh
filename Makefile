@@ -47,6 +47,7 @@ SRC	=	$(addprefix src/,\
 					clear_special.c	\
 					array_concat.c 	\
 					replace_aliases.c	\
+					star_formating.c	\
 				)	\
 				$(addprefix execute/,\
 					$(addprefix built_in/,\
