@@ -48,6 +48,16 @@ SRC	=	$(addprefix src/,\
 					array_concat.c 	\
 					replace_aliases.c	\
 				)	\
+				$(addprefix termios/,\
+					key_del.c	\
+					key_down.c	\
+					key_left.c	\
+					key_right.c	\
+					key_up.c	\
+					key_tab.c	\
+					key_enter.c	\
+					termios.c	\
+				)	\
 				$(addprefix execute/,\
 					$(addprefix built_in/,\
 						change_directory.c	\
@@ -76,7 +86,6 @@ SRC	=	$(addprefix src/,\
 					try_execute.c	\
 				)	\
 				start_shell.c	\
-				termios.c		\
 			)	\
 			$(addprefix print/,\
 				print_prompt.c	\
