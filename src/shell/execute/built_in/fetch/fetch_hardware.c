@@ -36,7 +36,7 @@ char *get_gpu(env_t *)
     char *gpu = NULL;
     char *buffer = NULL;
     size_t i = 0;
-    FILE *cmd = popen("lspci -mm | grep -i 'vga\\|3d\\|2d'", "r");
+    FILE *cmd = popen(GPU_COMMAND, "r");
 
     if (cmd == NULL)
         return NULL;
@@ -69,7 +69,7 @@ char *get_cpu(env_t *)
     char *cpu = NULL;
     char **data = NULL;
     size_t i = 0;
-    FILE *file = fopen("/proc/cpuinfo", "r");
+    FILE *file = fopen(CPU_PATH, "r");
 
     if (file == NULL)
         return NULL;
@@ -119,7 +119,7 @@ char *get_os(env_t *)
     char *os = NULL;
     char **data = NULL;
 
-    buffer = create_buffer("/etc/os-release");
+    buffer = create_buffer(OS_PATH);
     data = format_arguments(buffer, "=\"\n", "");
     if (data == NULL)
         return NULL;

@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "env.h"
+#include "history.h"
 #include "functions.h"
 #include "macros.h"
 
@@ -30,11 +31,14 @@ static void start_loop(env_t *env, int tty)
     size_t tmp = 0;
     char *input = NULL;
     char *new_input = NULL;
+    history_list_t *history = create_history();
 
     execute_rc(env);
     if (tty == 1)
         print_prompt(env);
-    while ((getline(&input, &tmp, stdin) != -1)) {
+    size = getline(&input, &tmp, stdin);
+    while ((size != -1)) {
+        add_command_history(input, &history);
         new_input = clear_special(input);
         if (handle_input(new_input, env))
             break;
@@ -43,6 +47,7 @@ static void start_loop(env_t *env, int tty)
     }
     if (input != NULL)
         free(input);
+    free_history(history);
 }
 
 int start_shell(char const **env)

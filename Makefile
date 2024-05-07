@@ -54,6 +54,11 @@ SRC	=	$(addprefix src/,\
 					replace_aliases.c	\
 					star_formating.c	\
 				)	\
+				$(addprefix autocompletion/,\
+					auto_complete.c	\
+					auto_complete_dir.c	\
+					auto_complete_cmd.c	\
+				)	\
 				$(addprefix execute/,\
 					$(addprefix built_in/,\
 						change_directory.c	\
@@ -72,6 +77,11 @@ SRC	=	$(addprefix src/,\
 							fetch_usr_info.c	\
 							fetch_window_info.c	\
 							fetch_memory.c	\
+						)	\
+						$(addprefix history/,\
+							create_history.c	\
+							command_history.c	\
+							display_history.c	\
 						)	\
 					)	\
 					default.c	\

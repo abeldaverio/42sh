@@ -24,6 +24,7 @@ bool change_directory(char **argv, env_t *env);
 bool set_exit_value(char **argv, env_t *env);
 bool set_alias(char **argv, env_t *env);
 bool unset_alias(char **argv, env_t *env);
+bool display_history(char **args, env_t *env);
 bool camille_fetch(char **argv, env_t *env);
 
 static const command_t COMMANDS[] = {
@@ -34,6 +35,7 @@ static const command_t COMMANDS[] = {
     {"exit", set_exit_value},
     {"alias", set_alias},
     {"unalias", unset_alias},
+    {"history", display_history},
     {"camillefetch", camille_fetch}
 };
 

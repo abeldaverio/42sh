@@ -103,7 +103,7 @@ char *get_memory(env_t *)
 {
     char *memory = NULL;
     char **mem_data = NULL;
-    FILE *file = fopen("/proc/meminfo", "r");
+    FILE *file = fopen(MEMORY_PATH, "r");
 
     if (file == NULL)
         return NULL;
