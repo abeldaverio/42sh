@@ -32,14 +32,14 @@ static char **get_dir_completion(char *to_complete)
     return candidates;
 }
 
-int auto_compete_dir(char *complete)
+int auto_compete_dir(char *complete, int *completion_ptr)
 {
     char **candidates = NULL;
     int lines_printed = 0;
 
     candidates = get_dir_completion(complete);
     if (candidates != NULL && candidates[0] != NULL) {
-        lines_printed = print_completion(candidates);
+        lines_printed = print_completion(candidates, completion_ptr);
         free_array(candidates);
     }
     return lines_printed;

@@ -82,19 +82,23 @@ static size_t get_bigest_len(char **completions)
     return max;
 }
 
-static void print_pretty(char *formated)
+static void print_pretty(char *formated, bool hightlight)
 {
     size_t format_size = strlen(formated);
 
+    if (hightlight)
+        dprintf(1, "\033[1;33m");
     if (format_size >= MAX_RANGE[BEG])
         dprintf(1, "%s\t", formated);
     if (format_size >= MID_RANGE[BEG] && format_size <= MID_RANGE[END])
         dprintf(1, "%s\t\t", formated);
     if (format_size >= SMALL_RANGE[BEG] && format_size <= SMALL_RANGE[END])
         dprintf(1, "%s\t\t\t", formated);
+    if (hightlight)
+        dprintf(1, "\033[0m");
 }
 
-int print_completion(char **completions)
+int print_completion(char **completions, int *completion_ptr)
 {
     char **formated = NULL;
     size_t format_index = 0;
@@ -111,14 +115,14 @@ int print_completion(char **completions)
             reset_counter = 0;
             lines_printed += dprintf(1, "\n");
         }
-        print_pretty(formated[format_index]);
+        print_pretty(formated[format_index], i == *completion_ptr);
         dprintf(1, i == last_element ? "\n" : "");
         free_array(formated);
     }
     return lines_printed;
 }
 
-int auto_complete(char *input)
+int auto_complete(char *input, int *completion_ptr)
 {
     char *to_complete = NULL;
     bool we_free = true;
@@ -129,9 +133,9 @@ int auto_complete(char *input)
         to_complete = "";
         we_free = false;
     }
-    lines_printed = auto_compete_cmd(to_complete);
+    lines_printed = auto_compete_cmd(to_complete, completion_ptr);
     if (lines_printed)
-        auto_compete_dir(to_complete);
+        lines_printed = auto_compete_dir(to_complete, completion_ptr);
     if (we_free)
         free(to_complete);
     return lines_printed;

@@ -16,7 +16,7 @@ static const size_t MAX_RANGE[] = {16, 32};
 static const size_t MID_RANGE[] = {8, 15};
 static const size_t SMALL_RANGE[] = {0, 7};
 
-int auto_compete_cmd(char *complete);
-int auto_compete_dir(char *complete);
+int auto_compete_cmd(char *complete, int *completion_ptr);
+int auto_compete_dir(char *complete, int *completion_ptr);
 char *get_completion(char *input);
-int print_completion(char **completions);
+int print_completion(char **completions, int *completion_ptr);

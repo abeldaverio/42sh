@@ -10,7 +10,9 @@
 
 int main(int const argc, char **, char const **env)
 {
-    if (!check_main_args(argc))
-        return ERROR_STATUS;
-    return start_shell(env);
+    int i = 3;
+    /* if (!check_main_args(argc)) */
+    /*     return ERROR_STATUS; */
+    /* return start_shell(env); */
+    auto_complete("gi", &i);
 }
