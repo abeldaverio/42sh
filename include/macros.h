@@ -12,10 +12,11 @@
     #define SUCCESS_STATUS 0
     #define EXIT_CODE 42
     #define ABS(x) ((x < 0) ? (-1 * (x)) : ((x)))
+    #define RC_FILE "./.bdshellrc"
 
 typedef enum pipe_fd_s {
     OUT,
     IN
 } pipe_fd_t;
 
-#endif /* !MACROS_H */
+#endif

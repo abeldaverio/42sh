@@ -9,6 +9,7 @@
     #define ENV_H
 
     #include <stddef.h>
+    #include <sys/wait.h>
 
 typedef struct env_list_s {
     char *variable;
