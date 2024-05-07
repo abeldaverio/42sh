@@ -49,6 +49,16 @@ SRC	=	$(addprefix src/,\
 					replace_aliases.c	\
 				)	\
 				$(addprefix termios/,\
+					$(addprefix lib_vector/,\
+						vector_add.c	\
+						vector_delete.c	\
+						vector_free.c	\
+						vector_init.c	\
+						vector_resize.c	\
+						vector_set.c	\
+						vector_total.c	\
+						vector_push.c	\
+					)	\
 					key_del.c	\
 					key_down.c	\
 					key_left.c	\
