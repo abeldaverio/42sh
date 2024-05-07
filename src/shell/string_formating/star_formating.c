@@ -76,7 +76,6 @@ static bool star_exec(char **tab_dup, int i, char ***input, int *to_offset)
     if (star_checking(tab_dup[i]))
         temp = star_replacing(*input, i + *to_offset, to_offset, &error);
     if (error) {
-        free_array(tab_dup);
         return true;
     }
     if (temp != NULL) {
