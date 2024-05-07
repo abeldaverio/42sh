@@ -47,7 +47,7 @@ static void start_loop(env_t *env, int tty, size_t prompt_size)
 int start_shell(char const **env)
 {
     env_t *env_struct = init_env(env);
-    int return_value;
+    int return_value = 0;
     int tty = isatty(0);
     size_t prompt_size = 0;
 

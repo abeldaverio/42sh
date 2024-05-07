@@ -90,7 +90,7 @@ static size_t vector_to_str(char **data, char **input, ssize_t index)
 
 static bool loop_char(prompt_t *prompt, env_t *env, char **input)
 {
-    while (1) {
+    while (true) {
         prompt->character = getchar();
         if (prompt->character == 0x000a) {
             write(1, "\n", 1);
@@ -117,8 +117,10 @@ size_t display_changes(env_t *env, size_t prompt_size, char **input)
     prompt.prompt_size = prompt_size;
     check_free(*input);
     init_termios(&term, &oldterm);
-    if (loop_char(&prompt, env, input) == true)
+    if (loop_char(&prompt, env, input) == true) {
+        tcsetattr(0, TCSANOW, &oldterm);
         return -1;
+    }
     tcsetattr(0, TCSANOW, &oldterm);
     return vector_to_str(&line, input, prompt.index);
 }
