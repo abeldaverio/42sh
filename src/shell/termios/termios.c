@@ -117,7 +117,8 @@ size_t display_changes(env_t *env, size_t prompt_size, char **input)
     prompt.prompt_size = prompt_size;
     check_free(*input);
     init_termios(&term, &oldterm);
-    loop_char(&prompt, env, input);
+    if (loop_char(&prompt, env, input) == true)
+        return -1;
     tcsetattr(0, TCSANOW, &oldterm);
     return vector_to_str(&line, input, prompt.index);
 }
