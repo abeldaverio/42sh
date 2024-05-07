@@ -36,6 +36,8 @@ bool execute(char **args, env_t *env);
 void update_status(int status, env_t *env);
 bool execute_file(char *executable, char **args, env_t *env);
 void try_execute(char *path, char **args, char **env);
+bool handle_input(char *input, env_t *env);
+void execute_rc(env_t *env);
 
 //string formating
 char *clear_special(char *input);
@@ -62,5 +64,8 @@ int start_tree(env_t *env, char *input);
 void request_input(char **input, char const *img);
 bool format_input(char ***input);
 bool is_filename_valid(char *name, char *prefix, char *suffix);
+
+//signal handling
+bool signal_handler(void);
 
 #endif

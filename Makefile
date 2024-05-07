@@ -30,6 +30,11 @@ SRC	=	$(addprefix src/,\
 				request_input.c	\
 			)	\
 			$(addprefix shell/,\
+				$(addprefix signal/,\
+					signal_handler.c	\
+					handle_sigint.c	\
+					handle_sigtstp.c	\
+				)	\
 				$(addprefix init/,\
 					$(addprefix own_env_init/,\
 						init_host.c	\
@@ -75,6 +80,7 @@ SRC	=	$(addprefix src/,\
 					execute_file.c	\
 					last_return.c	\
 					try_execute.c	\
+					execute_rc.c	\
 				)	\
 				start_shell.c	\
 			)	\
