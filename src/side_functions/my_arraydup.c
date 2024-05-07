@@ -11,7 +11,7 @@
 
 char **my_arraydup(char **array)
 {
-    char **new = malloc(sizeof(char *) * (my_arraylen(array) + 1));
+    char **new = calloc((my_arraylen(array) + 1), sizeof(char *));
     int i;
 
     if (new == NULL)

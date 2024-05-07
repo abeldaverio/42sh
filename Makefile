@@ -49,6 +49,11 @@ SRC	=	$(addprefix src/,\
 					replace_aliases.c	\
 					star_formating.c	\
 				)	\
+				$(addprefix autocompletion/,\
+					auto_complete.c	\
+					auto_complete_dir.c	\
+					auto_complete_cmd.c	\
+				)	\
 				$(addprefix execute/,\
 					$(addprefix built_in/,\
 						change_directory.c	\
