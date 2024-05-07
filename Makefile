@@ -59,6 +59,27 @@ SRC	=	$(addprefix src/,\
 					auto_complete_dir.c	\
 					auto_complete_cmd.c	\
 				)	\
+				$(addprefix termios/,\
+					$(addprefix lib_vector/,\
+						vector_add.c	\
+						vector_delete.c	\
+						vector_free.c	\
+						vector_init.c	\
+						vector_resize.c	\
+						vector_set.c	\
+						vector_total.c	\
+						vector_push.c	\
+						check_free.c	\
+					)	\
+					key_del.c	\
+					key_down.c	\
+					key_left.c	\
+					key_right.c	\
+					key_up.c	\
+					key_tab.c	\
+					key_enter.c	\
+					termios.c	\
+				)	\
 				$(addprefix execute/,\
 					$(addprefix built_in/,\
 						change_directory.c	\

@@ -23,38 +23,44 @@ static char *get_dir(char *pwd)
     return pwd + last_slash;
 }
 
-void print_boring_prompt(char *username, char *version, char *dir, env_t *env)
+size_t print_boring_prompt(char *username, char *version, char *dir,
+    env_t *env)
 {
-    dprintf(1, "%s@", ((username == NULL) ? "" : username));
-    dprintf(1, "%s:", ((version == NULL) ? "" : version));
-    dprintf(1, "%s", ((dir == NULL) ? "" : dir));
+    size_t compt = 0;
+
+    compt += dprintf(1, "%s@", ((username == NULL) ? "" : username));
+    compt += dprintf(1, "%s:", ((version == NULL) ? "" : version));
+    compt += dprintf(1, "%s", ((dir == NULL) ? "" : dir));
     if (env->last_return == 0)
-        dprintf(1, " > %ld ", env->last_return);
+        compt += dprintf(1, " > %ld ", env->last_return);
     else
-        dprintf(1, " > %ld ", env->last_return);
-    dprintf(1, "$> ");
+        compt += dprintf(1, " > %ld ", env->last_return);
+    compt += dprintf(1, "$> ");
+    return compt;
 }
 
-static void print_formated_prompt(char *str,
+static size_t print_formated_prompt(char *str,
     char *value, prompt_color_t color, char **colors)
 {
+    size_t compt = 0;
     char color_buff[255] = {0};
 
     if ((my_arraylen(colors) > (int)color) && (strlen(colors[color]) < 255))
         sprintf(color_buff, "\033%s", colors[color]);
-    dprintf(1, "%s", color_buff);
-    dprintf(1, str, (value == NULL) ? "" : value);
-    dprintf(1, "%s", DEFAULT);
+    compt = dprintf(1, "%s", color_buff);
+    compt += dprintf(1, str, (value == NULL) ? "" : value);
+    compt += dprintf(1, "%s", DEFAULT);
+    return compt;
 }
 
-static void print_formated_last_return(size_t last_return,
+static size_t print_formated_last_return(size_t last_return,
     prompt_color_t color, char **colors)
 {
     char color_buff[255] = {0};
 
     if ((my_arraylen(colors) > (int)color) && (strlen(colors[color]) < 255))
         sprintf(color_buff, "\033%s", colors[color]);
-    dprintf(1, " > %s%ld%s ", color_buff, last_return, DEFAULT);
+    return dprintf(1, " > %s%ld%s ", color_buff, last_return, DEFAULT);
 }
 
 char **get_colors(env_t *env)
@@ -64,32 +70,37 @@ char **get_colors(env_t *env)
     return colors;
 }
 
-void print_cool_prompt(env_t *env, char *version, char *dir, char **colors)
+size_t print_cool_prompt(env_t *env, char *version, char *dir, char **colors)
 {
-    dprintf(1, "@");
-    print_formated_prompt("%s", version, HOST, colors);
-    dprintf(1, ":");
-    print_formated_prompt("%s", dir, DIR, colors);
+    size_t compt = 0;
+
+    compt = dprintf(1, "@");
+    compt += print_formated_prompt("%s", version, HOST, colors);
+    compt += dprintf(1, ":");
+    compt += print_formated_prompt("%s", dir, DIR, colors);
     if (env->last_return == 0) {
-        print_formated_last_return(env->last_return, SUCCESS, colors);
+        compt += print_formated_last_return(env->last_return, SUCCESS, colors);
     } else {
-        print_formated_last_return(env->last_return, FAILURE, colors);
+        compt += print_formated_last_return(env->last_return, FAILURE, colors);
     }
-    print_formated_prompt("%s", "$> ", SYMBOL, colors);
+    compt += print_formated_prompt("%s", "$> ", SYMBOL, colors);
     free_array(colors);
+    return compt;
 }
 
-void print_prompt(env_t *env)
+size_t print_prompt(env_t *env)
 {
+    size_t compt = 0;
     char *username = search_env_value("USER", env->env_list);
     char *version = search_env_value("HOSTNAME", env->env_list);
     char *dir = get_dir(search_env_value("PWD", env->env_list));
     char **colors = get_colors(env);
 
     if (colors == NULL) {
-        print_boring_prompt(username, version, dir, env);
+        compt = print_boring_prompt(username, version, dir, env);
     } else {
-        print_formated_prompt("%s", username, USERNAME, colors);
-        print_cool_prompt(env, version, dir, colors);
+        compt = print_formated_prompt("%s", username, USERNAME, colors);
+        compt += print_cool_prompt(env, version, dir, colors);
     }
+    return compt;
 }
