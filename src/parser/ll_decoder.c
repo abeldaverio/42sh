@@ -119,6 +119,10 @@ bool lauch_command(ll_node_t *self, env_t *env, int)
     }
     if (input_twod == NULL)
         return return_value;
+    if (input_twod[0] == NULL || input_twod[0][0] == '\0') {
+        free_array(input_twod);
+        return true;
+    }
     return_value = execute(input_twod, env);
     return return_value;
 }
