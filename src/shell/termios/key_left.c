@@ -5,7 +5,10 @@
 ** key_left
 */
 
-void cursor_backward(char *line)
+#include <stddef.h>
+#include <stdio.h>
+
+void cursor_backward(size_t i)
 {
-    dprintf(1, "\033[%dC", 1);
+    dprintf(1, "\033[%ldD", i);
 }

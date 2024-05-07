@@ -24,22 +24,21 @@ static bool handle_input(char *input, env_t *env)
     return false;
 }
 
-static void start_loop(env_t *env, int tty)
+// handle tty
+static void start_loop(env_t *env, int tty, size_t prompt_size)
 {
     size_t tmp = 0;
     int size = 0;
     char *input = NULL;
     char *new_input = NULL;
 
-    display_changes();
-    size = getline(&input, &tmp, stdin);
+    size = display_changes(env, prompt_size, &input);
     while ((size != -1)) {
         new_input = clear_special(input);
         if (handle_input(new_input, env))
             break;
-        if (tty == 1)
-            print_prompt(env);
-        size = getline(&input, &tmp, stdin);
+        print_prompt(env);
+        size = display_changes(env, prompt_size, &input);
     }
     if (input != NULL)
         free(input);
@@ -50,12 +49,13 @@ int start_shell(char const **env)
     env_t *env_struct = init_env(env);
     int return_value;
     int tty = isatty(0);
+    size_t prompt_size = 0;
 
     if (env_struct == NULL)
         return 84;
     if (tty == 1)
-        print_prompt(env_struct);
-    start_loop(env_struct, tty);
+        prompt_size = print_prompt(env_struct);
+    start_loop(env_struct, tty, prompt_size);
     return_value = env_struct->last_return;
     free_env(env_struct);
     return return_value;

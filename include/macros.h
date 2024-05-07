@@ -22,31 +22,16 @@
     #define KEY_LEFT    0x0107
     #define KEY_RIGHT   0x0108
     #define KEY_DEL     0x7f
+    #define KEY_SUPP 0x7e
 
-void cursor_backward(char *line);
+void cursor_backward(size_t i);
 void history(char *line);
-void delete(char *line);
-void delete_command(char *line);
+void delete(size_t i);
+size_t delete_command(size_t index, char **line);
 void back_command(char *line);
 void front_command(char *line);
-void cursor_forward(char *line);
+void cursor_forward(size_t i);
 void enter(char *line);
-
-typedef struct flags {
-    int flags;
-    void (*d_f)(char *);
-} fl;
-
-static fl const tab[8] = {
-    {KEY_UP, &front_command},
-    {KEY_DOWN, &back_command},
-    {KEY_LEFT, &cursor_backward},
-    {KEY_RIGHT, &cursor_forward},
-    {KEY_DEL, &delete_command},
-    {KEY_TAB, &history},
-    {KEY_ENTER, &enter},
-    {0, NULL}
-};
 
 typedef enum pipe_fd_s {
     OUT,

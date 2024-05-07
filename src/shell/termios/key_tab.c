@@ -7,5 +7,6 @@
 
 void history(char *line)
 {
-    
+    (void)line;
+    return;
 }

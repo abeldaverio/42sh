@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 
-void cursor_forward(char *line)
+void cursor_forward(size_t i)
 {
-    dprintf(1, "\033[%dD", 1);
+    dprintf(1, "\033[%ldC", i);
 }

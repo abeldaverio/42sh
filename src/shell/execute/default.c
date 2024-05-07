@@ -27,8 +27,9 @@ static bool check_type(char *arg, env_t *env)
     return true;
 }
 
-bool always_true(char **)
+bool always_true(char **data)
 {
+    (void)data;
     return true;
 }
 

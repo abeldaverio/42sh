@@ -7,5 +7,6 @@
 
 void back_command(char *line)
 {
-    
+    (void)line;
+    return;
 }

@@ -7,5 +7,6 @@
 
 void enter(char *line)
 {
-    
+    (void)line;
+    return;
 }

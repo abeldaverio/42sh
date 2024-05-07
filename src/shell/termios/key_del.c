@@ -5,15 +5,19 @@
 ** key_del
 */
 
+#include <stdio.h>
 #include "macros.h"
+#include "vector.h"
 
-void delete(char *line)
+void delete(size_t i)
 {
     dprintf(1, "\033[%dE", 1);
 }
 
-void delete_command(char *line)
+size_t delete_command(size_t index, char **line)
 {
-    dprintf(1, "\b ");
-    cursor_forward(line);
+    if (index <= 0)
+        return index;
+    vector_delete(line, index - 1);
+    return index - 1;
 }

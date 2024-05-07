@@ -7,5 +7,6 @@
 
 void front_command(char *line)
 {
-
+    (void)line;
+    return;
 }

@@ -5,13 +5,19 @@
 ** termios
 */
 
+#include <stdlib.h>
+#include <sys/types.h>
 #include <termios.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdbool.h>
+#include "functions.h"
 #include "macros.h"
+#include "vector.h"
+#include "env.h"
 
-int get_char(struct termios *term, struct termios *oterm) 
+static int get_char(struct termios *term, struct termios *oterm)
 {
     int character = 0;
 
@@ -26,71 +32,7 @@ int get_char(struct termios *term, struct termios *oterm)
     return character;
 }
 
-static int keyboard_hit(struct termios *term, struct termios *oterm)
-{
-    int character = 0;
-
-    tcgetattr(0, oterm);
-    memcpy(term, oterm, sizeof(struct termios));
-    term->c_lflag &= ~(ICANON | ECHO);
-    term->c_cc[VMIN] = 0;
-    term->c_cc[VTIME] = 1;
-    tcsetattr(0, TCSANOW, term);
-    character = getchar();
-    tcsetattr(0, TCSANOW, oterm);
-    if (character != -1) 
-        ungetc(character, stdin);
-    return ((character != -1) ? 1 : 0);
-}
-static int keyboard_esc(struct termios *term, struct termios *oterm)
-{
-    int character = 0;
-
-    character = get_char(term, oterm);
-    if (character == '[') {
-        switch (get_char(term, oterm)) {
-            case 'A':
-                character = KEY_UP;
-                break;
-            case 'B':
-                character = KEY_DOWN;
-                break;
-            case 'C':
-                character = KEY_LEFT;
-                break;
-            case 'D':
-                character = KEY_RIGHT;
-                break;
-            case 'E':
-                character = KEY_DEL;
-                break;
-            default:
-                character = 0;
-                break;
-        }
-    } else {
-        character = 0;
-    }
-   if (character == 0)
-       while (keyboard_hit(term, oterm)) {
-           printf("kbhit\n");
-           get_char(term, oterm);
-           keyboard_esc(term, oterm);
-       }
-    return character;
-}
-
-static int keyboard_get(struct termios *term, struct termios *oterm)
-{
-    int character = 0;
-    int res = 0;
-
-    character = get_char(term, oterm);
-    res = keyboard_esc(term, oterm);
-    return (character == KEY_ESCAPE) ? res : character;
-}
-
-void init_termios(struct termios *term, struct termios *old_term)
+static void init_termios(struct termios *term, struct termios *old_term)
 {
     tcgetattr(0, old_term);
     memcpy(term, old_term, sizeof(struct termios));
@@ -100,38 +42,88 @@ void init_termios(struct termios *term, struct termios *old_term)
     tcsetattr(0, TCSANOW, term);
 }
 
-int is_command(struct termios *term, struct termios *oldterm)
+static size_t arrow(size_t index, char **line)
 {
-    int car = 0;
-    
-    car = getchar();
-    if (car == 27)
-        return keyboard_esc(term, oldterm);
+    char c = getchar();
+
+    if (c != '[')
+        return index;
+    c = getchar();
+    if (c == 'D' && index > 0) {
+        cursor_backward(1);
+        index--;
+    }
+    if (c == 'C' && index < vector_total(*line)) {
+        cursor_forward(1);
+        index++;
+    }
+    return index;
 }
 
-int display_changes(void)
+/* dprintf(1, "\33[%dF\n", index / 46); */
+/* cursor_forward(index % 46 + 1); */
+static void print_line(char **line, size_t prompt_size, size_t index,
+    env_t *env)
+{
+    cursor_backward(prompt_size + index);
+    dprintf(1, "\33[K");
+    print_prompt(env);
+    dprintf(1, "%.*s", vector_total(*line), *line);
+    cursor_backward(vector_total(*line));
+    cursor_forward(index + 1);
+}
+
+static ssize_t switching(char c, size_t index, char **line, env_t *env,
+    size_t prompt_size)
+{
+    if (c == '\033')
+        return arrow(index, line);
+    if (c == 4)
+        return -1;
+    if (c == KEY_DEL) {
+        index = delete_command(index, line);
+        print_line(line, prompt_size, index, env);
+        return index;
+    } else if (vector_total(*line) == index)
+        vector_add(line, &c);
+    else
+        vector_push(line, index, &c);
+    print_line(line, prompt_size, index, env);
+    return index + 1;
+}
+
+static size_t vector_to_str(char **data, char **input, ssize_t index)
+{
+    vector_t *vector = (vector_t *)(*(void **)data - sizeof(vector_t));
+    char *result = strndup(*data, vector->current);
+
+    if (vector != NULL)
+        free(vector);
+    *input = result;
+    return index;
+}
+
+size_t display_changes(env_t *env, size_t prompt_size, char **input)
 {
     int character = 0;
     struct termios term = {0};
     struct termios oldterm = {0};
-    char *line = NULL;
-    char car = {0};
+    ssize_t index = 0;
+    char *line = vector_init(sizeof(char));
 
+    if (*input != NULL)
+        free(*input);
     init_termios(&term, &oldterm);
-    character = is_command(&term, &oldterm);
-    for (int i = 0; tab[i].flags != 0; i++)
-        if (character == tab[i].flags)
-            tab[i].d_f(line);
+    while (1) {
+        character = getchar();
+        if (character == 0x000a) {
+            write(1, "\n", 1);
+            break;
+        }
+        index = switching(character, index, &line, env, prompt_size);
+        if (index == -1)
+            return vector_to_str(&line, input, index);
+    }
     tcsetattr(0, TCSANOW, &oldterm);
-    while (read(0, &car, 1) != -1)
-        dprintf(1, "%c", car);
-//        printf("passé\n");
-//        character = keyboard_get(&term, &oldterm);
-//        for (int i = 0; tab[i].flags != 0; i++) {
-//            if (character == tab[i].flags)
-//                tab[i].d_f(line);
-//        }
-//    tcsetattr(0, TCSANOW, &oldterm);
-//    }
-    return 1;
+    return vector_to_str(&line, input, index);
 }
