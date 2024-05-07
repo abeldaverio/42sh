@@ -36,8 +36,7 @@ static void start_loop(env_t *env, int tty)
     execute_rc(env);
     if (tty == 1)
         print_prompt(env);
-    size = getline(&input, &tmp, stdin);
-    while ((size != -1)) {
+    while ((getline(&input, &tmp, stdin) != -1)) {
         add_command_history(input, &history);
         new_input = clear_special(input);
         if (handle_input(new_input, env))
