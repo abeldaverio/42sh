@@ -58,6 +58,7 @@ SRC	=	$(addprefix src/,\
 						vector_set.c	\
 						vector_total.c	\
 						vector_push.c	\
+						check_free.c	\
 					)	\
 					key_del.c	\
 					key_down.c	\

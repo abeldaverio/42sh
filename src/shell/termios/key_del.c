@@ -11,6 +11,7 @@
 
 void delete(size_t i)
 {
+    (void)i;
     dprintf(1, "\033[%dE", 1);
 }
 

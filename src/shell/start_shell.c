@@ -24,14 +24,14 @@ static bool handle_input(char *input, env_t *env)
     return false;
 }
 
-// handle tty
+// handle tty == if tty getline
 static void start_loop(env_t *env, int tty, size_t prompt_size)
 {
-    size_t tmp = 0;
     int size = 0;
     char *input = NULL;
     char *new_input = NULL;
 
+    (void)tty;
     size = display_changes(env, prompt_size, &input);
     while ((size != -1)) {
         new_input = clear_special(input);

@@ -16,21 +16,7 @@
 #include "macros.h"
 #include "vector.h"
 #include "env.h"
-
-static int get_char(struct termios *term, struct termios *oterm)
-{
-    int character = 0;
-
-    tcgetattr(0, oterm);
-    memcpy(term, oterm, sizeof(struct termios));
-    term->c_lflag &= ~(ICANON | ECHO);
-    term->c_cc[VMIN] = 1;
-    term->c_cc[VTIME] = 0;
-    tcsetattr(0, TCSANOW, term);
-    character = getchar();
-    tcsetattr(0, TCSANOW, oterm);
-    return character;
-}
+#include "prompt.h"
 
 static void init_termios(struct termios *term, struct termios *old_term)
 {
@@ -62,34 +48,33 @@ static size_t arrow(size_t index, char **line)
 
 /* dprintf(1, "\33[%dF\n", index / 46); */
 /* cursor_forward(index % 46 + 1); */
-static void print_line(char **line, size_t prompt_size, size_t index,
-    env_t *env)
+static void print_line(prompt_t *prompt, env_t *env)
 {
-    cursor_backward(prompt_size + index);
+    cursor_backward(prompt->prompt_size + prompt->index);
     dprintf(1, "\33[K");
     print_prompt(env);
-    dprintf(1, "%.*s", vector_total(*line), *line);
-    cursor_backward(vector_total(*line));
-    cursor_forward(index + 1);
+    dprintf(1, "%.*s", (int)vector_total(*prompt->line), *prompt->line);
+    cursor_backward(vector_total(*prompt->line));
+    cursor_forward(prompt->index + 1);
 }
 
-static ssize_t switching(char c, size_t index, char **line, env_t *env,
-    size_t prompt_size)
+// struct with c, index, line, prompt_size
+static ssize_t switching(prompt_t *prompt, env_t *env)
 {
-    if (c == '\033')
-        return arrow(index, line);
-    if (c == 4)
+    if (prompt->character == '\033')
+        return arrow(prompt->index, prompt->line);
+    if (prompt->character == 4)
         return -1;
-    if (c == KEY_DEL) {
-        index = delete_command(index, line);
-        print_line(line, prompt_size, index, env);
-        return index;
-    } else if (vector_total(*line) == index)
-        vector_add(line, &c);
+    if (prompt->character == KEY_DEL) {
+        prompt->index = delete_command(prompt->index, prompt->line);
+        print_line(prompt, env);
+        return prompt->index;
+    } else if ((ssize_t)vector_total(*prompt->line) == prompt->index)
+        vector_add(prompt->line, &prompt->character);
     else
-        vector_push(line, index, &c);
-    print_line(line, prompt_size, index, env);
-    return index + 1;
+        vector_push(prompt->line, prompt->index, &prompt->character);
+    print_line(prompt, env);
+    return prompt->index + 1;
 }
 
 static size_t vector_to_str(char **data, char **input, ssize_t index)
@@ -103,27 +88,36 @@ static size_t vector_to_str(char **data, char **input, ssize_t index)
     return index;
 }
 
+static bool loop_char(prompt_t *prompt, env_t *env, char **input)
+{
+    while (1) {
+        prompt->character = getchar();
+        if (prompt->character == 0x000a) {
+            write(1, "\n", 1);
+            return false;
+        }
+        prompt->index = switching(prompt, env);
+        if (prompt->index == -1) {
+            vector_to_str(prompt->line, input, prompt->index);
+            return true;
+        }
+    }
+}
+
+// handle is a tty
+// prompt
 size_t display_changes(env_t *env, size_t prompt_size, char **input)
 {
-    int character = 0;
+    prompt_t prompt = {0};
     struct termios term = {0};
     struct termios oldterm = {0};
-    ssize_t index = 0;
     char *line = vector_init(sizeof(char));
 
-    if (*input != NULL)
-        free(*input);
+    prompt.line = &line;
+    prompt.prompt_size = prompt_size;
+    check_free(*input);
     init_termios(&term, &oldterm);
-    while (1) {
-        character = getchar();
-        if (character == 0x000a) {
-            write(1, "\n", 1);
-            break;
-        }
-        index = switching(character, index, &line, env, prompt_size);
-        if (index == -1)
-            return vector_to_str(&line, input, index);
-    }
+    loop_char(&prompt, env, input);
     tcsetattr(0, TCSANOW, &oldterm);
-    return vector_to_str(&line, input, index);
+    return vector_to_str(&line, input, prompt.index);
 }
