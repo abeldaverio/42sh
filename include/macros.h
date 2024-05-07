@@ -33,9 +33,11 @@ void front_command(char *line);
 void cursor_forward(size_t i);
 void enter(char *line);
 
+    #define RC_FILE "./.bdshellrc"
+
 typedef enum pipe_fd_s {
     OUT,
     IN
 } pipe_fd_t;
 
-#endif /* !MACROS_H */
+#endif

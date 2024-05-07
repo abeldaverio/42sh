@@ -14,9 +14,11 @@
 #include "fetch_info.h"
 #include "functions.h"
 
-bool camille_fetch(char **, env_t *env)
+bool camille_fetch(char **argv, env_t *env)
 {
-    if (!fetch_command(env, CAMILLE))
-        return false;
+    if (!fetch_command(argv, env, CAMILLE))
+        env->last_return = 1;
+    else
+        env->last_return = 0;
     return true;
 }

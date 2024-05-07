@@ -30,6 +30,11 @@ SRC	=	$(addprefix src/,\
 				request_input.c	\
 			)	\
 			$(addprefix shell/,\
+				$(addprefix signal/,\
+					signal_handler.c	\
+					handle_sigint.c	\
+					handle_sigtstp.c	\
+				)	\
 				$(addprefix init/,\
 					$(addprefix own_env_init/,\
 						init_host.c	\
@@ -47,6 +52,12 @@ SRC	=	$(addprefix src/,\
 					clear_special.c	\
 					array_concat.c 	\
 					replace_aliases.c	\
+					star_formating.c	\
+				)	\
+				$(addprefix autocompletion/,\
+					auto_complete.c	\
+					auto_complete_dir.c	\
+					auto_complete_cmd.c	\
 				)	\
 				$(addprefix termios/,\
 					$(addprefix lib_vector/,\
@@ -88,6 +99,11 @@ SRC	=	$(addprefix src/,\
 							fetch_window_info.c	\
 							fetch_memory.c	\
 						)	\
+						$(addprefix history/,\
+							create_history.c	\
+							command_history.c	\
+							display_history.c	\
+						)	\
 					)	\
 					default.c	\
 					execute_command.c	\
@@ -95,6 +111,7 @@ SRC	=	$(addprefix src/,\
 					execute_file.c	\
 					last_return.c	\
 					try_execute.c	\
+					execute_rc.c	\
 				)	\
 				start_shell.c	\
 			)	\

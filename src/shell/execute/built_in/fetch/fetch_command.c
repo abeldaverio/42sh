@@ -37,10 +37,8 @@ char *create_buffer(char *filepath)
     char *buffer = NULL;
     int file = open(filepath, O_RDONLY);
 
-    if (file == -1) {
-        perror("open");
+    if (file == -1)
         return NULL;
-    }
     buf_size = buffer_size(filepath);
     if (buf_size == 84)
         return NULL;
@@ -133,23 +131,20 @@ static void display_fetch(env_t *env, char *fetch, fetch_model_t model)
     }
 }
 
-bool fetch_command(env_t *env, fetch_model_t model)
+bool fetch_command(char **args, env_t *env, fetch_model_t model)
 {
     char *buffer = NULL;
     char *fetch = NULL;
 
+    if (my_arraylen(args) != 1)
+        return false;
     buffer = create_buffer(FETCH_THEME[model].filepath);
-    if (buffer == NULL) {
-        env->last_return = 1;
-        return true;
-    }
+    if (buffer == NULL)
+        return false;
     fetch = strtok(buffer, "\n");
-    if (fetch == NULL) {
-        env->last_return = 1;
-        return true;
-    }
+    if (fetch == NULL)
+        return false;
     display_fetch(env, fetch, model);
-    env->last_return = 0;
     free(buffer);
     return true;
 }

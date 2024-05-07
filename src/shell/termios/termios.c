@@ -92,7 +92,7 @@ static bool loop_char(prompt_t *prompt, env_t *env, char **input)
 {
     while (true) {
         prompt->character = getchar();
-        if (prompt->character == 0x000a) {
+        if (prompt->character == KEY_ENTER) {
             write(1, "\n", 1);
             return false;
         }

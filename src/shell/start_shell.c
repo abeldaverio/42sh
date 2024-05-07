@@ -10,9 +10,11 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "env.h"
+#include "history.h"
 #include "functions.h"
+#include "macros.h"
 
-static bool handle_input(char *input, env_t *env)
+bool handle_input(char *input, env_t *env)
 {
     if (input == NULL)
         exit(84);
@@ -30,6 +32,7 @@ static void start_loop(env_t *env, int tty, size_t prompt_size)
     int size = 0;
     char *input = NULL;
     char *new_input = NULL;
+    history_list_t *history = create_history();
 
     (void)tty;
     size = display_changes(env, prompt_size, &input);
@@ -42,6 +45,7 @@ static void start_loop(env_t *env, int tty, size_t prompt_size)
     }
     if (input != NULL)
         free(input);
+    free_history(history);
 }
 
 int start_shell(char const **env)
@@ -52,9 +56,13 @@ int start_shell(char const **env)
     size_t prompt_size = 0;
 
     if (env_struct == NULL)
-        return 84;
+        return ERROR_STATUS;
     if (tty == 1)
         prompt_size = print_prompt(env_struct);
+    start_loop(env_struct, tty, prompt_size);
+        return ERROR_STATUS;
+    if (!signal_handler())
+        return ERROR_STATUS;
     start_loop(env_struct, tty, prompt_size);
     return_value = env_struct->last_return;
     free_env(env_struct);

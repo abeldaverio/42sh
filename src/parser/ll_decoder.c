@@ -112,8 +112,17 @@ bool lauch_command(ll_node_t *self, env_t *env, int)
     int return_value = 0;
 
     input_twod = format_arguments(self->value, " \t\n", "\"\'");
+    if (format_input(&input_twod)) {
+        env->last_return = 1;
+        free_array(input_twod);
+        return 1;
+    }
     if (input_twod == NULL)
         return return_value;
+    if (input_twod[0] == NULL || input_twod[0][0] == '\0') {
+        free_array(input_twod);
+        return true;
+    }
     return_value = execute(input_twod, env);
     return return_value;
 }
@@ -136,8 +145,9 @@ int start_tree(env_t *env, char *input)
 {
     ll_node_t *root = NULL;
     int return_value = 0;
-    char **commands = format_arguments(input, ";\n", "");
+    char **commands = NULL;
 
+    commands = format_arguments(input, ";\n", "");
     if (!pre_checking(commands, env))
         return false;
     for (int i = 0; commands[i] != NULL; i++) {
