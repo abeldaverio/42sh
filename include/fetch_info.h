@@ -9,6 +9,14 @@
     #define FETCH_INFO_H
     #include <stddef.h>
 
+    #define RESOLUTION_COMMAND "xdpyinfo | awk '/dimensions/ {print $2}'"
+    #define UPTIME_PATH "/proc/uptime"
+    #define HOST_PATH "/sys/devices/virtual/dmi/id/product_name"
+    #define MEMORY_PATH "/proc/meminfo"
+    #define OS_PATH "/etc/os-release"
+    #define CPU_PATH "/proc/cpuinfo"
+    #define GPU_COMMAND "lspci -mm | grep -i 'vga\\|3d\\|2d'"
+
 char *get_os(env_t *);
 char *get_host(env_t *);
 char *get_kernel(env_t *);

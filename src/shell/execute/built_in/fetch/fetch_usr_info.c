@@ -22,7 +22,7 @@ char *get_host(env_t *)
     char **data = NULL;
     char *host = NULL;
     size_t i = 0;
-    FILE *file = fopen("/sys/devices/virtual/dmi/id/product_name", "r");
+    FILE *file = fopen(HOST_PATH, "r");
 
     if (file == NULL || getline(&buffer, &i, file) == -1)
         return NULL;
@@ -70,7 +70,7 @@ char *get_uptime(env_t *)
     char *buffer = NULL;
     char **data = NULL;
     size_t i = 0;
-    FILE *file = fopen("/proc/uptime", "r");
+    FILE *file = fopen(UPTIME_PATH, "r");
 
     if (file == NULL || getline(&buffer, &i, file) == -1)
         return NULL;

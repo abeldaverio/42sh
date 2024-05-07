@@ -15,7 +15,6 @@
 #include "history.h"
 #include "functions.h"
 
-
 static bool add_command_history_file(int index, char *command)
 {
     int file = open(HISTORY_PATH, O_WRONLY | O_CREAT | O_APPEND, 0644);
