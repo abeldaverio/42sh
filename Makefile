@@ -73,6 +73,11 @@ SRC	=	$(addprefix src/,\
 							fetch_window_info.c	\
 							fetch_memory.c	\
 						)	\
+						$(addprefix history/,\
+							create_history.c	\
+							command_history.c	\
+							display_history.c	\
+						)	\
 					)	\
 					default.c	\
 					execute_command.c	\

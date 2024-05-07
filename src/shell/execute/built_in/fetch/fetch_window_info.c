@@ -35,7 +35,7 @@ char *get_resolution(env_t *)
     char *buffer = NULL;
     char **data = NULL;
     size_t i = 0;
-    FILE *cmd = popen("xdpyinfo | awk '/dimensions/ {print $2}'", "r");
+    FILE *cmd = popen(RESOLUTION_COMMAND, "r");
 
     if (cmd == NULL || getline(&buffer, &i, cmd) == -1)
         return NULL;
