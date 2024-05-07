@@ -27,8 +27,8 @@ void insert_int_in_env(char *variable, int int_value, env_list_t **env);
 char **get_formated_value(char *variable, env_list_t **env);
 
 //print functions
-size_t print_prompt(env_t *env);
-size_t display_changes(env_t *env, size_t prompt_size, char **input);
+size_t print_prompt(env_t *env, int tty);
+size_t display_changes(env_t *env, size_t prompt_size, char **input, int tty);
 
 //main functions
 int start_shell(char const **env);

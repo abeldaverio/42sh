@@ -88,7 +88,7 @@ size_t print_cool_prompt(env_t *env, char *version, char *dir, char **colors)
     return compt;
 }
 
-size_t print_prompt(env_t *env)
+size_t print_prompt(env_t *env, int tty)
 {
     size_t compt = 0;
     char *username = search_env_value("USER", env->env_list);
@@ -96,6 +96,8 @@ size_t print_prompt(env_t *env)
     char *dir = get_dir(search_env_value("PWD", env->env_list));
     char **colors = get_colors(env);
 
+    if (tty != 1)
+        return 0;
     if (colors == NULL) {
         compt = print_boring_prompt(username, version, dir, env);
     } else {

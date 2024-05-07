@@ -16,6 +16,7 @@ typedef struct prompt_s {
     ssize_t index;
     char **line;
     size_t prompt_size;
+    int tty;
 } prompt_t;
 
 #endif /* PROMPT_H */

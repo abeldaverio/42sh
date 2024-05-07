@@ -27,21 +27,23 @@ bool handle_input(char *input, env_t *env)
 }
 
 // handle tty == if tty getline
-static void start_loop(env_t *env, int tty, size_t prompt_size)
+static void start_loop(env_t *env, int tty)
 {
     int size = 0;
+    size_t prompt_size = 0;
     char *input = NULL;
     char *new_input = NULL;
     history_list_t *history = create_history();
 
     (void)tty;
-    size = display_changes(env, prompt_size, &input);
+    prompt_size = print_prompt(env, tty);
+    size = display_changes(env, prompt_size, &input, tty);
     while ((size != -1)) {
         new_input = clear_special(input);
         if (handle_input(new_input, env))
             break;
-        print_prompt(env);
-        size = display_changes(env, prompt_size, &input);
+        prompt_size = print_prompt(env, tty);
+        size = display_changes(env, prompt_size, &input, tty);
     }
     if (input != NULL)
         free(input);
@@ -53,17 +55,13 @@ int start_shell(char const **env)
     env_t *env_struct = init_env(env);
     int return_value = 0;
     int tty = isatty(0);
-    size_t prompt_size = 0;
 
     if (env_struct == NULL)
         return ERROR_STATUS;
-    if (tty == 1)
-        prompt_size = print_prompt(env_struct);
-    start_loop(env_struct, tty, prompt_size);
-        return ERROR_STATUS;
     if (!signal_handler())
         return ERROR_STATUS;
-    start_loop(env_struct, tty, prompt_size);
+    execute_rc(env_struct);
+    start_loop(env_struct, tty);
     return_value = env_struct->last_return;
     free_env(env_struct);
     return return_value;

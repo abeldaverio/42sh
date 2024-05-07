@@ -52,7 +52,7 @@ static void print_line(prompt_t *prompt, env_t *env)
 {
     cursor_backward(prompt->prompt_size + prompt->index);
     dprintf(1, "\33[K");
-    print_prompt(env);
+    print_prompt(env, prompt->tty);
     dprintf(1, "%.*s", (int)vector_total(*prompt->line), *prompt->line);
     cursor_backward(vector_total(*prompt->line));
     cursor_forward(prompt->index + 1);
@@ -106,7 +106,7 @@ static bool loop_char(prompt_t *prompt, env_t *env, char **input)
 
 // handle is a tty
 // prompt
-size_t display_changes(env_t *env, size_t prompt_size, char **input)
+size_t display_changes(env_t *env, size_t prompt_size, char **input, int tty)
 {
     prompt_t prompt = {0};
     struct termios term = {0};
@@ -115,6 +115,7 @@ size_t display_changes(env_t *env, size_t prompt_size, char **input)
 
     prompt.line = &line;
     prompt.prompt_size = prompt_size;
+    prompt.tty = tty;
     check_free(*input);
     init_termios(&term, &oldterm);
     if (loop_char(&prompt, env, input) == true) {
