@@ -24,6 +24,8 @@
     #define KEY_DEL     0x7f
     #define KEY_SUPP 0x7e
     #define END_OF_FILE 4
+    #define CTRL_L 12
+    #define CTRL_C 3
 
 void history(char *line);
 void back_command(char *line);

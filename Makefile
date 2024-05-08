@@ -73,6 +73,8 @@ SRC	=	$(addprefix src/,\
 					)	\
 					exit_handle.c	\
 					arrow_handle.c	\
+					clear_terminal.c	\
+					clear_line.c	\
 					key_del.c	\
 					key_down.c	\
 					key_left.c	\
