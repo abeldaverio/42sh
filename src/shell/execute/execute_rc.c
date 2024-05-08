@@ -26,6 +26,7 @@ void execute_rc(env_t *env)
         if (handle_input(new_input, env))
             break;
     }
+    fclose(file);
     if (input != NULL)
         free(input);
 }

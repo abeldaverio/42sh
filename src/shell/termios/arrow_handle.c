@@ -9,14 +9,15 @@
 #include "prompt.h"
 #include "vector.h"
 #include "arrows.h"
+#include "functions.h"
 
-size_t arrow_handle(prompt_t *prompt)
+int arrow_handle(prompt_t *prompt, env_t *)
 {
-    char c = getchar();
+    char c = my_getchar();
 
     if (c != '[')
         return prompt->index;
-    c = getchar();
+    c = my_getchar();
     if (c == 'D' && prompt->index > 0) {
         cursor_backward(1);
         prompt->index -= 1;

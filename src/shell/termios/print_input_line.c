@@ -14,6 +14,8 @@
 
 void print_input_line(prompt_t *prompt, env_t *env, bool del)
 {
+    if (prompt->tty != 1)
+        return;
     cursor_backward(prompt->prompt_size + prompt->index);
     dprintf(1, "\33[K");
     print_prompt(env, prompt->tty);

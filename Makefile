@@ -127,6 +127,7 @@ SRC	=	$(addprefix src/,\
 				my_arraylen.c	\
 				my_strcat.c	\
 				is_string_in_array.c	\
+				my_getchar.c	\
 			)	\
 		)	\
 

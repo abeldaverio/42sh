@@ -60,6 +60,7 @@ int my_arraylen(char **);
 char *my_strcat(size_t size, ...);
 bool is_string_in_array(char *str, char **array);
 char **open_config_dir(char *dir, char *filter);
+char my_getchar(void);
 
 //parser
 int start_tree(env_t *env, char *input);

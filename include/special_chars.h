@@ -22,6 +22,7 @@ int handle_exit(prompt_t *, env_t *);
 
 static const special_chars_t SPECIAL_INPUT[] = {
     {END_OF_FILE, handle_exit},
+    {'\0', handle_exit},
     {'\033', arrow_handle},
     {KEY_DEL, delete_command},
 };

@@ -63,9 +63,9 @@ static size_t vector_to_str(char **data, char **input, ssize_t index)
 static bool loop_char(prompt_t *prompt, env_t *env, char **input)
 {
     while (true) {
-        prompt->character = getchar();
+        prompt->character = my_getchar();
         if (prompt->character == KEY_ENTER) {
-            write(1, "\n", 1);
+            dprintf(1, prompt->tty == 1 ? "\n" : "");
             return false;
         }
         prompt->index = switching(prompt, env);
