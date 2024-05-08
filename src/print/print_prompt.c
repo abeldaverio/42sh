@@ -96,8 +96,10 @@ size_t print_prompt(env_t *env, int tty)
     char *dir = get_dir(search_env_value("PWD", env->env_list));
     char **colors = get_colors(env);
 
-    if (tty != 1)
+    if (tty != 1) {
+        free_array(colors);
         return 0;
+    }
     if (colors == NULL) {
         compt = print_boring_prompt(username, version, dir, env);
     } else {
