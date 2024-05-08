@@ -10,6 +10,7 @@
 
     #include <stdbool.h>
     #include "env.h"
+    #include "prompt.h"
 
 //error handling
 bool check_main_args(int const argc);
@@ -71,5 +72,8 @@ bool signal_handler(void);
 
 //autocomplete
 int auto_complete(char *input, int *completion_ptr);
+
+//keyboard
+void print_input_line(prompt_t *prompt, env_t *env, bool del);
 
 #endif

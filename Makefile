@@ -71,6 +71,8 @@ SRC	=	$(addprefix src/,\
 						vector_push.c	\
 						check_free.c	\
 					)	\
+					exit_handle.c	\
+					arrow_handle.c	\
 					key_del.c	\
 					key_down.c	\
 					key_left.c	\
@@ -79,6 +81,7 @@ SRC	=	$(addprefix src/,\
 					key_tab.c	\
 					key_enter.c	\
 					termios.c	\
+					print_input_line.c	\
 				)	\
 				$(addprefix execute/,\
 					$(addprefix built_in/,\

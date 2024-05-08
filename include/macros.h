@@ -23,14 +23,12 @@
     #define KEY_RIGHT   0x0108
     #define KEY_DEL     0x7f
     #define KEY_SUPP 0x7e
+    #define END_OF_FILE 4
 
-void cursor_backward(size_t i);
 void history(char *line);
-void delete(size_t i);
-size_t delete_command(size_t index, char **line);
 void back_command(char *line);
 void front_command(char *line);
-void cursor_forward(size_t i);
+
 void enter(char *line);
 
     #define RC_FILE "./.bdshellrc"

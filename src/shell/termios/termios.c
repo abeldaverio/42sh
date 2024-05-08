@@ -6,6 +6,7 @@
 */
 
 #include <stdlib.h>
+#include <stdbool.h>
 #include <sys/types.h>
 #include <termios.h>
 #include <stdio.h>
@@ -17,6 +18,8 @@
 #include "vector.h"
 #include "env.h"
 #include "prompt.h"
+#include "special_chars.h"
+#include "arrows.h"
 
 static void init_termios(struct termios *term, struct termios *old_term)
 {
@@ -28,52 +31,21 @@ static void init_termios(struct termios *term, struct termios *old_term)
     tcsetattr(0, TCSANOW, term);
 }
 
-static size_t arrow(size_t index, char **line)
-{
-    char c = getchar();
-
-    if (c != '[')
-        return index;
-    c = getchar();
-    if (c == 'D' && index > 0) {
-        cursor_backward(1);
-        index--;
-    }
-    if (c == 'C' && index < vector_total(*line)) {
-        cursor_forward(1);
-        index++;
-    }
-    return index;
-}
-
 /* dprintf(1, "\33[%dF\n", index / 46); */
 /* cursor_forward(index % 46 + 1); */
-static void print_line(prompt_t *prompt, env_t *env)
-{
-    cursor_backward(prompt->prompt_size + prompt->index);
-    dprintf(1, "\33[K");
-    print_prompt(env, prompt->tty);
-    dprintf(1, "%.*s", (int)vector_total(*prompt->line), *prompt->line);
-    cursor_backward(vector_total(*prompt->line));
-    cursor_forward(prompt->index + 1);
-}
-
 // struct with c, index, line, prompt_size
 static ssize_t switching(prompt_t *prompt, env_t *env)
 {
-    if (prompt->character == '\033')
-        return arrow(prompt->index, prompt->line);
-    if (prompt->character == 4)
-        return -1;
-    if (prompt->character == KEY_DEL) {
-        prompt->index = delete_command(prompt->index, prompt->line);
-        print_line(prompt, env);
-        return prompt->index;
-    } else if ((ssize_t)vector_total(*prompt->line) == prompt->index)
+    for (size_t i = 0; i < NB_OF_SPECIAL_INPUT; ++i) {
+        if (prompt->character == SPECIAL_INPUT[i].character) {
+            return SPECIAL_INPUT[i].function(prompt, env);
+        }
+    }
+    if ((ssize_t)vector_total(*prompt->line) == prompt->index)
         vector_add(prompt->line, &prompt->character);
     else
         vector_push(prompt->line, prompt->index, &prompt->character);
-    print_line(prompt, env);
+    print_input_line(prompt, env, false);
     return prompt->index + 1;
 }
 
