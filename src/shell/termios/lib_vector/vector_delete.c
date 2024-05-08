@@ -14,7 +14,7 @@ void vector_delete(void *data, size_t index)
 
     if (index > vector->current)
         return;
-    if (index < vector->current)
+    if (index + 1 < vector->current)
         memmove(*(void **) data + (index * vector->size), (*(void **) data) +
             ((index + 1) * vector->size), vector->size *
             (vector->current) - index);
