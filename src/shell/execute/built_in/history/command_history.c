@@ -58,15 +58,33 @@ static void move_history_start(history_list_t **history)
     }
 }
 
+static void free_empty_node(history_list_t **history)
+{
+    history_list_t *tmp = NULL;
+
+    if ((*history) == NULL)
+        return;
+    tmp = (*history)->next;
+    if ((*history)->command != NULL)
+        free((*history)->command);
+    free((*history));
+    *history = tmp;
+    if (tmp != NULL)
+        (*history)->prev = NULL;
+}
+
 bool add_command_history(char *input, history_list_t **history)
 {
     if (input == NULL || strcmp(input, "\0") == 0)
         return true;
     move_history_start(history);
+    free_empty_node(history);
     if (!push_command_history(history, input))
         return false;
     if (history == NULL ||
     !add_command_history_file((*history)->index, (*history)->command))
+        return false;
+    if (!push_command_history(history, ""))
         return false;
     return true;
 }
