@@ -26,19 +26,20 @@ bool handle_input(char *input, env_t *env)
     return false;
 }
 
-// handle tty == if tty getline
 static void start_loop(env_t *env, int tty)
 {
     int size = 0;
     size_t prompt_size = 0;
     char *input = NULL;
     char *new_input = NULL;
-    history_list_t *history = create_history();
 
-    (void)tty;
     prompt_size = print_prompt(env, tty);
     size = display_changes(env, prompt_size, &input, tty);
     while ((size != -1)) {
+        if (!add_command_history(input, &(env->history))) {
+            env->last_return = 1;
+            break;
+        }
         new_input = clear_special(input);
         if (handle_input(new_input, env))
             break;
@@ -47,7 +48,6 @@ static void start_loop(env_t *env, int tty)
     }
     if (input != NULL)
         free(input);
-    free_history(history);
 }
 
 int start_shell(char const **env)

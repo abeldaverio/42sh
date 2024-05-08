@@ -28,22 +28,12 @@ static bool add_command_history_file(int index, char *command)
 
 bool add_command_history(char *input, history_list_t **history)
 {
-    if (input == NULL || strcmp(input, "\n") == 0)
-        return false;
+    if (input == NULL || strcmp(input, "\0") == 0)
+        return true;
     if (!push_command_history(history, input))
         return false;
     if (history == NULL ||
     !add_command_history_file((*history)->index, (*history)->command))
         return false;
     return true;
-}
-
-void get_prev_history(history_list_t **history)
-{
-    return;
-}
-
-void get_next_history(history_list_t **history)
-{
-    return;
 }

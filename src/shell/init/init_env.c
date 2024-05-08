@@ -72,5 +72,6 @@ env_t *init_env(char const **env_array)
     env->old_pwd = search_env_value("OLD_PWD", env->env_list);
     env->old_pwd = (env->old_pwd == NULL) ?
         (strdup("")) : (strdup(env->old_pwd));
+    env->history = create_history();
     return env;
 }

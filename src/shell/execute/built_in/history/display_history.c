@@ -38,24 +38,29 @@ bool display_n_history_line(char **args, char *buffer)
     return true;
 }
 
+static void check_free(char *buffer)
+{
+    if (buffer != NULL)
+        free(buffer);
+}
+
 bool display_history(char **args, env_t *env)
 {
     char *buffer = create_buffer(HISTORY_PATH);
 
     if (buffer == NULL || my_arraylen(args) > 2) {
         env->last_return = 1;
+        check_free(buffer);
         dprintf(2, "history: Too many arguments.\n");
         return true;
     }
     if (my_arraylen(args) == 1)
         dprintf(1, "%s", buffer);
-    else {
-        if (!display_n_history_line(args, buffer)) {
-            dprintf(2, "history: Badly formed number.\n");
-            env->last_return = 1;
-            free(buffer);
-            return true;
-        }
+    else if (!display_n_history_line(args, buffer)) {
+        dprintf(2, "history: Badly formed number.\n");
+        env->last_return = 1;
+        free(buffer);
+        return true;
     }
     free(buffer);
     env->last_return = 0;
