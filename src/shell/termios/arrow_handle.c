@@ -11,20 +11,18 @@
 #include "arrows.h"
 #include "functions.h"
 
-int arrow_handle(prompt_t *prompt, env_t *)
+int arrow_handle(prompt_t *prompt, env_t *env)
 {
     char c = my_getchar();
 
     if (c != '[')
         return prompt->index;
     c = my_getchar();
-    if (c == 'D' && prompt->index > 0) {
-        cursor_backward(1);
-        prompt->index -= 1;
-    }
-    if (c == 'C' && prompt->index < (ssize_t)vector_total(*prompt->line)) {
-        cursor_forward(1);
-        prompt->index += 1;
+    for (size_t i = 0; i < NB_OF_ARROWS; ++i) {
+        if (c == ARROWS_COMMAND[i].character) {
+            ARROWS_COMMAND[i].function(prompt, env);
+            break;
+        }
     }
     return prompt->index;
 }

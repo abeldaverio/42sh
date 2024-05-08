@@ -27,23 +27,26 @@ void free_history(history_list_t *history)
     }
 }
 
-bool push_command_history(history_list_t **history, char *input)
+static bool push_line_history(history_list_t **history, char *input)
 {
-    history_list_t *node = malloc(sizeof(history_list_t));
     char **data = NULL;
+    int i = 0;
 
-    if (node == NULL || input == NULL)
+    if (input == NULL)
         return false;
     data = format_arguments(input, "\n", "");
     if (data == NULL)
         return false;
-    node->index = (*history == NULL) ? 1 : (*history)->index + 1;
-    node->command = strdup(data[0]);
-    if (node->command == NULL)
+    while (data[0][i] != '\0' && data[0][i] != ':')
+        ++i;
+    if ((data[0] + i)[0] == '\0' || strlen(data[0] + i) <= 2) {
+        free_array(data);
         return false;
-    node->prev = NULL;
-    node->next = *history;
-    *history = node;
+    }
+    if (!push_command_history(history, data[0] + i + 2)) {
+        free_array(data);
+        return false;
+    }
     free_array(data);
     return true;
 }
@@ -56,7 +59,7 @@ history_list_t *create_history(void)
     FILE *file = fopen(HISTORY_PATH, "a+");
 
     while (getline(&line, &i, file) != -1)
-        if (!push_command_history(&history, line))
+        if (!push_line_history(&history, line))
             return NULL;
     if (line != NULL)
         free(line);

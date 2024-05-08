@@ -19,7 +19,8 @@ typedef struct history_list_s {
 } history_list_t;
 
 history_list_t *create_history(void);
-bool push_command_history(history_list_t **history, char *buffer);
+//void move_history_start(history_list_t *history);
+bool push_command_history(history_list_t **history, char *input);
 bool add_command_history(char *input, history_list_t **history);
 void free_history(history_list_t *history);
 char *create_buffer(char *filepath);

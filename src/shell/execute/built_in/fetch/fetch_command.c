@@ -20,15 +20,13 @@
 
 static int buffer_size(char const *filepath)
 {
-    int size = 0;
     struct stat sb;
 
     if (stat(filepath, &sb) == -1) {
         perror("stat");
-        return 84;
+        return -1;
     }
-    size = sb.st_size;
-    return size;
+    return sb.st_size;
 }
 
 char *create_buffer(char *filepath)
@@ -40,7 +38,7 @@ char *create_buffer(char *filepath)
     if (file == -1)
         return NULL;
     buf_size = buffer_size(filepath);
-    if (buf_size == 84)
+    if (buf_size == -1)
         return NULL;
     buffer = malloc(sizeof(char) * (buf_size + 1));
     if (buffer == NULL)
