@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <unistd.h>
 #include "env.h"
 #include "functions.h"
 
@@ -55,6 +56,19 @@ static bool fill_the_list(env_list_t **env, char const **env_array)
     return fill_the_list(env, env_array + 1);
 }
 
+static char *create_history_path(void)
+{
+    char *history_path = NULL;
+    char *buf = getcwd(NULL, 0);
+
+    if (buf == NULL)
+        return NULL;
+    history_path = my_strcat(3, buf, "/",
+    HISTORY_FILE_NAME);
+    free(buf);
+    return history_path;
+}
+
 env_t *init_env(char const **env_array)
 {
     env_t *env = malloc(sizeof(env_t));
@@ -73,5 +87,8 @@ env_t *init_env(char const **env_array)
     env->old_pwd = (env->old_pwd == NULL) ?
         (strdup("")) : (strdup(env->old_pwd));
     env->history = create_history();
+    env->history_path = create_history_path();
+    if (env->history_path == NULL)
+        return NULL;
     return env;
 }

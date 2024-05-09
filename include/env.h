@@ -25,6 +25,7 @@ typedef struct env_s {
     size_t last_return;
     char *old_pwd;
     history_list_t *history;
+    char *history_path;
 }env_t;
 
 #endif

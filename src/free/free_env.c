@@ -28,5 +28,6 @@ void free_env(env_t *env)
     free(env->old_pwd);
     free(env->env_list);
     free_history(env->history);
+    free(env->history_path);
     free(env);
 }
