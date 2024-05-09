@@ -41,7 +41,11 @@ int *auto_compete_dir(char *complete, int completion_ptr, int info[3])
     int *lines_info = NULL;
 
     candidates = get_dir_completion(complete);
-    if (candidates == NULL || candidates[0] == NULL) {
+    if (candidates == NULL) {
+        return NULL;
+    }
+    if (candidates[0] == NULL) {
+        free_array(candidates);
         return NULL;
     }
     lines_info = print_completion(candidates, completion_ptr, info);
@@ -57,7 +61,11 @@ char *auto_compete_dir_get(char *complete, int completion_ptr)
     if (completion == NULL)
         completion = "";
     candidates = get_dir_completion(complete);
-    if (candidates == NULL || candidates[0] == NULL) {
+    if (candidates == NULL) {
+        return NULL;
+    }
+    if (candidates[0] == NULL) {
+        free_array(candidates);
         return NULL;
     }
     if (completion_ptr != -1)

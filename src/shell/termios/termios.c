@@ -42,6 +42,8 @@ void reset_autocompletion(prompt_t *prompt, env_t *env)
         clear_last_completion(prompt);
         save = *prompt->line;
         *prompt->line = str_to_vector(prompt->completion_candidate);
+        free(prompt->completion_candidate);
+        prompt->completion_candidate = NULL;
         if (*prompt->line == NULL)
             *prompt->line = save;
         else

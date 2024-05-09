@@ -22,7 +22,7 @@
 static char *truncate_input(char *completion, char *old_completion, int offset)
 {
     char *new_completion = calloc((strlen(completion) +
-        strlen(old_completion)) - offset, sizeof(char));
+        strlen(old_completion) + 1) - offset, sizeof(char));
 
     if (new_completion == NULL)
         return NULL;
@@ -50,6 +50,8 @@ char *concat_vector(prompt_t *prompt)
     } else {
         new_completion = my_strcat(2, *prompt->line, completion);
     }
+    free(completion);
+    free(old_completion);
     return new_completion;
 }
 
