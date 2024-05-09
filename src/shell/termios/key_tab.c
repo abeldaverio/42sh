@@ -18,20 +18,21 @@
 #include "macros.h"
 #include "vector.h"
 
-static char *truncate_input(char *completion, char *old_completion, int offset)
+static char *truncate_input(prompt_t *prompt,
+    char *completion, char *old_completion, int offset)
 {
-    char *new_completion = calloc((strlen(completion) +
-        strlen(old_completion) + 1) - offset, sizeof(char));
+    char *tmp = vector_to_str((void **)prompt->line);
+    char *result = NULL;
+    int tmplen = strlen(tmp);
 
-    if (new_completion == NULL)
+    if (tmp == NULL)
         return NULL;
-    for (size_t i = 0; i < strlen(old_completion) - offset; i++) {
-        new_completion[i] = old_completion[i];
+    for (int i = 0; i < offset + 1; i++) {
+        tmp[tmplen - i] = '\0';
     }
-    for (size_t i = 0; completion[i]; i++) {
-        new_completion[i + (strlen(old_completion) - offset)] = completion[i];
-    }
-    return new_completion;
+    result = my_strcat(2, tmp, completion);
+    free(tmp);
+    return result;
 }
 
 static char *get_new_completion(prompt_t *prompt, char *completion)
@@ -57,7 +58,8 @@ char *concat_vector(prompt_t *prompt)
     if (old_completion != NULL)
         offset = strlen(old_completion);
     if (offset != 0) {
-        new_completion = truncate_input(completion, old_completion, offset);
+        new_completion = truncate_input(prompt,
+            completion, old_completion, offset);
     } else {
         new_completion = get_new_completion(prompt, completion);
     }

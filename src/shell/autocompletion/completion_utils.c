@@ -45,7 +45,7 @@ char *get_completion(char *input)
         return NULL;
     counter -= 1;
     for (int i = counter; i >= 0; i--) {
-        new_str[i] = input[(strlen(input) - 1) - counter_dup];
+        new_str[i] = input[(vector_total(input) - 1) - counter_dup];
         counter_dup++;
     }
     return new_str;
