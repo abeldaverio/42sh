@@ -10,6 +10,7 @@
 
     #include <stdbool.h>
     #include "env.h"
+    #include "prompt.h"
 
 //error handling
 bool check_main_args(int const argc);
@@ -27,7 +28,8 @@ void insert_int_in_env(char *variable, int int_value, env_list_t **env);
 char **get_formated_value(char *variable, env_list_t **env);
 
 //print functions
-void print_prompt(env_t *env);
+size_t print_prompt(env_t *env, int tty);
+size_t display_changes(env_t *env, size_t prompt_size, char **input, int tty);
 
 //main functions
 int start_shell(char const **env);
@@ -36,6 +38,8 @@ bool execute(char **args, env_t *env);
 void update_status(int status, env_t *env);
 bool execute_file(char *executable, char **args, env_t *env);
 void try_execute(char *path, char **args, char **env);
+bool handle_input(char *input, env_t *env);
+void execute_rc(env_t *env);
 
 //string formating
 char *clear_special(char *input);
@@ -55,8 +59,22 @@ char **my_arraydup(char **);
 int my_arraylen(char **);
 char *my_strcat(size_t size, ...);
 bool is_string_in_array(char *str, char **array);
+char **open_config_dir(char *dir, char *filter);
+char my_getchar(void);
 
-// parser
+//parser
 int start_tree(env_t *env, char *input);
+void request_input(char **input, char const *img);
+bool format_input(char ***input);
+bool is_filename_valid(char *name, char *prefix, char *suffix);
+
+//signal handling
+bool signal_handler(void);
+
+//autocomplete
+int *auto_complete(char *input, int completion_ptr, int info[3]);
+
+//keyboard
+void print_input_line(prompt_t *prompt, env_t *env, bool del);
 
 #endif

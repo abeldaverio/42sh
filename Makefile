@@ -27,8 +27,14 @@ SRC	=	$(addprefix src/,\
 				ll_decoder.c	\
 				ll_parser.c	\
 				symbols_handling.c	\
+				request_input.c	\
 			)	\
 			$(addprefix shell/,\
+				$(addprefix signal/,\
+					signal_handler.c	\
+					handle_sigint.c	\
+					handle_sigtstp.c	\
+				)	\
 				$(addprefix init/,\
 					$(addprefix own_env_init/,\
 						init_host.c	\
@@ -46,6 +52,40 @@ SRC	=	$(addprefix src/,\
 					clear_special.c	\
 					array_concat.c 	\
 					replace_aliases.c	\
+					star_formating.c	\
+				)	\
+				$(addprefix autocompletion/,\
+					auto_complete.c	\
+					auto_complete_dir.c	\
+					auto_complete_cmd.c	\
+					completion_print.c	\
+					completion_utils.c	\
+				)	\
+				$(addprefix termios/,\
+					$(addprefix lib_vector/,\
+						vector_add.c	\
+						vector_delete.c	\
+						vector_free.c	\
+						vector_init.c	\
+						vector_resize.c	\
+						vector_set.c	\
+						vector_total.c	\
+						vector_push.c	\
+						vector_normal.c	\
+						check_free.c	\
+					)	\
+					exit_handle.c	\
+					arrow_handle.c	\
+					clear_terminal.c	\
+					clear_line.c	\
+					key_del.c	\
+					key_down.c	\
+					key_left.c	\
+					key_right.c	\
+					key_up.c	\
+					key_tab.c	\
+					termios.c	\
+					print_input_line.c	\
 				)	\
 				$(addprefix execute/,\
 					$(addprefix built_in/,\
@@ -66,6 +106,11 @@ SRC	=	$(addprefix src/,\
 							fetch_window_info.c	\
 							fetch_memory.c	\
 						)	\
+						$(addprefix history/,\
+							create_history.c	\
+							command_history.c	\
+							display_history.c	\
+						)	\
 					)	\
 					default.c	\
 					execute_command.c	\
@@ -73,6 +118,7 @@ SRC	=	$(addprefix src/,\
 					execute_file.c	\
 					last_return.c	\
 					try_execute.c	\
+					execute_rc.c	\
 				)	\
 				start_shell.c	\
 			)	\
@@ -85,6 +131,7 @@ SRC	=	$(addprefix src/,\
 				my_arraylen.c	\
 				my_strcat.c	\
 				is_string_in_array.c	\
+				my_getchar.c	\
 			)	\
 		)	\
 

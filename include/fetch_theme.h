@@ -23,7 +23,7 @@ static const fetch_theme_t FETCH_THEME[] = {
     {"assets/fetch_logo/camille.txt", "\033[38;2;6;178;255m"}
 };
 
-bool fetch_command(env_t *env, fetch_model_t model);
+bool fetch_command(char **argv, env_t *env, fetch_model_t model);
 char *create_buffer(char *filepath);
 char **get_colors(env_t *env);
 

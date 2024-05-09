@@ -14,3 +14,4 @@ unit_tests
 *.gcda
 compile_flags.txt
 42sh
+vgcore.*
