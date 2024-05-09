@@ -37,16 +37,15 @@ void reset_autocompletion(prompt_t *prompt, env_t *env)
     if ((prompt->in_completion && prompt->character != '\t') &&
         prompt->completion_candidate != NULL) {
         clear_last_completion(prompt);
-        concat_vector(prompt->completion_candidate, prompt, env);
+        vector_free(*prompt->line);
+        *prompt->line = str_to_vector(prompt->completion_candidate);
+        prompt->index = vector_total(*prompt->line);
         prompt->completion_ptr = 0;
         prompt->in_completion = false;
         print_input_line(prompt, env, true);
     }
 }
 
-/* dprintf(1, "\33[%dF\n", index / 46); */
-/* cursor_forward(index % 46 + 1); */
-// struct with c, index, line, prompt_size
 static ssize_t switching(prompt_t *prompt, env_t *env)
 {
     for (size_t i = 0; i < NB_OF_SPECIAL_INPUT; ++i) {
@@ -92,8 +91,6 @@ static bool loop_char(prompt_t *prompt, env_t *env, char **input)
     }
 }
 
-// handle is a tty
-// prompt
 size_t display_changes(env_t *env, size_t prompt_size, char **input, int tty)
 {
     prompt_t prompt = {0};

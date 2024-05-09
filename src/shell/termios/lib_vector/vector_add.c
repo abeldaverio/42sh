@@ -21,3 +21,16 @@ void vector_add(void *data, void *c)
     memcpy(current, c, vector->size);
     (vector)->current++;
 }
+
+char *str_to_vector(char *str)
+{
+    char *tmp = NULL;
+
+    tmp = vector_init(sizeof(char));
+    if (tmp == NULL)
+        return NULL;
+    for (int i = 0; str[i]; ++i) {
+        vector_push(&tmp, i, &str[i]);
+    }
+    return tmp;
+}

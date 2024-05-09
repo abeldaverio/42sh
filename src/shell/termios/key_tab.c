@@ -5,6 +5,7 @@
 ** kay_tab
 */
 
+#include <bits/posix2_lim.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,36 +18,6 @@
 #include "env.h"
 #include "macros.h"
 #include "vector.h"
-
-static void clean_up_term(prompt_t *prompt, env_t *env, int *lines_info)
-{
-    char *tmp = NULL;
-    char *save = NULL;
-
-    dprintf(1, "\33[A");
-    for (int i = 0; i <= prompt->last_completion_offset; i++) {
-        dprintf(1, "\33[A");
-        cursor_backward(lines_info[i]);
-    }
-    dprintf(1, "\33[2K");
-    if (prompt->completion_candidate == NULL) {
-        print_input_line(prompt, env, true);
-        return;
-    }
-    tmp = vector_init(sizeof(char));
-    if (tmp == NULL)
-        return;
-    for (int i = 0; prompt->completion_candidate[i]; ++i) {
-        vector_push(&tmp, i, &prompt->completion_candidate[i]);
-    }
-    save = *prompt->line;
-    prompt->index = vector_total(tmp);
-    *prompt->line = tmp;
-    print_input_line(prompt, env, true);
-    *prompt->line = save;
-    prompt->index = vector_total(*prompt->line);
-    vector_free(tmp);
-}
 
 static char *truncate_input(char *completion, char *old_completion, int offset)
 {
@@ -64,8 +35,9 @@ static char *truncate_input(char *completion, char *old_completion, int offset)
     return new_completion;
 }
 
-void concat_vector(char *completion, prompt_t *prompt, env_t *env)
+char *concat_vector(prompt_t *prompt, env_t *env)
 {
+    char *completion = get_completion_result(*prompt->line, prompt->completion_ptr);
     char *old_completion = get_completion(*prompt->line);
     int offset = 0;
     char *new_completion = NULL;
@@ -75,19 +47,36 @@ void concat_vector(char *completion, prompt_t *prompt, env_t *env)
     if (offset != 0) {
         new_completion = truncate_input(completion, old_completion, offset);
     } else {
-        new_completion = my_strcat(2, old_completion, completion);
+        new_completion = my_strcat(2, *prompt->line, completion);
     }
-    if (new_completion == NULL)
-        return;
-    vector_free(*prompt->line);
-    *prompt->line = vector_init(sizeof(char));
-    if (*prompt->line == NULL)
-        return;
-    for (int i = 0; new_completion[i]; ++i) {
-        vector_push(prompt->line, i, &new_completion[i]);
+    return new_completion;
+}
+
+static void clean_up_term(prompt_t *prompt, env_t *env, int *lines_info)
+{
+    char *tmp = NULL;
+    char *save = NULL;
+
+    dprintf(1, "\33[A");
+    for (int i = 0; i <= prompt->last_completion_offset; i++) {
+        dprintf(1, "\33[A");
+        cursor_backward(lines_info[i]);
     }
-    prompt->index = vector_total(*prompt->line);
+    dprintf(1, "\33[2K");
+    if (prompt->completion_candidate == NULL) {
+        print_input_line(prompt, env, true);
+        return;
+    }
+    tmp = str_to_vector(prompt->completion_candidate);
+    if (tmp == NULL)
+        return;
+    save = *prompt->line;
+    prompt->index = vector_total(tmp);
+    *prompt->line = tmp;
     print_input_line(prompt, env, true);
+    *prompt->line = save;
+    prompt->index = vector_total(*prompt->line);
+    vector_free(tmp);
 }
 
 void clear_last_completion(prompt_t *prompt)
@@ -117,8 +106,7 @@ int handle_tab(prompt_t *prompt, env_t *env)
     if (prompt->completion_ptr != -1) {
         if (prompt->completion_candidate != NULL)
             free(prompt->completion_candidate);
-        prompt->completion_candidate =
-            get_completion_result(*prompt->line, prompt->completion_ptr);
+        prompt->completion_candidate = concat_vector(prompt, env);
     }
     clean_up_term(prompt, env, lines_info);
     prompt->completion_ptr += 1;
