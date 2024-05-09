@@ -35,10 +35,9 @@ void reset_autocompletion(prompt_t *prompt, env_t *env)
 {
     char *save = NULL;
 
-    prompt->completion_ptr =
-        prompt->character == '\t' ? prompt->completion_ptr : 0;
-    if ((prompt->in_completion && prompt->character != '\t') &&
+    if ((prompt->in_completion && prompt->character != '\t' && prompt->character != '\033') &&
         prompt->completion_candidate != NULL) {
+        prompt->completion_ptr = 0;
         clear_last_completion(prompt);
         save = *prompt->line;
         *prompt->line = str_to_vector(prompt->completion_candidate);

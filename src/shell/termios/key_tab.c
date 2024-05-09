@@ -113,7 +113,21 @@ void clear_last_completion(prompt_t *prompt)
     }
 }
 
-int handle_tab(prompt_t *prompt, env_t *env)
+static void handle_cmplt_ptr(prompt_t *prompt,
+    int offset, int info[3], int *lines_info)
+{
+    if (prompt->completion_ptr + offset < 0) {
+        prompt->completion_ptr = info[WORDS_INFO] - 1;
+        return;
+    }
+    if (prompt->completion_ptr + offset >= info[WORDS_INFO]) {
+        prompt->completion_ptr = 0;
+        return;
+    }
+    prompt->completion_ptr += offset;
+}
+
+int handle_tab_completion(prompt_t *prompt, env_t *env, int offset)
 {
     int info[3] = {0};
     int *lines_info = NULL;
@@ -130,9 +144,12 @@ int handle_tab(prompt_t *prompt, env_t *env)
         prompt->completion_candidate = concat_vector(prompt);
     }
     clean_up_term(prompt, env, lines_info);
-    prompt->completion_ptr += 1;
-    if (info[WORDS_INFO] != 0)
-        prompt->completion_ptr %= info[WORDS_INFO];
+    handle_cmplt_ptr(prompt, offset, info, lines_info);
     free(lines_info);
     return prompt->index;
+}
+
+int handle_tab(prompt_t *prompt, env_t *env)
+{
+    return handle_tab_completion(prompt, env, 1);
 }
