@@ -35,9 +35,10 @@ static char *truncate_input(char *completion, char *old_completion, int offset)
     return new_completion;
 }
 
-char *concat_vector(prompt_t *prompt, env_t *env)
+char *concat_vector(prompt_t *prompt)
 {
-    char *completion = get_completion_result(*prompt->line, prompt->completion_ptr);
+    char *completion = get_completion_result(*prompt->line,
+        prompt->completion_ptr);
     char *old_completion = get_completion(*prompt->line);
     int offset = 0;
     char *new_completion = NULL;
@@ -52,11 +53,8 @@ char *concat_vector(prompt_t *prompt, env_t *env)
     return new_completion;
 }
 
-static void clean_up_term(prompt_t *prompt, env_t *env, int *lines_info)
+static void reset_lines(prompt_t *prompt, env_t *env, int *lines_info)
 {
-    char *tmp = NULL;
-    char *save = NULL;
-
     dprintf(1, "\33[A");
     for (int i = 0; i <= prompt->last_completion_offset; i++) {
         dprintf(1, "\33[A");
@@ -67,6 +65,14 @@ static void clean_up_term(prompt_t *prompt, env_t *env, int *lines_info)
         print_input_line(prompt, env, true);
         return;
     }
+}
+
+static void clean_up_term(prompt_t *prompt, env_t *env, int *lines_info)
+{
+    char *tmp = NULL;
+    char *save = NULL;
+
+    reset_lines(prompt, env, lines_info);
     tmp = str_to_vector(prompt->completion_candidate);
     if (tmp == NULL)
         return;
@@ -106,7 +112,7 @@ int handle_tab(prompt_t *prompt, env_t *env)
     if (prompt->completion_ptr != -1) {
         if (prompt->completion_candidate != NULL)
             free(prompt->completion_candidate);
-        prompt->completion_candidate = concat_vector(prompt, env);
+        prompt->completion_candidate = concat_vector(prompt);
     }
     clean_up_term(prompt, env, lines_info);
     prompt->completion_ptr += 1;
