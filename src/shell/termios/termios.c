@@ -74,6 +74,7 @@ static bool loop_char(prompt_t *prompt, env_t *env, char **input)
     while (true) {
         prompt->character = my_getchar();
         if (prompt->character == KEY_ENTER) {
+            clear_last_completion(prompt);
             dprintf(1, prompt->tty == 1 ? "\n" : "");
             return false;
         }
