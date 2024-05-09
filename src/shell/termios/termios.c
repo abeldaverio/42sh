@@ -107,7 +107,6 @@ size_t display_changes(env_t *env, size_t prompt_size, char **input, int tty)
     struct termios oldterm = {0};
     char *line = vector_init(sizeof(char));
 
-    prompt.completion_ptr = -1;
     prompt.line = &line;
     prompt.prompt_size = prompt_size;
     prompt.tty = tty;
