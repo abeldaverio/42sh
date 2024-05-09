@@ -5,8 +5,9 @@
 ** main
 */
 
-#include "vector.h"
 #include <string.h>
+#include <stdlib.h>
+#include "vector.h"
 
 void vector_add(void *data, void *c)
 {
@@ -35,4 +36,17 @@ char *str_to_vector(char *str)
         vector_push(&tmp, i, &str[i]);
     }
     return tmp;
+}
+
+char *vector_to_str(void **data)
+{
+    vector_t *vector = (vector_t *)(*(void **)data - sizeof(vector_t));
+    char *result = calloc(sizeof(char), vector->size + 1);
+
+    if (result == NULL)
+        return NULL;
+    for (size_t i = 0; i < vector->size; ++i) {
+        result[i] = ((char **)(data))[0][i];
+    }
+    return result;
 }

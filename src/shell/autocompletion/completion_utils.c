@@ -13,16 +13,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <glob.h>
-
 #include "complete.h"
 #include "functions.h"
+#include "vector.h"
 
 static char *alloc_completion(char *input, int *counter_ptr)
 {
     char *new_str = NULL;
     int counter = 0;
 
-    for (int i = strlen(input) - 1; i >= 0; i--) {
+    for (int i = vector_total(input) - 1; i >= 0; i--) {
         if (input[i] == ' ' || input[i] == '\0' || input[i] == '\t') {
             break;
         }

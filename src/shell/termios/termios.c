@@ -72,7 +72,7 @@ static ssize_t switching(prompt_t *prompt, env_t *env)
     return prompt->index + 1;
 }
 
-static size_t vector_to_str(char **data, char **input, ssize_t index)
+size_t input_to_str(char **data, char **input, ssize_t index)
 {
     vector_t *vector = (vector_t *)(*(void **)data - sizeof(vector_t));
     char *result = strndup(*data, vector->current);
@@ -89,12 +89,13 @@ static bool loop_char(prompt_t *prompt, env_t *env, char **input)
         prompt->character = my_getchar();
         if (prompt->character == KEY_ENTER) {
             clear_last_completion(prompt);
+            reset_autocompletion(prompt, env);
             dprintf(1, prompt->tty == 1 ? "\n" : "");
             return false;
         }
         prompt->index = switching(prompt, env);
         if (prompt->index == -1) {
-            vector_to_str(prompt->line, input, prompt->index);
+            input_to_str(prompt->line, input, prompt->index);
             return true;
         }
     }
@@ -118,5 +119,5 @@ size_t display_changes(env_t *env, size_t prompt_size, char **input, int tty)
         return -1;
     }
     tcsetattr(0, TCSANOW, &oldterm);
-    return vector_to_str(&line, input, prompt.index);
+    return input_to_str(&line, input, prompt.index);
 }

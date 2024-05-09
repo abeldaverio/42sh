@@ -35,6 +35,17 @@ static char *truncate_input(char *completion, char *old_completion, int offset)
     return new_completion;
 }
 
+static char *get_new_completion(prompt_t *prompt, char *completion)
+{
+    char *tmp = vector_to_str((void **)prompt->line);
+    char *result = NULL;
+
+    if (tmp == NULL)
+        return NULL;
+    result = my_strcat(2, tmp, completion);
+    return result;
+}
+
 char *concat_vector(prompt_t *prompt)
 {
     char *completion = get_completion_result(*prompt->line,
@@ -48,7 +59,7 @@ char *concat_vector(prompt_t *prompt)
     if (offset != 0) {
         new_completion = truncate_input(completion, old_completion, offset);
     } else {
-        new_completion = my_strcat(2, *prompt->line, completion);
+        new_completion = get_new_completion(prompt, completion);
     }
     free(completion);
     free(old_completion);
