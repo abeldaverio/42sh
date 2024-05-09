@@ -21,6 +21,7 @@ int arrow_handle(prompt_t *, env_t *);
 int handle_exit(prompt_t *, env_t *);
 int clear_terminal(prompt_t *, env_t *);
 int clear_line(prompt_t *, env_t *);
+int handle_tab(prompt_t *, env_t *);
 
 static const special_chars_t SPECIAL_INPUT[] = {
     {END_OF_FILE, handle_exit},
@@ -29,6 +30,7 @@ static const special_chars_t SPECIAL_INPUT[] = {
     {KEY_DEL, delete_command},
     {CTRL_L, clear_terminal},
     {CTRL_C, clear_line},
+    {'\t', handle_tab},
 };
 
 static const size_t NB_OF_SPECIAL_INPUT =

@@ -13,13 +13,13 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
+#include "complete.h"
 #include "functions.h"
 #include "macros.h"
 #include "vector.h"
 #include "env.h"
 #include "prompt.h"
 #include "special_chars.h"
-#include "arrows.h"
 
 static void init_termios(struct termios *term, struct termios *old_term)
 {
@@ -38,6 +38,15 @@ static ssize_t switching(prompt_t *prompt, env_t *env)
 {
     for (size_t i = 0; i < NB_OF_SPECIAL_INPUT; ++i) {
         if (prompt->character == SPECIAL_INPUT[i].character) {
+            prompt->completion_ptr = prompt->character == '\t' ? prompt->completion_ptr : 0;
+            if ((prompt->in_completion && prompt->character != '\t') &&
+                prompt->completion_candidate != NULL) {
+                clear_last_completion(prompt);
+                concat_vector(prompt->completion_candidate, prompt, env);
+                prompt->completion_ptr = 0;
+                prompt->in_completion = false;
+                print_input_line(prompt, env, true);
+            }
             return SPECIAL_INPUT[i].function(prompt, env);
         }
     }
@@ -85,6 +94,7 @@ size_t display_changes(env_t *env, size_t prompt_size, char **input, int tty)
     struct termios oldterm = {0};
     char *line = vector_init(sizeof(char));
 
+    prompt.completion_ptr = -1;
     prompt.line = &line;
     prompt.prompt_size = prompt_size;
     prompt.tty = tty;

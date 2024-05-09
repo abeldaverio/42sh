@@ -21,15 +21,20 @@
 static char **get_command_completion(char *to_complete)
 {
     char **candidates = NULL;
-    glob_t globbuf = {0};
+    glob_t globbuf;
     char *concat_path = NULL;
 
+    globbuf.gl_offs = 0;
     if (to_complete[0] == '\0')
         return NULL;
     concat_path = my_strcat(3, "/bin/", to_complete, "*");
+    if (concat_path == NULL)
+        return NULL;
     glob(concat_path, GLOB_DOOFFS, NULL, &globbuf);
     free(concat_path);
     concat_path = my_strcat(3, "/usr/bin/", to_complete, "*");
+    if (concat_path == NULL)
+        return NULL;
     glob(concat_path, GLOB_DOOFFS | GLOB_APPEND, NULL, &globbuf);
     free(concat_path);
     candidates = my_arraydup(globbuf.gl_pathv);
@@ -37,15 +42,31 @@ static char **get_command_completion(char *to_complete)
     return candidates;
 }
 
-int auto_compete_cmd(char *complete, int *completion_ptr)
+int *auto_compete_cmd(char *complete, int completion_ptr, int info[3])
 {
     char **candidates = NULL;
-    int lines_printed = 0;
+    int *lines_info = NULL;
 
     candidates = get_command_completion(complete);
-    if (candidates != NULL && candidates[0] != NULL) {
-        lines_printed = print_completion(candidates, completion_ptr);
-        free_array(candidates);
+    if (candidates == NULL || candidates[0] == NULL) {
+        return NULL;
     }
-    return lines_printed;
+    lines_info = print_completion(candidates, completion_ptr, info);
+    free_array(candidates);
+    return lines_info;
+}
+
+char *auto_compete_cmd_get(char *complete, int completion_ptr)
+{
+    char **candidates = NULL;
+    char *completion = NULL;
+
+    candidates = get_command_completion(complete);
+    if (candidates == NULL || candidates[0] == NULL) {
+        return NULL;
+    }
+    if (completion_ptr != -1)
+        completion = isolate_completion(candidates, completion_ptr);
+    free_array(candidates);
+    return completion;
 }

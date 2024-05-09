@@ -58,6 +58,8 @@ SRC	=	$(addprefix src/,\
 					auto_complete.c	\
 					auto_complete_dir.c	\
 					auto_complete_cmd.c	\
+					completion_print.c	\
+					completion_utils.c	\
 				)	\
 				$(addprefix termios/,\
 					$(addprefix lib_vector/,\
@@ -69,6 +71,7 @@ SRC	=	$(addprefix src/,\
 						vector_set.c	\
 						vector_total.c	\
 						vector_push.c	\
+						vector_normal.c	\
 						check_free.c	\
 					)	\
 					exit_handle.c	\

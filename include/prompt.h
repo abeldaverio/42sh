@@ -10,6 +10,7 @@
 
     #include <stddef.h>
     #include <stdio.h>
+    #include <stdbool.h>
 
 typedef struct prompt_s {
     char character;
@@ -17,6 +18,10 @@ typedef struct prompt_s {
     char **line;
     size_t prompt_size;
     int tty;
+    char *completion_candidate;
+    bool in_completion;
+    int completion_ptr;
+    int last_completion_offset;
 } prompt_t;
 
 #endif /* PROMPT_H */

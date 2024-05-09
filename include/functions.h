@@ -72,7 +72,7 @@ bool is_filename_valid(char *name, char *prefix, char *suffix);
 bool signal_handler(void);
 
 //autocomplete
-int auto_complete(char *input, int *completion_ptr);
+int *auto_complete(char *input, int completion_ptr, int info[3]);
 
 //keyboard
 void print_input_line(prompt_t *prompt, env_t *env, bool del);
