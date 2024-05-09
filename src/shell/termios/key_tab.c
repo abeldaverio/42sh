@@ -18,8 +18,7 @@
 #include "macros.h"
 #include "vector.h"
 
-static char *truncate_input(prompt_t *prompt,
-    char *completion, char *old_completion, int offset)
+static char *truncate_input(prompt_t *prompt, char *completion, int offset)
 {
     char *tmp = vector_to_str((void **)prompt->line);
     char *result = NULL;
@@ -59,7 +58,7 @@ char *concat_vector(prompt_t *prompt)
         offset = strlen(old_completion);
     if (offset != 0) {
         new_completion = truncate_input(prompt,
-            completion, old_completion, offset);
+            completion, offset);
     } else {
         new_completion = get_new_completion(prompt, completion);
     }
@@ -113,8 +112,7 @@ void clear_last_completion(prompt_t *prompt)
     }
 }
 
-static void handle_cmplt_ptr(prompt_t *prompt,
-    int offset, int info[3], int *lines_info)
+static void handle_cmplt_ptr(prompt_t *prompt, int offset, int info[3])
 {
     if (prompt->completion_ptr + offset < 0) {
         prompt->completion_ptr = info[WORDS_INFO] - 1;
@@ -144,7 +142,7 @@ int handle_tab_completion(prompt_t *prompt, env_t *env, int offset)
         prompt->completion_candidate = concat_vector(prompt);
     }
     clean_up_term(prompt, env, lines_info);
-    handle_cmplt_ptr(prompt, offset, info, lines_info);
+    handle_cmplt_ptr(prompt, offset, info);
     free(lines_info);
     return prompt->index;
 }

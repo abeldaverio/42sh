@@ -11,9 +11,11 @@
 #include "vector.h"
 #include "prompt.h"
 #include "functions.h"
+#include "complete.h"
 
 size_t delete_command(prompt_t *prompt, env_t *env)
 {
+    reset_autocompletion(prompt, env);
     if (prompt->index <= 0)
         return prompt->index;
     vector_delete(prompt->line, prompt->index - 1);

@@ -84,7 +84,6 @@ SRC	=	$(addprefix src/,\
 					key_right.c	\
 					key_up.c	\
 					key_tab.c	\
-					key_enter.c	\
 					termios.c	\
 					print_input_line.c	\
 				)	\

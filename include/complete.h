@@ -9,6 +9,7 @@
 
 #include <stddef.h>
 #include "prompt.h"
+#include "env.h"
 
 #define BEG 0
 #define END 1
@@ -31,3 +32,4 @@ char *get_completion_result(char *input, int completion_ptr);
 char *isolate_completion(char **candidates, int completion_ptr);
 
 void clear_last_completion(prompt_t *prompt);
+void reset_autocompletion(prompt_t *prompt, env_t *env);

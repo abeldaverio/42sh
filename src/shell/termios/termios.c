@@ -35,8 +35,7 @@ void reset_autocompletion(prompt_t *prompt, env_t *env)
 {
     char *save = NULL;
 
-    if ((prompt->in_completion && prompt->character != '\t' && prompt->character != '\033') &&
-        prompt->completion_candidate != NULL) {
+    if (prompt->completion_candidate != NULL) {
         prompt->completion_ptr = 0;
         clear_last_completion(prompt);
         save = *prompt->line;
@@ -58,7 +57,6 @@ static ssize_t switching(prompt_t *prompt, env_t *env)
 {
     for (size_t i = 0; i < NB_OF_SPECIAL_INPUT; ++i) {
         if (prompt->character == SPECIAL_INPUT[i].character) {
-            reset_autocompletion(prompt, env);
             return SPECIAL_INPUT[i].function(prompt, env);
         }
     }

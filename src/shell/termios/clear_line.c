@@ -9,9 +9,11 @@
 #include "prompt.h"
 #include "functions.h"
 #include "vector.h"
+#include "complete.h"
 
 int clear_line(prompt_t *prompt, env_t *env)
 {
+    reset_autocompletion(prompt, env);
     dprintf(1, "\n");
     vector_free(*prompt->line);
     *prompt->line = vector_init(sizeof(char));
