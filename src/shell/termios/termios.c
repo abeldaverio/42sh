@@ -31,6 +31,19 @@ static void init_termios(struct termios *term, struct termios *old_term)
     tcsetattr(0, TCSANOW, term);
 }
 
+void reset_autocompletion(prompt_t *prompt, env_t *env)
+{
+    prompt->completion_ptr = prompt->character == '\t' ? prompt->completion_ptr : 0;
+    if ((prompt->in_completion && prompt->character != '\t') &&
+        prompt->completion_candidate != NULL) {
+        clear_last_completion(prompt);
+        concat_vector(prompt->completion_candidate, prompt, env);
+        prompt->completion_ptr = 0;
+        prompt->in_completion = false;
+        print_input_line(prompt, env, true);
+    }
+}
+
 /* dprintf(1, "\33[%dF\n", index / 46); */
 /* cursor_forward(index % 46 + 1); */
 // struct with c, index, line, prompt_size
@@ -38,18 +51,11 @@ static ssize_t switching(prompt_t *prompt, env_t *env)
 {
     for (size_t i = 0; i < NB_OF_SPECIAL_INPUT; ++i) {
         if (prompt->character == SPECIAL_INPUT[i].character) {
-            prompt->completion_ptr = prompt->character == '\t' ? prompt->completion_ptr : 0;
-            if ((prompt->in_completion && prompt->character != '\t') &&
-                prompt->completion_candidate != NULL) {
-                clear_last_completion(prompt);
-                concat_vector(prompt->completion_candidate, prompt, env);
-                prompt->completion_ptr = 0;
-                prompt->in_completion = false;
-                print_input_line(prompt, env, true);
-            }
+            reset_autocompletion(prompt, env);
             return SPECIAL_INPUT[i].function(prompt, env);
         }
     }
+    reset_autocompletion(prompt, env);
     if ((ssize_t)vector_total(*prompt->line) == prompt->index)
         vector_add(prompt->line, &prompt->character);
     else

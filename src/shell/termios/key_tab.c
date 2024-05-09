@@ -20,13 +20,32 @@
 
 static void clean_up_term(prompt_t *prompt, env_t *env, int *lines_info)
 {
+    char *tmp = NULL;
+    char *save = NULL;
+
     dprintf(1, "\33[A");
     for (int i = 0; i <= prompt->last_completion_offset; i++) {
         dprintf(1, "\33[A");
         cursor_backward(lines_info[i]);
     }
     dprintf(1, "\33[2K");
+    if (prompt->completion_candidate == NULL) {
+        print_input_line(prompt, env, true);
+        return;
+    }
+    tmp = vector_init(sizeof(char));
+    if (tmp == NULL)
+        return;
+    for (int i = 0; prompt->completion_candidate[i]; ++i) {
+        vector_push(&tmp, i, &prompt->completion_candidate[i]);
+    }
+    save = *prompt->line;
+    prompt->index = vector_total(tmp);
+    *prompt->line = tmp;
     print_input_line(prompt, env, true);
+    *prompt->line = save;
+    prompt->index = vector_total(*prompt->line);
+    vector_free(tmp);
 }
 
 static char *truncate_input(char *completion, char *old_completion, int offset)
@@ -95,13 +114,13 @@ int handle_tab(prompt_t *prompt, env_t *env)
     prompt->in_completion = true;
     if (lines_info == NULL)
         return 0;
-    clean_up_term(prompt, env, lines_info);
     if (prompt->completion_ptr != -1) {
         if (prompt->completion_candidate != NULL)
             free(prompt->completion_candidate);
         prompt->completion_candidate =
             get_completion_result(*prompt->line, prompt->completion_ptr);
     }
+    clean_up_term(prompt, env, lines_info);
     prompt->completion_ptr += 1;
     if (info[WORDS_INFO] != 0)
         prompt->completion_ptr %= info[WORDS_INFO];
