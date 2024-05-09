@@ -58,9 +58,17 @@ history_list_t *create_history(void)
     char *line = NULL;
     FILE *file = fopen(HISTORY_PATH, "a+");
 
-    while (getline(&line, &i, file) != -1)
-        if (!push_line_history(&history, line))
+    if (file == NULL)
+        return NULL;
+    while (getline(&line, &i, file) != -1) {
+        if (!push_line_history(&history, line)) {
+            free(line);
+            fclose(file);
             return NULL;
+        }
+    }
+    if (!push_command_history(&history, ""))
+        return history;
     if (line != NULL)
         free(line);
     fclose(file);

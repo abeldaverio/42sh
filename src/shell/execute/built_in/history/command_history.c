@@ -15,12 +15,15 @@
 #include "history.h"
 #include "functions.h"
 
-static bool add_command_history_file(int index, char *command)
+static bool add_command_history_file(int index, char *command,
+    char *history_path)
 {
-    int file = open(HISTORY_PATH, O_WRONLY | O_CREAT | O_APPEND, 0644);
+    int file = open(history_path, O_WRONLY | O_CREAT | O_APPEND, 0644);
 
-    if (file == -1)
+    if (file == -1) {
+        perror("open");
         return false;
+    }
     dprintf(file, "%d: %s\n", index, command);
     close(file);
     return true;
@@ -58,15 +61,34 @@ static void move_history_start(history_list_t **history)
     }
 }
 
-bool add_command_history(char *input, history_list_t **history)
+static void free_empty_node(history_list_t **history)
+{
+    history_list_t *tmp = NULL;
+
+    if ((*history) == NULL)
+        return;
+    tmp = (*history)->next;
+    if ((*history)->command != NULL)
+        free((*history)->command);
+    free((*history));
+    *history = tmp;
+    if (tmp != NULL)
+        (*history)->prev = NULL;
+}
+
+bool add_command_history(char *input, history_list_t **history,
+    char *history_path)
 {
     if (input == NULL || strcmp(input, "\0") == 0)
         return true;
     move_history_start(history);
+    free_empty_node(history);
     if (!push_command_history(history, input))
         return false;
-    if (history == NULL ||
-    !add_command_history_file((*history)->index, (*history)->command))
+    if (history == NULL || !add_command_history_file((*history)->index,
+    (*history)->command, history_path))
+        return false;
+    if (!push_command_history(history, ""))
         return false;
     return true;
 }

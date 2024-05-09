@@ -36,7 +36,7 @@ static void start_loop(env_t *env, int tty)
     prompt_size = print_prompt(env, tty);
     size = display_changes(env, prompt_size, &input, tty);
     while ((size != -1)) {
-        if (!add_command_history(input, &(env->history))) {
+        if (!add_command_history(input, &(env->history), env->history_path)) {
             env->last_return = 1;
             break;
         }

@@ -16,6 +16,7 @@ void down_arrow_command(prompt_t *prompt, env_t *env)
     reset_autocompletion(prompt, env);
     if (env->history == NULL || prompt->in_completion)
         return;
+    env->history = env->history->prev;
     vector_free(*prompt->line);
     *prompt->line = vector_init(sizeof(char));
     if (*prompt->line == NULL)
@@ -25,7 +26,4 @@ void down_arrow_command(prompt_t *prompt, env_t *env)
     }
     prompt->index = vector_total(*prompt->line);
     print_input_line(prompt, env, true);
-    if (env->history->prev == NULL)
-        return;
-    env->history = env->history->prev;
 }
