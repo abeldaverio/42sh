@@ -9,10 +9,12 @@
 #include "prompt.h"
 #include "vector.h"
 #include "functions.h"
+#include "complete.h"
 
 void up_arrow_command(prompt_t *prompt, env_t *env)
 {
-    if (env->history == NULL || env->history->next == NULL)
+    reset_autocompletion(prompt, env);
+    if (env->history == NULL || prompt->in_completion)
         return;
     env->history = env->history->next;
     vector_free(*prompt->line);

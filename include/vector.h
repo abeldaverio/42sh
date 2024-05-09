@@ -28,6 +28,9 @@ void vector_free(void *data);
 void vector_push(void *data, size_t index, void *c);
 void check_free(void *ptr);
 void vector_normal(void *data, void *c);
+char *str_to_vector(char *str);
+char *vector_to_str(void **data);
+
 
 #endif
 

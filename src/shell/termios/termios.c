@@ -13,13 +13,13 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
+#include "complete.h"
 #include "functions.h"
 #include "macros.h"
 #include "vector.h"
 #include "env.h"
 #include "prompt.h"
 #include "special_chars.h"
-#include "arrows.h"
 
 static void init_termios(struct termios *term, struct termios *old_term)
 {
@@ -31,9 +31,28 @@ static void init_termios(struct termios *term, struct termios *old_term)
     tcsetattr(0, TCSANOW, term);
 }
 
-/* dprintf(1, "\33[%dF\n", index / 46); */
-/* cursor_forward(index % 46 + 1); */
-// struct with c, index, line, prompt_size
+void reset_autocompletion(prompt_t *prompt, env_t *env)
+{
+    char *save = NULL;
+
+    if (prompt->completion_candidate != NULL) {
+        prompt->completion_ptr = 0;
+        clear_last_completion(prompt);
+        save = *prompt->line;
+        *prompt->line = str_to_vector(prompt->completion_candidate);
+        free(prompt->completion_candidate);
+        prompt->completion_candidate = NULL;
+        if (*prompt->line == NULL)
+            *prompt->line = save;
+        else
+            vector_free(save);
+        prompt->index = vector_total(*prompt->line);
+        prompt->completion_ptr = 0;
+        prompt->in_completion = false;
+        print_input_line(prompt, env, true);
+    }
+}
+
 static ssize_t switching(prompt_t *prompt, env_t *env)
 {
     for (size_t i = 0; i < NB_OF_SPECIAL_INPUT; ++i) {
@@ -41,6 +60,7 @@ static ssize_t switching(prompt_t *prompt, env_t *env)
             return SPECIAL_INPUT[i].function(prompt, env);
         }
     }
+    reset_autocompletion(prompt, env);
     if ((ssize_t)vector_total(*prompt->line) == prompt->index)
         vector_add(prompt->line, &prompt->character);
     else
@@ -49,7 +69,7 @@ static ssize_t switching(prompt_t *prompt, env_t *env)
     return prompt->index + 1;
 }
 
-static size_t vector_to_str(char **data, char **input, ssize_t index)
+size_t input_to_str(char **data, char **input, ssize_t index)
 {
     vector_t *vector = (vector_t *)(*(void **)data - sizeof(vector_t));
     char *result = strndup(*data, vector->current);
@@ -65,19 +85,19 @@ static bool loop_char(prompt_t *prompt, env_t *env, char **input)
     while (true) {
         prompt->character = my_getchar();
         if (prompt->character == KEY_ENTER) {
+            clear_last_completion(prompt);
+            reset_autocompletion(prompt, env);
             dprintf(1, prompt->tty == 1 ? "\n" : "");
             return false;
         }
         prompt->index = switching(prompt, env);
         if (prompt->index == -1) {
-            vector_to_str(prompt->line, input, prompt->index);
+            input_to_str(prompt->line, input, prompt->index);
             return true;
         }
     }
 }
 
-// handle is a tty
-// prompt
 size_t display_changes(env_t *env, size_t prompt_size, char **input, int tty)
 {
     prompt_t prompt = {0};
@@ -95,5 +115,5 @@ size_t display_changes(env_t *env, size_t prompt_size, char **input, int tty)
         return -1;
     }
     tcsetattr(0, TCSANOW, &oldterm);
-    return vector_to_str(&line, input, prompt.index);
+    return input_to_str(&line, input, prompt.index);
 }
