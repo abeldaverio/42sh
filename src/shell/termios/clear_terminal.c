@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2024
-** clear terminal 
+** 42sh
 ** File description:
 ** ctrl l
 */

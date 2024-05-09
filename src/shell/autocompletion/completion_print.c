@@ -67,7 +67,8 @@ static int print_pretty(char *formated, bool hightlight)
     return chars_printed;
 }
 
-static int update_info(char **formated, bool is_last_element, bool highlight, int info[3])
+static int update_info(char **formated,
+    bool is_last_element, bool highlight, int info[3])
 {
     int temp_line_char = 0;
     size_t format_index = 0;
@@ -80,7 +81,8 @@ static int update_info(char **formated, bool is_last_element, bool highlight, in
     return temp_line_char;
 }
 
-static int *is_reset(size_t *reset_counter, size_t offset, int info[3], int *lines_info)
+static int *is_reset(size_t *reset_counter,
+    size_t offset, int info[3], int *lines_info)
 {
     if (*reset_counter == offset) {
         *reset_counter = 0;
@@ -97,7 +99,7 @@ int *print_completion(char **completions, int completion_ptr, int info[3])
     size_t offset = get_win_offset(get_bigest_len(completions));
     size_t reset_counter = 0;
     int *lines_info = calloc(1, sizeof(int));
-    int last_element = my_arraylen(completions) - 1;
+    int last_elmt = my_arraylen(completions) - 1;
 
     if (lines_info == NULL)
         return NULL;
@@ -109,7 +111,7 @@ int *print_completion(char **completions, int completion_ptr, int info[3])
         reset_counter += 1;
         lines_info = is_reset(&reset_counter, offset, info, lines_info);
         lines_info[info[LINES_INFO]] =
-            update_info(formated, i == last_element, i == completion_ptr, info);
+            update_info(formated, i == last_elmt, i == completion_ptr, info);
     }
     info[WORDS_INFO] = my_arraylen(completions);
     return lines_info;

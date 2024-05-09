@@ -33,7 +33,8 @@ static void init_termios(struct termios *term, struct termios *old_term)
 
 void reset_autocompletion(prompt_t *prompt, env_t *env)
 {
-    prompt->completion_ptr = prompt->character == '\t' ? prompt->completion_ptr : 0;
+    prompt->completion_ptr =
+        prompt->character == '\t' ? prompt->completion_ptr : 0;
     if ((prompt->in_completion && prompt->character != '\t') &&
         prompt->completion_candidate != NULL) {
         clear_last_completion(prompt);
