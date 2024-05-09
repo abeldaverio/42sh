@@ -20,9 +20,9 @@
 
 static void clean_up_term(prompt_t *prompt, env_t *env, int *lines_info)
 {
-    dprintf(1, "\033[A");
+    dprintf(1, "\33[A");
     for (int i = 0; i <= prompt->last_completion_offset; i++) {
-        dprintf(1, "\033[A");
+        dprintf(1, "\33[A");
         cursor_backward(lines_info[i]);
     }
     dprintf(1, "\33[2K");
@@ -73,11 +73,14 @@ void concat_vector(char *completion, prompt_t *prompt, env_t *env)
 
 void clear_last_completion(prompt_t *prompt)
 {
-    if (prompt->last_completion_offset != 0) {
-        for (int i = 0; i <= prompt->last_completion_offset; i++) {
-            dprintf(1, "\033[D");
-            dprintf(1, "\33[2K");
-        }
+    if (prompt->last_completion_offset == 0)
+        return;
+    for (int i = 0; i <= prompt->last_completion_offset; i++) {
+        dprintf(1, "\33[B");
+        dprintf(1, "\33[2K");
+    }
+    for (int i = 0; i <= prompt->last_completion_offset; i++) {
+        dprintf(1, "\33[A");
     }
 }
 
@@ -90,6 +93,8 @@ int handle_tab(prompt_t *prompt, env_t *env)
     lines_info = auto_complete(*prompt->line, prompt->completion_ptr, info);
     prompt->last_completion_offset = info[LINES_INFO];
     prompt->in_completion = true;
+    if (lines_info == NULL)
+        return 0;
     clean_up_term(prompt, env, lines_info);
     if (prompt->completion_ptr != -1) {
         if (prompt->completion_candidate != NULL)
