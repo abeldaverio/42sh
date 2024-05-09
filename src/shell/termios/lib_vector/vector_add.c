@@ -26,6 +26,8 @@ char *str_to_vector(char *str)
 {
     char *tmp = NULL;
 
+    if (str == NULL)
+        return NULL;
     tmp = vector_init(sizeof(char));
     if (tmp == NULL)
         return NULL;

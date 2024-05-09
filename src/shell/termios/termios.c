@@ -33,13 +33,19 @@ static void init_termios(struct termios *term, struct termios *old_term)
 
 void reset_autocompletion(prompt_t *prompt, env_t *env)
 {
+    char *save = NULL;
+
     prompt->completion_ptr =
         prompt->character == '\t' ? prompt->completion_ptr : 0;
     if ((prompt->in_completion && prompt->character != '\t') &&
         prompt->completion_candidate != NULL) {
         clear_last_completion(prompt);
-        vector_free(*prompt->line);
+        save = *prompt->line;
         *prompt->line = str_to_vector(prompt->completion_candidate);
+        if (*prompt->line == NULL)
+            *prompt->line = save;
+        else
+            vector_free(save);
         prompt->index = vector_total(*prompt->line);
         prompt->completion_ptr = 0;
         prompt->in_completion = false;

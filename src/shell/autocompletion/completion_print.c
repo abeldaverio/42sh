@@ -55,7 +55,7 @@ static int print_pretty(char *formated, bool hightlight)
     int chars_printed = 0;
 
     if (hightlight)
-        chars_printed += dprintf(1, "\033[1;33m");
+        chars_printed += dprintf(1, "\x1b[47m\x1b[30m");
     if (format_size >= MAX_RANGE[BEG])
         chars_printed += dprintf(1, "%s\t", formated);
     if (format_size >= MID_RANGE[BEG] && format_size <= MID_RANGE[END])
@@ -63,7 +63,7 @@ static int print_pretty(char *formated, bool hightlight)
     if (format_size >= SMALL_RANGE[BEG] && format_size <= SMALL_RANGE[END])
         chars_printed += dprintf(1, "%s\t\t\t", formated);
     if (hightlight)
-        chars_printed += dprintf(1, "\033[0m");
+        chars_printed += dprintf(1, "\x1b[0m");
     return chars_printed;
 }
 
