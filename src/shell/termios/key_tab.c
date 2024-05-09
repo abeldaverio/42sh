@@ -10,7 +10,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "arrows.h"
 #include "complete.h"
 #include "functions.h"
@@ -43,6 +42,7 @@ static char *get_new_completion(prompt_t *prompt, char *completion)
     if (tmp == NULL)
         return NULL;
     result = my_strcat(2, tmp, completion);
+    free(tmp);
     return result;
 }
 

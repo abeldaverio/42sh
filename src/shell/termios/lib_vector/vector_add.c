@@ -41,12 +41,10 @@ char *str_to_vector(char *str)
 char *vector_to_str(void **data)
 {
     vector_t *vector = (vector_t *)(*(void **)data - sizeof(vector_t));
-    char *result = calloc(sizeof(char), vector->size + 1);
+    char *result = calloc(sizeof(char), vector->current + 1);
 
     if (result == NULL)
         return NULL;
-    for (size_t i = 0; i < vector->size; ++i) {
-        result[i] = ((char **)(data))[0][i];
-    }
+    strncpy(result, *data, vector->current);
     return result;
 }
