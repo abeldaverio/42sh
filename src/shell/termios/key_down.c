@@ -14,7 +14,8 @@
 void down_arrow_command(prompt_t *prompt, env_t *env)
 {
     reset_autocompletion(prompt, env);
-    if (env->history == NULL || prompt->in_completion)
+    if (env->history == NULL || prompt->in_completion ||
+    env->history->prev == NULL)
         return;
     env->history = env->history->prev;
     vector_free(*prompt->line);
