@@ -5,12 +5,24 @@
 ** redirects the output for tests purposes
 */
 
+#include "functions.h"
 #include "header_test.h"
+#include <criterion/assert.h>
+#include <criterion/internal/assert.h>
 
 void redirect_all_std(void)
 {
     cr_redirect_stdout();
     cr_redirect_stderr();
+}
+
+// THIS REQUIRES A NULL AT THE END
+void assert_char_arrays(char **actual, char **expected)
+{
+    cr_assert(my_arraylen(actual) == my_arraylen(actual));
+    for (int i = 0; actual[i] != NULL; i++) {
+        cr_assert_strings_eq(actual[i], expected[i]);
+    }
 }
 
 /*

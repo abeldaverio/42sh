@@ -88,6 +88,7 @@ SRC	=	$(addprefix src/,\
 		)	\
 
 SRC_TEST	=	$(addprefix tests/,\
+			env_testing.c	\
 			redirect.c	\
 			)
 

@@ -12,5 +12,6 @@ unit_tests
 *.o
 *.gcno
 *.gcda
+coverage*
 compile_flags.txt
 42sh
