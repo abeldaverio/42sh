@@ -18,3 +18,20 @@ Test(First, my_array_concat)
 
     cr_assert_arr_eq(res, array_concat(first, second), 0);
 }
+
+Test(Second, clear_special)
+{
+    char input[] = {'L',
+                    'O',
+                    'L',
+                    '>',
+                    '\0'};
+    char res[] = {'L',
+                'O',
+                'L',
+                '\1',
+                '>',
+                '\1',
+                '\0'};
+    cr_assert_str_eq(res, clear_special(input), "LOSE");
+}
