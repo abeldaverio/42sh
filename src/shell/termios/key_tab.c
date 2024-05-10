@@ -133,7 +133,7 @@ int handle_tab_completion(prompt_t *prompt, env_t *env, int offset)
 
     clear_last_completion(prompt);
     lines_info = auto_complete(*prompt->line, prompt->completion_ptr, info);
-    prompt->last_completion_offset = info[LINES_INFO];
+    prompt->last_completion_offset = info[LINES_INFO] + 1;
     prompt->in_completion = true;
     if (lines_info == NULL)
         return 0;
