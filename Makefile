@@ -139,6 +139,7 @@ SRC_TEST	=	$(addprefix tests/,\
 					env_testing.c	\
 					redirect.c	\
 					side_tests.c	\
+					autocomplete_testing.c	\
 				)	\
 
 SRC_TO_TEST	=	$(filter-out src/main.c, $(SRC))

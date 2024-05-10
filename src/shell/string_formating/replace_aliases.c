@@ -43,7 +43,8 @@ void replace_aliases(char ***args, env_list_t **aliases)
         return;
     while (replace_array(args, check, aliases)) {
         len = my_arraylen(CONST_A(check));
-        check = reallocarray(check, my_arraylen(CONST_A(check)) + 2, sizeof(char *));
+        check = reallocarray(check, my_arraylen(CONST_A(check)) + 2,
+            sizeof(char *));
         check[len + 1] = NULL;
         if (check == NULL)
             return;

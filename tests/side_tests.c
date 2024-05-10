@@ -32,6 +32,7 @@ Test(is_string_in_array_success, test3)
         "cacaview",
         "la maturité on connais hein",
         "prout",
+        NULL
     };
 
     cr_assert(is_string_in_array("cacafire", (char const *const *)array));
@@ -45,6 +46,7 @@ Test(is_string_in_array_failure, test4)
         "cacaview",
         "la maturité on connais hein",
         "prout",
+        NULL
     };
 
     cr_assert_not(is_string_in_array("cacademo", (char const *const *)array));

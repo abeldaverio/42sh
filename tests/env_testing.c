@@ -48,10 +48,19 @@ Test(linked_list_env_test, env_testing)
     env_t *env_s = init_env((const char **) env);
 
     cr_assert_not_null(env_s);
-
     char **disp_value = get_formated_value("DISPLAY", env_s->env_list);
-    cr_assert_not_null(env_s);
+    cr_assert_not_null(disp_value);
     cr_assert_str_eq(disp_value[0], "1");
     free_array(disp_value);
+
+    insert_int_in_env("TEST", 69, env_s->env_list);
+    char *insert_test = search_env_value("TEST", env_s->env_list);
+    cr_assert_not_null(insert_test);
+    cr_assert_str_eq(insert_test, "69");
+
+    insert_int_in_env("TEST", 420, env_s->env_list);
+    char *reinsert_test = search_env_value("TEST", env_s->env_list);
+    cr_assert_not_null(reinsert_test);
+    cr_assert_str_eq(reinsert_test, "420");
     free_env(env_s);
 }

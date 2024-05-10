@@ -46,7 +46,8 @@ static size_t print_formated_prompt(char *str,
     size_t compt = 0;
     char color_buff[255] = {0};
 
-    if ((my_arraylen(CONST_A(colors)) > (int)color) && (strlen(colors[color]) < 255))
+    if ((my_arraylen(CONST_A(colors)) > (int)color) &&
+        (strlen(colors[color]) < 255))
         sprintf(color_buff, "\033%s", colors[color]);
     compt = dprintf(1, "%s", color_buff);
     compt += dprintf(1, str, (value == NULL) ? "" : value);
@@ -59,7 +60,8 @@ static size_t print_formated_last_return(size_t last_return,
 {
     char color_buff[255] = {0};
 
-    if ((my_arraylen(CONST_A(colors)) > (int)color) && (strlen(colors[color]) < 255))
+    if ((my_arraylen(CONST_A(colors)) > (int)color) &&
+        (strlen(colors[color]) < 255))
         sprintf(color_buff, "\033%s", colors[color]);
     return dprintf(1, " > %s%ld%s ", color_buff, last_return, DEFAULT);
 }

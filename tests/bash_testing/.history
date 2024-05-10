@@ -1,0 +1,51 @@
+1: ls /etc
+2: cat /etc/resolv.conf
+3: pwd
+4: pwd
+5: cat /etc/resolv.conf
+6: ls -l /etc
+7: pwd
+8: unsetenv HOSTTYPE
+9: unsetenv VENDOR
+10: unsetenv OSTYPE
+11: unsetenv MACHTYPE
+12: unsetenv SHLVL
+13: unsetenv PWD
+14: unsetenv LOGNAME
+15: unsetenv USER
+16: unsetenv GROUP
+17: unsetenv HOST
+18: unsetenv REMOTEHOST
+19: unsetenv _
+20: unsetenv LS_COLORS
+21: unsetenv NOTE
+22: setenv titi
+23: setenv tata coucou
+24: env
+25: /usr/bin/env
+26: setenv var1 val1
+27: setenv var2 val2
+28: cd ..
+29: ls -l
+30: cd /usr
+31: ls -l
+32: binary_error    ls     42sh-l    binary_error  42sh -a /usr   binary_error
+33: ./my_divzero
+34: cd -
+35: cd ..
+36: ls -l
+37: cd -
+38: ls -l
+39: cd
+40: ls -l
+41: cd ~
+42: ls -l
+43: ./include
+44: ./Makefile
+45: ./tester/segmentation_fault
+46: ./tester/binary_error
+47: setenv 1
+48: setenv hello! world
+49: setenv hello world hello
+50: unsetenv
+51: cd a
