@@ -100,3 +100,16 @@ Test(my_strcat_NULL_test, test6)
     cr_assert_str_eq("first", test);
     free(test);
 }
+
+
+Test(main_check_test, test7)
+{
+    cr_assert(check_main_args(1));
+}
+
+Test(main_check_test_fail, test8)
+{
+    cr_assert_not(check_main_args(2));
+}
+
+

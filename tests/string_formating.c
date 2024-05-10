@@ -38,10 +38,13 @@ Test(Second, clear_special)
 
 Test(third, format_input)
 {
-    char *input[] = {"WOW",
-                    "WORKING?",
-                    NULL};
+    char input[] = "WOW WORKING?";
+    char *test[] = {
+        "WOW",
+        "WORKING?",
+        NULL,
+    };
     char **input_twod = format_arguments(input, " \t\n", "\"\'");
 
-    cr_assert_eq(0, format_input(&input_twod), "NO");
+    assert_char_arrays(test, input_twod);
 }
