@@ -16,3 +16,4 @@ coverage*
 compile_flags.txt
 42sh
 vgcore.*
+.history
