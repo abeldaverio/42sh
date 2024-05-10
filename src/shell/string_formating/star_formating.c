@@ -12,7 +12,7 @@
 #include <string.h>
 #include <glob.h>
 #include <unistd.h>
-
+#include "macros.h"
 #include "functions.h"
 
 static char **tab_reconstructor(char **input, char **options, int to_replace)
@@ -20,8 +20,8 @@ static char **tab_reconstructor(char **input, char **options, int to_replace)
     char **new_tab = NULL;
     int offset = 0;
 
-    new_tab = calloc(my_arraylen(input) +
-        my_arraylen(options), sizeof(char *));
+    new_tab = calloc(my_arraylen(CONST_A(input)) +
+        my_arraylen(CONST_A(options)), sizeof(char *));
     if (new_tab == NULL)
         return NULL;
     for (int i = 0; input[i] != NULL; i++) {
@@ -49,7 +49,7 @@ static char **star_replacing(char **input,
         globfree(&globbuf);
         return NULL;
     }
-    *offset = my_arraylen(globbuf.gl_pathv) - 1;
+    *offset = my_arraylen(CONST_A(globbuf.gl_pathv)) - 1;
     new_tab = tab_reconstructor(input, globbuf.gl_pathv, to_replace);
     globfree(&globbuf);
     return new_tab;
@@ -88,7 +88,7 @@ static bool star_exec(char **tab_dup, int i, char ***input, int *to_offset)
 
 bool format_input(char ***input)
 {
-    char **tab_dup = my_arraydup(*input);
+    char **tab_dup = my_arraydup(CONST_A(*input));
     int to_offset = 0;
 
     for (int i = 0; tab_dup[i] != NULL; i++) {

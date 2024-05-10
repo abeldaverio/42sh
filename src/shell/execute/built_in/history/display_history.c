@@ -15,6 +15,7 @@
 #include "env.h"
 #include "history.h"
 #include "functions.h"
+#include "macros.h"
 
 static void display_history_line(history_list_t *history, int count, int n)
 {
@@ -42,12 +43,12 @@ bool display_history(char **args, env_t *env)
 
     if (tmp_history == NULL)
         return true;
-    if (my_arraylen(args) > 2) {
+    if (my_arraylen(CONST_A(args)) > 2) {
         dprintf(2, "history: Too many arguments.\n");
         env->last_return = 1;
         return true;
     }
-    if (my_arraylen(args) == 1)
+    if (my_arraylen(CONST_A(args)) == 1)
         display_history_line(tmp_history, tmp_history->index, 0);
     else if (!display_n_history_line(args, tmp_history)) {
         dprintf(2, "history: Badly formed number.\n");

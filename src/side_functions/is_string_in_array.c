@@ -8,7 +8,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-bool is_string_in_array(char *str, char **array)
+bool is_string_in_array(char const *const str, char const *const *const array)
 {
     for (int i = 0; array[i]; ++i) {
         if (strcmp(array[i], str) == 0)

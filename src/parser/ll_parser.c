@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include "macros.h"
 #include "functions.h"
 #include "ll_parsing.h"
 
@@ -57,7 +57,7 @@ ll_node_t *ll_parser(char *input)
     ll_node_t *first_node = NULL;
     char **formated = format_arguments(input, "\1", "");
 
-    for (int i = my_arraylen(formated) - 1; i >= 0; i--) {
+    for (int i = my_arraylen(CONST_A(formated)) - 1; i >= 0; i--) {
         if (formated[i] != NULL)
             ll_filler(formated[i], &first_node);
     }

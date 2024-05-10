@@ -55,14 +55,14 @@ static int handle_alias(env_list_t **aliases, char **arg)
             return 1;
         }
     }
-    if (my_arraylen(arg) > 1)
+    if (my_arraylen(CONST_A(arg)) > 1)
         return handle_alias(aliases, arg + 1);
     return 0;
 }
 
 bool set_alias(char **args, env_t *env)
 {
-    if (my_arraylen(args) == 1) {
+    if (my_arraylen(CONST_A(args)) == 1) {
         print_aliases(env->aliases, NULL);
         env->last_return = 0;
     } else {

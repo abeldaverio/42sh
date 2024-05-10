@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <glob.h>
-
+#include "macros.h"
 #include "functions.h"
 #include "complete.h"
 
@@ -40,7 +40,7 @@ static size_t get_bigest_len(char **completions)
 
     for (int i = 0; completions[i] != NULL; i++) {
         formated = format_arguments(completions[i], "/", "");
-        format_index = my_arraylen(formated) - 1;
+        format_index = my_arraylen(CONST_A(formated)) - 1;
         format_size = strlen(formated[format_index]);
         if (format_size > max)
             max = format_size;
@@ -73,7 +73,7 @@ static int update_info(char **formated,
     int temp_line_char = 0;
     size_t format_index = 0;
 
-    format_index = my_arraylen(formated) - 1;
+    format_index = my_arraylen(CONST_A(formated)) - 1;
     temp_line_char += print_pretty(formated[format_index], highlight);
     temp_line_char += dprintf(1, is_last_element ? "\n" : "");
     info[CHARS_INFO] += temp_line_char;
@@ -99,7 +99,7 @@ int *print_completion(char **completions, int completion_ptr, int info[3])
     size_t offset = get_win_offset(get_bigest_len(completions));
     size_t reset_counter = 0;
     int *lines_info = calloc(1, sizeof(int));
-    int last_elmt = my_arraylen(completions) - 1;
+    int last_elmt = my_arraylen(CONST_A(completions)) - 1;
 
     if (lines_info == NULL)
         return NULL;
@@ -113,6 +113,6 @@ int *print_completion(char **completions, int completion_ptr, int info[3])
         lines_info[info[LINES_INFO]] =
             update_info(formated, i == last_elmt, i == completion_ptr, info);
     }
-    info[WORDS_INFO] = my_arraylen(completions);
+    info[WORDS_INFO] = my_arraylen(CONST_A(completions));
     return lines_info;
 }

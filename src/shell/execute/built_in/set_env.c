@@ -11,6 +11,7 @@
 #include "functions.h"
 #include "env.h"
 #include "built_in.h"
+#include "macros.h"
 
 static bool is_str_alphanumeric(char *str)
 {
@@ -31,7 +32,7 @@ static bool is_letter(char c)
 
 static bool check_error(char **argv)
 {
-    if (my_arraylen(argv) > 3) {
+    if (my_arraylen(CONST_A(argv)) > 3) {
         dprintf(2, "setenv: Too many arguments.\n");
         return true;
     }
@@ -50,7 +51,7 @@ static bool check_error(char **argv)
 
 bool set_env(char **argv, env_t *env)
 {
-    if (my_arraylen(argv) == 1) {
+    if (my_arraylen(CONST_A(argv)) == 1) {
         return display_env(argv, env);
     }
     if (check_error(argv)) {

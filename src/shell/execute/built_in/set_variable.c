@@ -31,7 +31,7 @@ bool set_variable(char **args, env_t *env)
         insert_in_env(tmp[0], tmp[1], env->env_list);
     env->last_return = 0;
     free_array(tmp);
-    if (my_arraylen(args) > 1)
-        execute(my_arraydup(args + 1), env);
+    if (my_arraylen(CONST_A(args)) > 1)
+        execute(my_arraydup(CONST_A(args + 1)), env);
     return true;
 }

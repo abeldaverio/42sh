@@ -11,6 +11,7 @@
 #include "built_in.h"
 #include "functions.h"
 #include "env.h"
+#include "macros.h"
 
 static void remove_node(env_list_t **env_list)
 {
@@ -35,7 +36,7 @@ void remove_from_env(char *variable, env_list_t **env_list)
 
 bool unset_env(char **argv, env_t *env)
 {
-    if (my_arraylen(argv) < 2) {
+    if (my_arraylen(CONST_A(argv)) < 2) {
         dprintf(2, "unsetenv: Too few arguments.\n");
         env->last_return = 1;
         return true;

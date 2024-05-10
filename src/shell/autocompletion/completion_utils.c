@@ -16,6 +16,7 @@
 #include "complete.h"
 #include "functions.h"
 #include "vector.h"
+#include "macros.h"
 
 static char *alloc_completion(char *input, int *counter_ptr)
 {
@@ -59,7 +60,7 @@ char *isolate_completion(char **candidates, int completion_ptr)
 
     if (formated_glob == NULL)
         return NULL;
-    final_str = strdup(formated_glob[my_arraylen(formated_glob) - 1]);
+    final_str = strdup(formated_glob[my_arraylen(CONST_A(formated_glob)) - 1]);
     free_array(formated_glob);
     return final_str;
 }

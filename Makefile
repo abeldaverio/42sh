@@ -136,9 +136,10 @@ SRC	=	$(addprefix src/,\
 		)	\
 
 SRC_TEST	=	$(addprefix tests/,\
-			env_testing.c	\
-			redirect.c	\
-			)
+					env_testing.c	\
+					redirect.c	\
+					side_tests.c	\
+				)	\
 
 SRC_TO_TEST	=	$(filter-out src/main.c, $(SRC))
 

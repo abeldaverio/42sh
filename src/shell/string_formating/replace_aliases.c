@@ -22,11 +22,11 @@ static bool replace_array(char ***args, char **check, env_list_t **aliases)
     formated_alias = format_arguments(alias_value, " \t\n", "\"\'");
     if (formated_alias == NULL)
         exit(ERROR_STATUS);
-    if (is_string_in_array(formated_alias[0], check)) {
+    if (is_string_in_array(formated_alias[0], CONST_A(check))) {
         free_array(formated_alias);
         return false;
     }
-    check[my_arraylen(check)] = **args;
+    check[my_arraylen(CONST_A(check))] = **args;
     new_args = array_concat(formated_alias, *args + 1);
     free(*args);
     free(formated_alias);
@@ -42,8 +42,8 @@ void replace_aliases(char ***args, env_list_t **aliases)
     if (check == NULL)
         return;
     while (replace_array(args, check, aliases)) {
-        len = my_arraylen(check);
-        check = reallocarray(check, my_arraylen(check) + 2, sizeof(char *));
+        len = my_arraylen(CONST_A(check));
+        check = reallocarray(check, my_arraylen(CONST_A(check)) + 2, sizeof(char *));
         check[len + 1] = NULL;
         if (check == NULL)
             return;

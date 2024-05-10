@@ -96,12 +96,12 @@ bool change_directory(char **argv, env_t *env)
 {
     char buff[255];
 
-    if (my_arraylen(argv) > 2) {
+    if (my_arraylen(CONST_A(argv)) > 2) {
         dprintf(2, "cd: Too many arguments.\n");
         env->last_return = 1;
         return true;
     }
-    if (my_arraylen(argv) == 1 || strcmp(argv[1], "~") == 0) {
+    if (my_arraylen(CONST_A(argv)) == 1 || strcmp(argv[1], "~") == 0) {
         go_home(env, buff);
         return true;
     }

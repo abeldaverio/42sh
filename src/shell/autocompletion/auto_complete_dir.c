@@ -15,7 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <glob.h>
-
+#include "macros.h"
 #include "complete.h"
 
 static char **get_dir_completion(char *to_complete)
@@ -29,7 +29,7 @@ static char **get_dir_completion(char *to_complete)
     if (concat_path == NULL)
         return NULL;
     glob(concat_path, GLOB_DOOFFS, NULL, &globbuf);
-    candidates = my_arraydup(globbuf.gl_pathv);
+    candidates = my_arraydup(CONST_A(globbuf.gl_pathv));
     globfree(&globbuf);
     free(concat_path);
     return candidates;

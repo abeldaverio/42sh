@@ -9,10 +9,11 @@
 #include <stdio.h>
 #include "env.h"
 #include "functions.h"
+#include "macros.h"
 
 bool unset_alias(char **argv, env_t *env)
 {
-    if (my_arraylen(argv) < 2) {
+    if (my_arraylen(CONST_A(argv)) < 2) {
         dprintf(2, "unalias: Too few arguments.\n");
         env->last_return = 1;
         return true;

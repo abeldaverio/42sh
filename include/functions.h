@@ -55,10 +55,10 @@ void free_array(char **);
 
 //side functions
 char *int_to_str(int);
-char **my_arraydup(char **);
-int my_arraylen(char **);
+char **my_arraydup(char const *const *const);
+int my_arraylen(char const *const *const);
 char *my_strcat(size_t size, ...);
-bool is_string_in_array(char *str, char **array);
+bool is_string_in_array(char const *const str, char const *const *const array);
 char **open_config_dir(char *dir, char *filter);
 char my_getchar(void);
 

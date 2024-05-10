@@ -5,8 +5,6 @@
 ** auto complete
 */
 
-#include "functions.h"
-
 #include <sys/ioctl.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -15,7 +13,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <glob.h>
-
+#include "macros.h"
+#include "functions.h"
 #include "complete.h"
 
 static char **get_command_completion(char *to_complete)
@@ -37,7 +36,7 @@ static char **get_command_completion(char *to_complete)
         return NULL;
     glob(concat_path, GLOB_DOOFFS | GLOB_APPEND, NULL, &globbuf);
     free(concat_path);
-    candidates = my_arraydup(globbuf.gl_pathv);
+    candidates = my_arraydup(CONST_A(globbuf.gl_pathv));
     globfree(&globbuf);
     return candidates;
 }

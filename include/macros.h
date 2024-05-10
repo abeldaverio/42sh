@@ -26,6 +26,7 @@
     #define END_OF_FILE 4
     #define CTRL_L 12
     #define CTRL_C 3
+    #define CONST_A (char const *const *const)
 
 void history(char *line);
 void back_command(char *line);

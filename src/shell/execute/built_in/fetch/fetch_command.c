@@ -17,6 +17,7 @@
 #include "fetch_info.h"
 #include "fetch_theme.h"
 #include "functions.h"
+#include "macros.h"
 
 static int buffer_size(char const *filepath)
 {
@@ -104,9 +105,9 @@ static void display_colors_shell(env_t *env)
         data = format_arguments(colors[i], ";m[", "");
         if (data == NULL || data[0] == NULL)
             break;
-        if (my_arraylen(data) == 1)
+        if (my_arraylen(CONST_A(data)) == 1)
             dprintf(1, "\033[%dm   ", atoi(data[0]) + 10);
-        if (my_arraylen(data) == 2)
+        if (my_arraylen(CONST_A(data)) == 2)
             dprintf(1, "\033[%dm   ", atoi(data[1]) + 10);
         free_array(data);
     }
@@ -134,7 +135,7 @@ bool fetch_command(char **args, env_t *env, fetch_model_t model)
     char *buffer = NULL;
     char *fetch = NULL;
 
-    if (my_arraylen(args) != 1)
+    if (my_arraylen(CONST_A(args)) != 1)
         return false;
     buffer = create_buffer(FETCH_THEME[model].filepath);
     if (buffer == NULL)

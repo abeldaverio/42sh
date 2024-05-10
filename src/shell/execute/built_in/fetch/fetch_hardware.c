@@ -16,6 +16,8 @@
 #include "fetch_info.h"
 #include "fetch_theme.h"
 #include "functions.h"
+#include "functions.h"
+#include "macros.h"
 
 static char *search_gpu(char *buffer)
 {
@@ -25,7 +27,7 @@ static char *search_gpu(char *buffer)
     data = format_arguments(buffer, " \n", "\"");
     if (data == NULL)
         return NULL;
-    if (my_arraylen(data) >= 4)
+    if (my_arraylen(CONST_A(data)) >= 4)
         gpu = my_strcat(3, data[2], " ", data[3]);
     free_array(data);
     return gpu;

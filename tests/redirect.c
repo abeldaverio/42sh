@@ -9,6 +9,7 @@
 #include "header_test.h"
 #include <criterion/assert.h>
 #include <criterion/internal/assert.h>
+#include "macros.h"
 
 void redirect_all_std(void)
 {
@@ -19,7 +20,7 @@ void redirect_all_std(void)
 // THIS REQUIRES A NULL AT THE END
 void assert_char_arrays(char **actual, char **expected)
 {
-    cr_assert(my_arraylen(actual) == my_arraylen(actual));
+    cr_assert(my_arraylen(CONST_A(actual)) == my_arraylen(CONST_A(actual)));
     for (int i = 0; actual[i] != NULL; i++) {
         cr_assert_strings_eq(actual[i], expected[i]);
     }

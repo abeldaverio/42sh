@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include "functions.h"
 
-char **my_arraydup(char **array)
+char **my_arraydup(char const *const *const array)
 {
     char **new = calloc((my_arraylen(array) + 1), sizeof(char *));
     int i;
