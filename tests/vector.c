@@ -147,3 +147,13 @@ Test(vector_delete_same, vector)
     vector_delete(&data, 5);
     vector_free(data);
 }
+
+Test(vector_set_too_high, vector)
+{
+    void *data = vector_init(sizeof(char));
+    char c = 'a';
+
+    vector_add(&data, &c);
+    vector_set(&data, 10, &c);
+    vector_free(data);
+}
