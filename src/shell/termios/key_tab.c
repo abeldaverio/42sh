@@ -102,6 +102,8 @@ static void clean_up_term(prompt_t *prompt, env_t *env, int *lines_info)
 
 void clear_last_completion(prompt_t *prompt)
 {
+    if (!prompt->in_completion)
+        return;
     for (int i = 0; i <= prompt->last_completion_offset; i++) {
         dprintf(1, "\33[B");
         dprintf(1, "\33[2K");
