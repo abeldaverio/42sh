@@ -23,7 +23,7 @@ char *get_completion_result(char *input, int completion_ptr)
     bool we_free = true;
     char *completion = NULL;
 
-    to_complete = get_completion(input);
+    to_complete = get_completion(input, false);
     if (to_complete == NULL) {
         to_complete = "";
         we_free = false;
@@ -42,7 +42,7 @@ int *auto_complete(char *input, int completion_ptr, int info[3])
     bool we_free = true;
     int *lines_info = NULL;
 
-    to_complete = get_completion(input);
+    to_complete = get_completion(input, false);
     if (to_complete == NULL) {
         to_complete = "";
         we_free = false;

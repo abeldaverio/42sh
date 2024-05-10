@@ -18,12 +18,14 @@
 #include "vector.h"
 #include "macros.h"
 
-static char *alloc_completion(char *input, int *counter_ptr)
+static char *alloc_completion(char *input, int *counter_ptr, bool stop_at_dir)
 {
     char *new_str = NULL;
     int counter = 0;
 
     for (int i = vector_total(input) - 1; i >= 0; i--) {
+        if (stop_at_dir && input[i] == '/')
+            break;
         if (input[i] == ' ' || input[i] == '\0' || input[i] == '\t') {
             break;
         }
@@ -36,10 +38,10 @@ static char *alloc_completion(char *input, int *counter_ptr)
     return new_str;
 }
 
-char *get_completion(char *input)
+char *get_completion(char *input, bool stop_at_dir)
 {
     int counter = 0;
-    char *new_str = alloc_completion(input, &counter);
+    char *new_str = alloc_completion(input, &counter, stop_at_dir);
     int counter_dup = 0;
 
     if (new_str == NULL)

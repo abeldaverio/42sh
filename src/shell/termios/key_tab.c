@@ -51,7 +51,7 @@ char *concat_vector(prompt_t *prompt)
 {
     char *completion = get_completion_result(*prompt->line,
         prompt->completion_ptr);
-    char *old_completion = get_completion(*prompt->line);
+    char *old_completion = get_completion(*prompt->line, true);
     int offset = 0;
     char *new_completion = NULL;
 
@@ -133,7 +133,7 @@ int handle_tab_completion(prompt_t *prompt, env_t *env, int offset)
 
     clear_last_completion(prompt);
     lines_info = auto_complete(*prompt->line, prompt->completion_ptr, info);
-    prompt->last_completion_offset = info[LINES_INFO] + 1;
+    prompt->last_completion_offset = info[LINES_INFO];
     prompt->in_completion = true;
     if (lines_info == NULL)
         return 0;

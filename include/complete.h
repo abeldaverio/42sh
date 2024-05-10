@@ -23,7 +23,7 @@ static const int WORDS_INFO = 2;
 
 int *auto_compete_cmd(char *complete, int completion_ptr, int info[3]);
 int *auto_compete_dir(char *complete, int completion_ptr, int info[3]);
-char *get_completion(char *input);
+char *get_completion(char *input, bool stop_at_dir);
 int *print_completion(char **completions, int completion_ptr, int info[3]);
 
 char *auto_compete_dir_get(char *complete, int completion_ptr);
