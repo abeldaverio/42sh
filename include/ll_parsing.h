@@ -67,6 +67,7 @@ bool ischar_in_str(char c, const char *separators);
 bool find_char_str(char const *str, char const *to_check);
 int str_in_tab(char const *const *tab, char const *str);
 bool str_contains(const char *str, const char *tocheck);
+void free_tree(ll_node_t *current);
 
 
 #endif
