@@ -9,6 +9,8 @@
     #define SPECIAL_STR_H
 
 static const char *SPECIAL[] = {
+    "&&",
+    "||",
     "|",
     ">>",
     "<<",

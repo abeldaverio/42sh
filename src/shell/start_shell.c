@@ -10,9 +10,11 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "env.h"
+#include "history.h"
 #include "functions.h"
+#include "macros.h"
 
-static bool handle_input(char *input, env_t *env)
+bool handle_input(char *input, env_t *env)
 {
     if (input == NULL)
         exit(84);
@@ -26,19 +28,23 @@ static bool handle_input(char *input, env_t *env)
 
 static void start_loop(env_t *env, int tty)
 {
-    size_t tmp = 0;
     int size = 0;
+    size_t prompt_size = 0;
     char *input = NULL;
     char *new_input = NULL;
 
-    size = getline(&input, &tmp, stdin);
+    prompt_size = print_prompt(env, tty);
+    size = display_changes(env, prompt_size, &input, tty);
     while ((size != -1)) {
+        if (!add_command_history(input, &(env->history), env->history_path)) {
+            env->last_return = 1;
+            break;
+        }
         new_input = clear_special(input);
         if (handle_input(new_input, env))
             break;
-        if (tty == 1)
-            print_prompt(env);
-        size = getline(&input, &tmp, stdin);
+        prompt_size = print_prompt(env, tty);
+        size = display_changes(env, prompt_size, &input, tty);
     }
     if (input != NULL)
         free(input);
@@ -47,13 +53,14 @@ static void start_loop(env_t *env, int tty)
 int start_shell(char const **env)
 {
     env_t *env_struct = init_env(env);
-    int return_value;
+    int return_value = 0;
     int tty = isatty(0);
 
     if (env_struct == NULL)
-        return 84;
-    if (tty == 1)
-        print_prompt(env_struct);
+        return ERROR_STATUS;
+    if (!signal_handler())
+        return ERROR_STATUS;
+    execute_rc(env_struct);
     start_loop(env_struct, tty);
     return_value = env_struct->last_return;
     free_env(env_struct);

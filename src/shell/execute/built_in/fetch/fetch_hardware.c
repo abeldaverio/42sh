@@ -17,57 +17,6 @@
 #include "fetch_theme.h"
 #include "functions.h"
 
-static int search_memory(FILE *file)
-{
-    size_t i = 0;
-    char **data = NULL;
-    char *buffer = NULL;
-    int result = 0;
-
-    if (getline(&buffer, &i, file) == -1)
-        return -1;
-    data = format_arguments(buffer, " \n", "");
-    if (data == 0)
-        return -1;
-    if (my_arraylen(data) < 2)
-        return -1;
-    result = atoi(data[1]);
-    if (result == 0)
-        return -1;
-    free(buffer);
-    free_array(data);
-    return result;
-}
-
-static char *compute_memory(FILE *file)
-{
-    char *memory = NULL;
-    int total_memory = -1;
-    int free_memory = -1;
-    char tmp[256] = {0};
-
-    total_memory = search_memory(file) / 1024;
-    free_memory = search_memory(file) / 1024;
-    if (free_memory < 0 || total_memory < 0)
-        return NULL;
-    if (sprintf(tmp, "%dMib / %dMib", free_memory, total_memory) == -1)
-        return NULL;
-    memory = strdup(tmp);
-    return memory;
-}
-
-char *get_memory(env_t *)
-{
-    char *memory = NULL;
-    FILE *file = fopen("/proc/meminfo", "r");
-
-    if (file == NULL)
-        return NULL;
-    memory = compute_memory(file);
-    fclose(file);
-    return memory;
-}
-
 static char *search_gpu(char *buffer)
 {
     char **data = NULL;
@@ -87,7 +36,7 @@ char *get_gpu(env_t *)
     char *gpu = NULL;
     char *buffer = NULL;
     size_t i = 0;
-    FILE *cmd = popen("lspci -mm | grep -i 'vga\\|3d\\|2d'", "r");
+    FILE *cmd = popen(GPU_COMMAND, "r");
 
     if (cmd == NULL)
         return NULL;
@@ -120,7 +69,7 @@ char *get_cpu(env_t *)
     char *cpu = NULL;
     char **data = NULL;
     size_t i = 0;
-    FILE *file = fopen("/proc/cpuinfo", "r");
+    FILE *file = fopen(CPU_PATH, "r");
 
     if (file == NULL)
         return NULL;
@@ -170,7 +119,7 @@ char *get_os(env_t *)
     char *os = NULL;
     char **data = NULL;
 
-    buffer = create_buffer("/etc/os-release");
+    buffer = create_buffer(OS_PATH);
     data = format_arguments(buffer, "=\"\n", "");
     if (data == NULL)
         return NULL;
