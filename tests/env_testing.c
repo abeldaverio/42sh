@@ -65,7 +65,7 @@ Test(linked_list_env_test, env_testing)
     free_env(env_s);
 }
 
-Test(prompt_test, prompt, .init=redirect_all_std)
+Test(prompt_boring_test, prompt, .init=redirect_all_std)
 {
     char *env[] = {
         "DISPLAY=1",
@@ -83,4 +83,24 @@ Test(prompt_test, prompt, .init=redirect_all_std)
     remove_from_env("PROMPT_COLORS", env_s->env_list);
     print_prompt(env_s, 1);
     cr_assert_stdout_eq_str("abeldaverio@fedora:B-PSU-200-PAR-2-1-42sh-luc.simon > 0 $> ");
+}
+
+Test(prompt_cool_test, prompt, .init=redirect_all_std)
+{
+    char *env[] = {
+        "DISPLAY=1",
+        "PATH=/usr/bin",
+        "USER=TEST",
+        "VARTEST=1",
+        "VAR=1",
+        NULL
+    };
+    env_t *env_s = init_env((const char **) env);
+
+    insert_in_env("HOST", "fedora", env_s->env_list);
+    insert_in_env("USER", "abeldaverio", env_s->env_list);
+    insert_in_env("PWD", "caca/B-PSU-200-PAR-2-1-42sh-luc.simon", env_s->env_list);
+    insert_in_env("PROMPT_COLORS", "", env_s->env_list);
+    print_prompt(env_s, 1);
+    cr_assert_stdout_eq_str("abeldaverio\033[0m@fedora\033[0m:B-PSU-200-PAR-2-1-42sh-luc.simon\033[0m > 0\033[0m $> \033[0m");
 }
