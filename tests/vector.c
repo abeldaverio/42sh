@@ -138,8 +138,12 @@ Test(vector_delete_same, vector)
     void *data = vector_init(sizeof(char));
     char c = 'a';
 
-    for (size_t i = 0; i < 6; ++i)
-        vector_add(&data, &c);
+    vector_add(&data, &c);
+    vector_add(&data, &c);
+    vector_add(&data, &c);
+    vector_add(&data, &c);
+    vector_add(&data, &c);
+    vector_add(&data, &c);
     vector_delete(&data, 5);
     vector_free(data);
 }
