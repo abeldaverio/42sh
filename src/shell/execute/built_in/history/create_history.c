@@ -15,16 +15,25 @@
 #include "history.h"
 #include "functions.h"
 
-void free_history(history_list_t *history)
+static void free_history_rec(history_list_t *history)
 {
     if (history == NULL)
         return;
-    free_history((history)->next);
+    free_history_rec((history)->next);
     if (history != NULL) {
         if (history->command != NULL)
             free(history->command);
         free(history);
     }
+}
+
+void free_history(history_list_t *history)
+{
+    if (history == NULL)
+        return;
+    while (history->prev != NULL)
+        history = history->prev;
+    free_history_rec(history);
 }
 
 static bool push_line_history(history_list_t **history, char *input)
