@@ -49,6 +49,51 @@ Test(third, format_input)
     assert_char_arrays(test, input_twod);
 }
 
+Test(fourth, display_env)
+{
+    char *argv[] = {"print", "env", NULL};
+    env_t *env = malloc(sizeof(*env));
+    
+    cr_assert_eq(true, display_env(argv, env), "NOPE");
+}
+
+Test(fifth, display_env)
+{
+    char *argv[] = {"env", NULL};
+    env_t *env = malloc(sizeof(*env));
+
+    env->env_list = malloc(sizeof(env_list_t *));
+    cr_assert_eq(true, display_env(argv, env), "NOPE");
+}
+
+void fill_env_list(env_list_t **env)
+{
+    char value[] = {'V',
+                    'A',
+                    'L',
+                    '\0'};
+    char variable[] = {'V',
+                        'A',
+                        'R',
+                        '\0'};
+    (*env) = malloc(sizeof(env_list_t *));
+    (*env)->value = strdup(value);
+    (*env)->variable = strdup(variable);
+    (*env)->next = NULL;
+}
+
+Test(sixth, display_env)
+{
+    char *argv[] = {"env", NULL};
+    env_t *env = malloc(sizeof(*env));
+
+    env->env_list = malloc(sizeof(env_list_t **));
+    fill_env_list(env->env_list);
+    cr_assert_eq(true, display_env(argv, env), "NOPE");
+    free((*env->env_list));
+    free(env->env_list);
+    free(env);
+}
 
 Test(basic_star, star_test)
 {
