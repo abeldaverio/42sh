@@ -142,6 +142,7 @@ SRC_TEST	=	$(addprefix tests/,\
 					autocomplete_testing.c	\
 					parser_testing.c	\
 					built_in_tests.c	\
+					possibility_testing.c	\
 				)	\
 
 SRC_TO_TEST	=	$(filter-out src/main.c, $(SRC))

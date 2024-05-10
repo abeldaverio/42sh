@@ -102,8 +102,8 @@ static void clean_up_term(prompt_t *prompt, env_t *env, int *lines_info)
 
 void clear_last_completion(prompt_t *prompt)
 {
-    if (prompt->last_completion_offset == 0)
-        return;
+    //if (prompt->last_completion_offset == 0)
+    //    return;
     for (int i = 0; i <= prompt->last_completion_offset; i++) {
         dprintf(1, "\33[B");
         dprintf(1, "\33[2K");
@@ -135,8 +135,10 @@ int handle_tab_completion(prompt_t *prompt, env_t *env, int offset)
     lines_info = auto_complete(*prompt->line, prompt->completion_ptr, info);
     prompt->last_completion_offset = info[LINES_INFO];
     prompt->in_completion = true;
-    if (lines_info == NULL)
-        return 0;
+    if (lines_info == NULL) {
+        prompt->in_completion = false;
+        return prompt->index;
+    }
     if (prompt->completion_ptr != -1) {
         if (prompt->completion_candidate != NULL)
             free(prompt->completion_candidate);
