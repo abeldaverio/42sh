@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include "arrows.h"
 #include "complete.h"
 #include "functions.h"
@@ -149,5 +150,12 @@ int handle_tab_completion(prompt_t *prompt, env_t *env, int offset)
 
 int handle_tab(prompt_t *prompt, env_t *env)
 {
+    char tab = '\t';
+
+    if (prompt->tty != 1) {
+        vector_push(prompt->line, prompt->index, &tab);
+        prompt->index += 1;
+        return prompt->index;
+    }
     return handle_tab_completion(prompt, env, 1);
 }
