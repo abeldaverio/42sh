@@ -49,3 +49,107 @@
 49: setenv hello world hello
 50: unsetenv
 51: cd a
+52: ls /etc
+53: cat /etc/resolv.conf
+54: pwd
+55: pwd
+56: cat /etc/resolv.conf
+57: ls -l /etc
+58: pwd
+59: unsetenv HOSTTYPE
+60: unsetenv VENDOR
+61: unsetenv OSTYPE
+62: unsetenv MACHTYPE
+63: unsetenv SHLVL
+64: unsetenv PWD
+65: unsetenv LOGNAME
+66: unsetenv USER
+67: unsetenv GROUP
+68: unsetenv HOST
+69: unsetenv REMOTEHOST
+70: unsetenv _
+71: unsetenv LS_COLORS
+72: unsetenv NOTE
+73: setenv titi
+74: setenv tata coucou
+75: env
+76: /usr/bin/env
+77: setenv var1 val1
+78: setenv var2 val2
+79: cd ..
+80: ls -l
+81: cd /usr
+82: ls -l
+83: binary_error    ls     42sh-l    binary_error  42sh -a /usr   binary_error
+84: ./my_divzero
+85: cd -
+86: cd ..
+87: ls -l
+88: cd -
+89: ls -l
+90: cd
+91: ls -l
+92: cd ~
+93: ls -l
+94: ./include
+95: ./Makefile
+96: ./tester/segmentation_fault
+97: ./tester/binary_error
+98: setenv 1
+99: setenv hello! world
+100: setenv hello world hello
+101: unsetenv
+102: cd a
+103: binary_error    ls     42sh-l    binary_error  42sh -a /usr   binary_error
+104: binary_error    ls     42sh-l    binary_error  42sh -a /usr   binary_error
+105: ls -l -a /usr
+106: ls /etc
+107: cat /etc/resolv.conf
+108: pwd
+109: pwd
+110: cat /etc/resolv.conf
+111: ls -l /etc
+112: pwd
+113: unsetenv HOSTTYPE
+114: unsetenv VENDOR
+115: unsetenv OSTYPE
+116: unsetenv MACHTYPE
+117: unsetenv SHLVL
+118: unsetenv PWD
+119: unsetenv LOGNAME
+120: unsetenv USER
+121: unsetenv GROUP
+122: unsetenv HOST
+123: unsetenv REMOTEHOST
+124: unsetenv _
+125: unsetenv LS_COLORS
+126: unsetenv NOTE
+127: setenv titi
+128: setenv tata coucou
+129: env
+130: /usr/bin/env
+131: setenv var1 val1
+132: setenv var2 val2
+133: cd ..
+134: ls -l
+135: cd /usr
+136: ls -l
+137: 		    ls	     	-l    		  	 -a /usr   		
+138: ./my_divzero
+139: cd ..
+140: ls -l
+141: cd -
+142: ls -l
+143: cd
+144: ls -l
+145: cd ~
+146: ls -l
+147: ./include
+148: ./Makefile
+149: ./tester/segmentation_fault
+150: ./tester/binary_error
+151: setenv 1
+152: setenv hello! world
+153: setenv hello world hello
+154: unsetenv
+155: cd a

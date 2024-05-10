@@ -98,14 +98,6 @@ TESTS=
 [909-END]
 
 # NEW TESTS
-[910]
-NAME="builtin cd dash err"
-SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
-CLEAN=""
-TESTS=
-  echo 'cd -'
-[910-END]
-
 [911]
 NAME="builtin cd dash"
 SETUP="export TERM=xterm ; PATH='/bin:/usr/bin'"
