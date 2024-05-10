@@ -10,6 +10,8 @@
 
 void vector_free(void *data)
 {
+    if (data == NULL)
+        return;
     data = data - sizeof(vector_t);
     free(data);
 }

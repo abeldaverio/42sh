@@ -140,6 +140,7 @@ SRC_TEST	=	$(addprefix tests/,\
 					redirect.c	\
 					side_tests.c	\
 					autocomplete_testing.c	\
+					vector.c	\
 					parser_testing.c	\
 					built_in_tests.c	\
 					possibility_testing.c	\
