@@ -7,6 +7,7 @@
 
 #include "header_test.h"
 #include "functions.h"
+#include "built_in.h"
 
 Test(First, my_array_concat)
 {
@@ -53,7 +54,7 @@ Test(fourth, display_env)
 {
     char *argv[] = {"print", "env", NULL};
     env_t *env = malloc(sizeof(*env));
-    
+
     cr_assert_eq(true, display_env(argv, env), "NOPE");
 }
 
