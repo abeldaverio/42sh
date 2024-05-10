@@ -99,3 +99,47 @@ Test(vector_to_str_null, vector)
 {
     vector_to_str(NULL);
 }
+
+Test(vector_to_str, vector)
+{
+    void *data = vector_init(sizeof(char));
+    char c = 'a';
+
+    for (size_t i = 0; i < 6; ++i)
+        vector_add(&data, &c);
+    vector_to_str(&data);
+    vector_free(data);
+}
+
+Test(vector_delete_nul, vector)
+{
+    void *data = vector_init(sizeof(char));
+    char c = 'a';
+
+    for (size_t i = 0; i < 6; ++i)
+        vector_add(&data, &c);
+    vector_delete(&data, 1);
+    vector_free(data);
+}
+
+Test(vector_delete_too_high, vector)
+{
+    void *data = vector_init(sizeof(char));
+    char c = 'a';
+
+    for (size_t i = 0; i < 6; ++i)
+        vector_add(&data, &c);
+    vector_delete(&data, 10);
+    vector_free(data);
+}
+
+Test(vector_delete_same, vector)
+{
+    void *data = vector_init(sizeof(char));
+    char c = 'a';
+
+    for (size_t i = 0; i < 6; ++i)
+        vector_add(&data, &c);
+    vector_delete(&data, 5);
+    vector_free(data);
+}
