@@ -19,10 +19,11 @@
 
 static void display_history_line(history_list_t *history, int count, int n)
 {
-    if (history == NULL || n == count)
+    if (history == NULL || n == count + 1)
         return;
     display_history_line(history->next, count, n + 1);
-    dprintf(1, "%d: %s\n", history->index, history->command);
+    if (history->prev != NULL)
+        dprintf(1, "%d: %s\n", history->index, history->command);
 }
 
 static bool display_n_history_line(char **args,
