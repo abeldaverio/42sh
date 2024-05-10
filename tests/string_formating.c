@@ -35,3 +35,13 @@ Test(Second, clear_special)
                 '\0'};
     cr_assert_str_eq(res, clear_special(input), "LOSE");
 }
+
+Test(third, format_input)
+{
+    char *input[] = {"WOW",
+                    "WORKING?",
+                    NULL};
+    char **input_twod = format_arguments(input, " \t\n", "\"\'");
+
+    cr_assert_eq(0, format_input(&input_twod), "NO");
+}
