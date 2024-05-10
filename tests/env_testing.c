@@ -77,7 +77,7 @@ Test(prompt_boring_test, prompt, .init=redirect_all_std)
     };
     env_t *env_s = init_env((const char **) env);
 
-    insert_in_env("HOST", "fedora", env_s->env_list);
+    insert_in_env("HOSTNAME", "fedora", env_s->env_list);
     insert_in_env("USER", "abeldaverio", env_s->env_list);
     insert_in_env("PWD", "caca/B-PSU-200-PAR-2-1-42sh-luc.simon", env_s->env_list);
     remove_from_env("PROMPT_COLORS", env_s->env_list);
@@ -97,7 +97,7 @@ Test(prompt_cool_test, prompt, .init=redirect_all_std)
     };
     env_t *env_s = init_env((const char **) env);
 
-    insert_in_env("HOST", "fedora", env_s->env_list);
+    insert_in_env("HOSTNAME", "fedora", env_s->env_list);
     insert_in_env("USER", "abeldaverio", env_s->env_list);
     insert_in_env("PWD", "caca/B-PSU-200-PAR-2-1-42sh-luc.simon", env_s->env_list);
     insert_in_env("PROMPT_COLORS", "", env_s->env_list);
