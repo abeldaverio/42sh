@@ -61,9 +61,9 @@ Test(fourth, display_env)
 Test(fifth, display_env)
 {
     char *argv[] = {"env", NULL};
-    env_t *env = malloc(sizeof(*env));
+    env_t *env = calloc(sizeof(*env), 1);
 
-    env->env_list = malloc(sizeof(env_list_t *));
+    env->env_list = calloc(sizeof(env_list_t *), 1);
     cr_assert_eq(true, display_env(argv, env), "NOPE");
 }
 
