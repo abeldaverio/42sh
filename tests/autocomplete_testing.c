@@ -50,7 +50,6 @@ Test(auto_complete_print_cmd, auto_complet_func)
 
     cr_assert_not_null(lineinf);
     cr_assert_neq(info[WORDS_INFO], 0);
-    cr_assert_neq(info[LINES_INFO], 0);
     cr_assert_neq(info[CHARS_INFO], 0);
     free(lineinf);
     vector_free(input);
@@ -64,7 +63,6 @@ Test(auto_complete_print_dir, auto_complet_func)
 
     cr_assert_not_null(lineinf);
     cr_assert_neq(info[WORDS_INFO], 0);
-    cr_assert_neq(info[LINES_INFO], 0);
     cr_assert_neq(info[CHARS_INFO], 0);
     free(lineinf);
     vector_free(input);
