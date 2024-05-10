@@ -17,6 +17,11 @@
 #include "complete.h"
 #include "functions.h"
 
+bool pick_completion(char *input)
+{
+    return true;
+}
+
 char *get_completion_result(char *input, int completion_ptr)
 {
     char *to_complete = NULL;

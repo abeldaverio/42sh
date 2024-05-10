@@ -48,3 +48,12 @@ Test(third, format_input)
 
     assert_char_arrays(test, input_twod);
 }
+
+
+Test(basic_star, star_test)
+{
+    char **input = format_arguments("ls src/*", " ", "");
+
+    cr_assert_eq(format_input(&input), false);
+    free_array(input);
+}
