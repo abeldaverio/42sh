@@ -25,6 +25,7 @@ static bool get_func(ll_node_t *current)
     for (int i = 0; MODEL_SEP[i].sep != NULL; i++)
         if (strcmp(MODEL_SEP[i].sep, current->value) == 0) {
             current->func = MODEL_SEP[i].exec_func;
+            current->is_operator = true;
             return true;
         }
     current->func = lauch_command;
@@ -45,7 +46,6 @@ static void ll_filler(char *cmd, ll_node_t **head)
     }
     if (get_func(node)) {
         node->right = temp;
-        node->is_operator = true;
         *head = node;
     } else {
         (*head)->left = node;

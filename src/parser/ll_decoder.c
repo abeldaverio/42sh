@@ -51,6 +51,9 @@ static bool check_node(ll_node_t *node)
         return true;
     if (node->value[0] == '\n' || node->value[0] == '\0')
         return true;
+    if (node->is_operator == true &&
+        (node->left == NULL || node->right == NULL))
+        return true;
     return false;
 }
 
@@ -69,7 +72,8 @@ static void ll_tester(ll_node_t *current, bool *err)
 {
     if (current == NULL)
         return;
-    if (check_node(current->right) || check_node(current->left)) {
+    if (check_node(current) ||
+        check_node(current->right) || check_node(current->left)) {
         dprintf(STDERR_FILENO, "Invalid null command.\n");
         *err = true;
         return;
